@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const Bundler = require('parcel-bundler');
+require(`${__dirname}/src/main.js`);
+
 const app = express();
 
 utils = {
@@ -26,10 +28,7 @@ app.set('views', utils.path.current('views'));
 
 app.set('view engine', 'pug');
 
-// const bundler = new Bundler(utils.path.working('app/main.js'), {
-//   outdir: 'main'
-// });
-const bundler = new Bundler(utils.path.current('src/main.js'), {
+const bundler = new Bundler(utils.path.working('app/index.js'), {
   outDir: 'public/scripts',
   outFile: 'spalate.js',
 });
