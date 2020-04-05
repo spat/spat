@@ -29,8 +29,13 @@ app.set('views', utils.path.current('views'));
 app.set('view engine', 'pug');
 
 const bundler = new Bundler(utils.path.working('app/index.js'), {
+  target: 'browser',
+  bundleNodeModules: true,
   outDir: 'public/scripts',
   outFile: 'spalate.js',
+  hmr: true,
+  global: 'spalate',
+  cache: false,
 });
 app.use(bundler.middleware());
 
@@ -46,3 +51,19 @@ app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
 });
+
+// for node
+var moduleBundler = new Bundler(utils.path.working('app/index.js'), {
+  target: 'node',
+  bundleNodeModules: false,
+  outDir: 'app',
+  outFile: 'modules.js',
+  hmr: true,
+  global: 'spalate',
+  cache: false,
+  sourceMaps: false,
+});
+setTimeout(() => {
+  moduleBundler.bundle();
+}, 4000);
+// require(path.join(process.cwd(), 'app/modules.js'));

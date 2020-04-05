@@ -1,11 +1,17 @@
 {
   "name": "test",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "node ../index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-riotjs": "git://github.com/riot/parcel-plugin-riot.git#1653eea7c25775fcafcf09ab5a1ffb68d0bc0826",
+    "riot": "^3.13.2"
+  }
 }
