@@ -144,12 +144,15 @@ require("./tags/*.tag");
 
 require("./tags/**/*.tag");
 
+var _browserOrNode = require("browser-or-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
-var isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+console.log('isNode', _browserOrNode.isNode);
+console.log('isBrowser', _browserOrNode.isBrowser);
 
-if (!isNode) {
+if (!_browserOrNode.isNode) {
   _riot.default.mount('*');
 } // export default {
 //   riot,

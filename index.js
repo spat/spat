@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const riot = require('riot');
 const express = require('express');
 const Bundler = require('parcel-bundler');
 require(`${__dirname}/src/main.js`);

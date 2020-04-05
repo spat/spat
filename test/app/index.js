@@ -6,9 +6,11 @@ import './tags/**/*.tag'
 
 console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
 
+import { isBrowser, isNode } from 'browser-or-node';
 
+console.log('isNode', isNode);
+console.log('isBrowser', isBrowser);
 
-var isNode = (typeof process !== 'undefined' && process.versions != null && process.versions.node != null);
 if (!isNode) {
   riot.mount('*');
 }

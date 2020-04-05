@@ -6173,8 +6173,30 @@ process.chdir = function (dir) {
 process.umask = function () {
   return 0;
 };
-},{}],"index.js":[function(require,module,exports) {
+},{}],"../../node_modules/browser-or-node/lib/index.js":[function(require,module,exports) {
 var process = require("process");
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/* global window self */
+
+var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+
+/* eslint-disable no-restricted-globals */
+var isWebWorker = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) === 'object' && self.constructor && self.constructor.name === 'DedicatedWorkerGlobalScope';
+/* eslint-enable no-restricted-globals */
+
+var isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+
+exports.isBrowser = isBrowser;
+exports.isWebWorker = isWebWorker;
+exports.isNode = isNode;
+},{"process":"../../node_modules/process/browser.js"}],"index.js":[function(require,module,exports) {
 var global = arguments[3];
 "use strict";
 
@@ -6188,12 +6210,15 @@ require("./tags/*.tag");
 
 require("./tags/**/*.tag");
 
+var _browserOrNode = require("browser-or-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
-var isNode = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+console.log('isNode', _browserOrNode.isNode);
+console.log('isBrowser', _browserOrNode.isBrowser);
 
-if (!isNode) {
+if (!_browserOrNode.isNode) {
   _riot.default.mount('*');
 } // export default {
 //   riot,
@@ -6203,7 +6228,7 @@ if (!isNode) {
 
 global.riot = _riot.default;
 global._ = _underscore.default;
-},{"underscore":"../../node_modules/underscore/modules/index-all.js","riot":"../node_modules/riot/riot.js","firerest":"../../node_modules/firerest/firerest.js","./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","process":"../../node_modules/process/browser.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"underscore":"../../node_modules/underscore/modules/index-all.js","riot":"../node_modules/riot/riot.js","firerest":"../../node_modules/firerest/firerest.js","./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","browser-or-node":"../../node_modules/browser-or-node/lib/index.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -6231,7 +6256,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56480" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58054" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
