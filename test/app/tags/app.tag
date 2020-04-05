@@ -1,5 +1,9 @@
-<app>
+<app class='p16'>
   <h1>{ title }</h1>
+
+  <div class='p16'>
+    <div class='s64 bg-red'></div>
+  </div>
 
   <ul>
     <li>aaaaaaaaaaaaa bbbbbbbb cccc dddd</li>
@@ -7,7 +11,7 @@
   </ul>
 
   <script>
-    this.title = 'Hello, riot with parcel!';
+    this.title = 'Hello, spalate with parcel!';
     // console.log(Firestore);
   </script>
 </app>

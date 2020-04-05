@@ -120,8 +120,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"tags/app.tag":[function(require,module,exports) {
 const riot = require('riot');
 
-riot.tag2('app', '<h1>{title}</h1> <ul> <li>aaaaaaaaaaaaa bbbbbbbb cccc dddd</li> <item each="{item in [1, 2, 3, 4]}" item="{item}"></item> </ul>', '', '', function (opts) {
-  this.title = 'Hello, riot with parcel!';
+riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul> <li>aaaaaaaaaaaaa bbbbbbbb cccc dddd</li> <item each="{item in [1, 2, 3, 4]}" item="{item}"></item> </ul>', '', 'class="p16"', function (opts) {
+  this.title = 'Hello, spalate with parcel!';
 });
 },{}],"tags/*.tag":[function(require,module,exports) {
 module.exports = {
@@ -137,6 +137,8 @@ module.exports = {
 var _underscore = _interopRequireDefault(require("underscore"));
 
 var _riot = _interopRequireDefault(require("riot"));
+
+var _firerest = _interopRequireDefault(require("firerest"));
 
 require("./tags/*.tag");
 
