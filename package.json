@@ -20,15 +20,10 @@
   },
   "homepage": "https://github.com/phi-jp/spalate-with-parcel#readme",
   "dependencies": {
-    "app": "^0.1.0",
     "express": "^4.17.1",
     "firerest": "^0.1.6",
-    "main.js": "^0.0.1",
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-riotjs": "git://github.com/riot/parcel-plugin-riot.git#1653eea7c25775fcafcf09ab5a1ffb68d0bc0826",
-    "public": "^0.1.5",
     "pug": "^2.0.4",
-    "riot": "^3.13.2",
     "underscore": "^1.10.2"
   }
 }
