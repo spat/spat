@@ -1,7 +1,6 @@
-import './tags/*.tag'
-import './tags/**/*.tag'
+import './tags/*.pug'
+import './tags/**/*.pug'
 import firerest from 'firerest'
-
 
 // グローバル化
 import _ from 'underscore'

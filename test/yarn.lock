@@ -3863,9 +3863,9 @@ parcel-bundler@^1.12.3, parcel-bundler@^1.12.4:
     v8-compile-cache "^2.0.0"
     ws "^5.1.1"
 
-"parcel-plugin-riotjs@git://github.com/riot/parcel-plugin-riot.git#1653eea7c25775fcafcf09ab5a1ffb68d0bc0826":
+"parcel-plugin-riot-pug@git://github.com/phi-jp/parcel-plugin-riot-pug.git#6b309b94a32a33ae8ce8097bd8908131964272aa":
   version "2.1.0"
-  resolved "git://github.com/riot/parcel-plugin-riot.git#1653eea7c25775fcafcf09ab5a1ffb68d0bc0826"
+  resolved "git://github.com/phi-jp/parcel-plugin-riot-pug.git#6b309b94a32a33ae8ce8097bd8908131964272aa"
   dependencies:
     parcel-bundler "^1.12.3"
     riot "^3.13.2"

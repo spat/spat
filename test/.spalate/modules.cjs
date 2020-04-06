@@ -117,22 +117,22 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"tags/app.tag":[function(require,module,exports) {
+})({"tags/app.pug":[function(require,module,exports) {
 const riot = require('riot');
 
-riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
+riot.tag2('app', '<div class="p16"> <h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <div class="mb16"> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}">item {item}</li> </ul> </div> <div class="mb16"><img src="/images/kenkyo.png"></div> </div>', '', '', function (opts) {
   this.title = 'Hello, spalate with parcel!';
   this.on('mount', () => {});
 });
-},{}],"tags/*.tag":[function(require,module,exports) {
+},{}],"tags/*.pug":[function(require,module,exports) {
 module.exports = {
-  "app": require("./app.tag")
+  "app": require("./app.pug")
 };
-},{"./app.tag":"tags/app.tag"}],"tags/**/*.tag":[function(require,module,exports) {
+},{"./app.pug":"tags/app.pug"}],"tags/**/*.pug":[function(require,module,exports) {
 module.exports = {
-  "app": require("./../app.tag")
+  "app": require("./../app.pug")
 };
-},{"./../app.tag":"tags/app.tag"}],"scripts/main.js":[function(require,module,exports) {
+},{"./../app.pug":"tags/app.pug"}],"scripts/main.js":[function(require,module,exports) {
 "use strict";
 
 var _browserOrNode = require("browser-or-node");
@@ -143,17 +143,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 if (_browserOrNode.isBrowser) {
   console.log('ブラウザだよ');
-
-  window.onload = () => {
+  window.addEventListener('load', () => {
     _riot.default.mount('*');
-  };
+  }, false);
 }
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
 
-require("./tags/*.tag");
+require("./tags/*.pug");
 
-require("./tags/**/*.tag");
+require("./tags/**/*.pug");
 
 var _firerest = _interopRequireDefault(require("firerest"));
 
@@ -176,4 +175,4 @@ console.log('isNode', _browserOrNode.isNode);
 console.log('isBrowser', _browserOrNode.isBrowser); // export default {
 //   _,
 // };
-},{"./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","./scripts/main.js":"scripts/main.js"}]},{},["index.js"], "spalate")
+},{"./tags/*.pug":"tags/*.pug","./tags/**/*.pug":"tags/**/*.pug","./scripts/main.js":"scripts/main.js"}]},{},["index.js"], "spalate")

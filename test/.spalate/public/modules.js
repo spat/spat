@@ -3455,22 +3455,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     value: true
   });
 });
-},{}],"tags/app.tag":[function(require,module,exports) {
+},{}],"tags/app.pug":[function(require,module,exports) {
 var riot = require('riot');
 
-riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
+riot.tag2('app', '<div class="p16"> <h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <div class="mb16"> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}">item {item}</li> </ul> </div> <div class="mb16"><img src="/images/kenkyo.png"></div> </div>', '', '', function (opts) {
   this.title = 'Hello, spalate with parcel!';
   this.on('mount', function () {});
 });
-},{"riot":"../node_modules/riot/riot.js"}],"tags/*.tag":[function(require,module,exports) {
+},{"riot":"../node_modules/riot/riot.js"}],"tags/*.pug":[function(require,module,exports) {
 module.exports = {
-  "app": require("./app.tag")
+  "app": require("./app.pug")
 };
-},{"./app.tag":"tags/app.tag"}],"tags/**/*.tag":[function(require,module,exports) {
+},{"./app.pug":"tags/app.pug"}],"tags/**/*.pug":[function(require,module,exports) {
 module.exports = {
-  "app": require("./../app.tag")
+  "app": require("./../app.pug")
 };
-},{"./../app.tag":"tags/app.tag"}],"../../node_modules/node-fetch/browser.js":[function(require,module,exports) {
+},{"./../app.pug":"tags/app.pug"}],"../../node_modules/node-fetch/browser.js":[function(require,module,exports) {
 
 "use strict"; // ref: https://github.com/tc39/proposal-global
 
@@ -6208,18 +6208,17 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 if (_browserOrNode.isBrowser) {
   console.log('ブラウザだよ');
-
-  window.onload = function () {
+  window.addEventListener('load', function () {
     _riot.default.mount('*');
-  };
+  }, false);
 }
 },{"browser-or-node":"../../node_modules/browser-or-node/lib/index.js","riot":"../node_modules/riot/riot.js"}],"index.js":[function(require,module,exports) {
 var global = arguments[3];
 "use strict";
 
-require("./tags/*.tag");
+require("./tags/*.pug");
 
-require("./tags/**/*.tag");
+require("./tags/**/*.pug");
 
 var _firerest = _interopRequireDefault(require("firerest"));
 
@@ -6242,7 +6241,7 @@ console.log('isNode', _browserOrNode.isNode);
 console.log('isBrowser', _browserOrNode.isBrowser); // export default {
 //   _,
 // };
-},{"./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","firerest":"../../node_modules/firerest/firerest.js","underscore":"../../node_modules/underscore/modules/index-all.js","riot":"../node_modules/riot/riot.js","browser-or-node":"../../node_modules/browser-or-node/lib/index.js","./scripts/main.js":"scripts/main.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./tags/*.pug":"tags/*.pug","./tags/**/*.pug":"tags/**/*.pug","firerest":"../../node_modules/firerest/firerest.js","underscore":"../../node_modules/underscore/modules/index-all.js","riot":"../node_modules/riot/riot.js","browser-or-node":"../../node_modules/browser-or-node/lib/index.js","./scripts/main.js":"scripts/main.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -6270,7 +6269,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51362" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50766" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

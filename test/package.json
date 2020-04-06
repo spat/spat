@@ -11,7 +11,7 @@
   "description": "",
   "dependencies": {
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-riotjs": "git://github.com/riot/parcel-plugin-riot.git#1653eea7c25775fcafcf09ab5a1ffb68d0bc0826",
+    "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#6b309b94a32a33ae8ce8097bd8908131964272aa",
     "riot": "^3.13.2"
   }
 }

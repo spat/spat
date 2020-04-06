@@ -4,7 +4,7 @@ import riot from 'riot'
 if (isBrowser) {
   console.log('ブラウザだよ');
 
-  window.onload = () => {
+  window.addEventListener('load', () => {
     riot.mount('*');
-  };
+  }, false);
 }

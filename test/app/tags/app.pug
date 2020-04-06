@@ -1,0 +1,21 @@
+app
+  div.p16
+    h1 {title}
+
+    div.p16
+      div.s64.bg-red
+    
+    div.mb16
+      ul.ml32
+        li isNode: {isNode}
+        li isBrowser: {isBrowser}
+        li(each='{item in [1, 2, 3, 4]}') item {item}
+    
+    div.mb16
+      img(src='/images/kenkyo.png')
+
+  script.
+    this.title = 'Hello, spalate with parcel!';
+
+    this.on('mount', () => {
+    });
