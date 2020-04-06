@@ -26,7 +26,7 @@ var main = async () => {
   
   // setup static
   app.use(express.static(`${process.cwd()}/public`));
-  app.use(express.static(`${process.cwd()}/app/spalate/public`));
+  app.use('/spalate', express.static(`${process.cwd()}/app/spalate/public`));
   
   // setup pug
   app.set('views', utils.path.current('views'));
