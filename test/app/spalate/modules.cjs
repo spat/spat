@@ -120,7 +120,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"tags/app.tag":[function(require,module,exports) {
 const riot = require('riot');
 
-riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul> <li>aaaaaaaaaaaaa bbbbbbbb cccc dddd</li> <item each="{item in [1, 2, 3, 4]}" item="{item}"></item> </ul>', '', 'class="p16"', function (opts) {
+riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul> <li>Text Text Text Text Text Text Text Text </li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
   this.title = 'Hello, spalate with parcel!';
 });
 },{}],"tags/*.tag":[function(require,module,exports) {

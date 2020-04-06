@@ -7,7 +7,7 @@ require(`${__dirname}/src/main.js`);
 
 var main = async () => {
   await bundleServerModules();
-  require(path.join(process.cwd(), 'app/modules.js'));
+  require(`${process.cwd()}/app/spalate/modules.cjs`);
 
   const app = express();
 
@@ -26,6 +26,7 @@ var main = async () => {
   
   // setup static
   app.use(express.static(`${process.cwd()}/public`));
+  app.use(express.static(`${process.cwd()}/app/spalate/public`));
   
   // setup pug
   app.set('views', utils.path.current('views'));
@@ -33,11 +34,12 @@ var main = async () => {
   
   app.set('view engine', 'pug');
   
-  const bundler = new Bundler(utils.path.working('app/index.js'), {
+  var target = `${process.cwd()}/app/index.js`;
+  const bundler = new Bundler(target, {
     target: 'browser',
     bundleNodeModules: true,
-    outDir: 'public/scripts',
-    outFile: 'spalate.js',
+    outDir: 'app/spalate/public/',
+    outFile: 'modules.js',
     hmr: true,
     global: 'spalate',
     cache: false,
@@ -56,8 +58,6 @@ var main = async () => {
     console.log(`App listening on port ${PORT}`);
     console.log('Press Ctrl+C to quit.');
   });
-  
-
 };
 
 
@@ -68,8 +68,8 @@ var bundleServerModules = async () => {
   var moduleBundler = new Bundler(target, {
     target: 'node',
     bundleNodeModules: false,
-    outDir: 'app',
-    outFile: 'modules.js',
+    outDir: 'app/spalate/',
+    outFile: 'modules.cjs',
     hmr: true,
     global: 'spalate',
     cache: false,
