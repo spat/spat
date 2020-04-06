@@ -5431,7 +5431,21 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     value: true
   });
 });
-},{}],"../../node_modules/node-fetch/browser.js":[function(require,module,exports) {
+},{}],"tags/app.tag":[function(require,module,exports) {
+var riot = require('riot');
+
+riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
+  this.title = 'Hello, spalate with parcel!';
+});
+},{"riot":"../node_modules/riot/riot.js"}],"tags/*.tag":[function(require,module,exports) {
+module.exports = {
+  "app": require("./app.tag")
+};
+},{"./app.tag":"tags/app.tag"}],"tags/**/*.tag":[function(require,module,exports) {
+module.exports = {
+  "app": require("./../app.tag")
+};
+},{"./../app.tag":"tags/app.tag"}],"../../node_modules/node-fetch/browser.js":[function(require,module,exports) {
 
 "use strict"; // ref: https://github.com/tc39/proposal-global
 
@@ -5950,21 +5964,7 @@ var global = arguments[3];
 
 
 
-},{"node-fetch":"../../node_modules/node-fetch/browser.js"}],"tags/app.tag":[function(require,module,exports) {
-var riot = require('riot');
-
-riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
-  this.title = 'Hello, spalate with parcel!';
-});
-},{"riot":"../node_modules/riot/riot.js"}],"tags/*.tag":[function(require,module,exports) {
-module.exports = {
-  "app": require("./app.tag")
-};
-},{"./app.tag":"tags/app.tag"}],"tags/**/*.tag":[function(require,module,exports) {
-module.exports = {
-  "app": require("./../app.tag")
-};
-},{"./../app.tag":"tags/app.tag"}],"../../node_modules/process/browser.js":[function(require,module,exports) {
+},{"node-fetch":"../../node_modules/node-fetch/browser.js"}],"../../node_modules/process/browser.js":[function(require,module,exports) {
 
 // shim for using process in browser
 var process = module.exports = {}; // cached from whatever global is present so that test runners that stub it
@@ -6196,42 +6196,47 @@ var isNode = typeof process !== 'undefined' && process.versions != null && proce
 exports.isBrowser = isBrowser;
 exports.isWebWorker = isWebWorker;
 exports.isNode = isNode;
-},{"process":"../../node_modules/process/browser.js"}],"index.js":[function(require,module,exports) {
+},{"process":"../../node_modules/process/browser.js"}],"scripts/main.js":[function(require,module,exports) {
+"use strict";
+
+var _browserOrNode = require("browser-or-node");
+
+var _riot = _interopRequireDefault(require("riot"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (_browserOrNode.isBrowser) {
+  console.log('ブラウザだよ');
+
+  _riot.default.mount('*');
+}
+},{"browser-or-node":"../../node_modules/browser-or-node/lib/index.js","riot":"../node_modules/riot/riot.js"}],"index.js":[function(require,module,exports) {
 var global = arguments[3];
 "use strict";
 
 var _underscore = _interopRequireDefault(require("underscore"));
 
-var _riot = _interopRequireDefault(require("riot"));
-
-var _firerest = _interopRequireDefault(require("firerest"));
-
 require("./tags/*.tag");
 
 require("./tags/**/*.tag");
 
+var _firerest = _interopRequireDefault(require("firerest"));
+
 var _browserOrNode = require("browser-or-node");
+
+require("./scripts/main.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
 global.isBrowser = _browserOrNode.isBrowser;
 global.isNode = _browserOrNode.isNode;
 console.log('isNode', _browserOrNode.isNode);
 console.log('isBrowser', _browserOrNode.isBrowser);
-console.log('--------------------');
-
-if (!_browserOrNode.isNode) {
-  _riot.default.mount('*');
-} // export default {
-//   riot,
+// export default {
 //   _,
 // };
-
-
-global.riot = _riot.default;
 global._ = _underscore.default;
-},{"underscore":"../../node_modules/underscore/modules/index-all.js","riot":"../node_modules/riot/riot.js","firerest":"../../node_modules/firerest/firerest.js","./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","browser-or-node":"../../node_modules/browser-or-node/lib/index.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"underscore":"../../node_modules/underscore/modules/index-all.js","./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","firerest":"../../node_modules/firerest/firerest.js","browser-or-node":"../../node_modules/browser-or-node/lib/index.js","./scripts/main.js":"scripts/main.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -6259,7 +6264,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58883" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64542" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

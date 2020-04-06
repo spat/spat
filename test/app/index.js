@@ -1,32 +1,18 @@
 import _ from 'underscore'
-import riot from 'riot'
-import firerest from 'firerest'
 import './tags/*.tag'
 import './tags/**/*.tag'
-
-console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
+import firerest from 'firerest'
 
 import { isBrowser, isNode } from 'browser-or-node';
-
 global.isBrowser = isBrowser;
 global.isNode = isNode;
-
 console.log('isNode', isNode);
 console.log('isBrowser', isBrowser);
 
-console.log('--------------------');
-
-if (!isNode) {
-  riot.mount('*');
-}
+import './scripts/main.js'
 
 // export default {
-//   riot,
 //   _,
 // };
 
-global.riot = riot;
 global._ = _;
-
-
-

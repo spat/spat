@@ -131,38 +131,43 @@ module.exports = {
 module.exports = {
   "app": require("./../app.tag")
 };
-},{"./../app.tag":"tags/app.tag"}],"index.js":[function(require,module,exports) {
+},{"./../app.tag":"tags/app.tag"}],"scripts/main.js":[function(require,module,exports) {
 "use strict";
 
-var _underscore = _interopRequireDefault(require("underscore"));
+var _browserOrNode = require("browser-or-node");
 
 var _riot = _interopRequireDefault(require("riot"));
 
-var _firerest = _interopRequireDefault(require("firerest"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+if (_browserOrNode.isBrowser) {
+  console.log('ブラウザだよ');
+
+  _riot.default.mount('*');
+}
+},{}],"index.js":[function(require,module,exports) {
+"use strict";
+
+var _underscore = _interopRequireDefault(require("underscore"));
 
 require("./tags/*.tag");
 
 require("./tags/**/*.tag");
 
+var _firerest = _interopRequireDefault(require("firerest"));
+
 var _browserOrNode = require("browser-or-node");
+
+require("./scripts/main.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
 global.isBrowser = _browserOrNode.isBrowser;
 global.isNode = _browserOrNode.isNode;
 console.log('isNode', _browserOrNode.isNode);
 console.log('isBrowser', _browserOrNode.isBrowser);
-console.log('--------------------');
-
-if (!_browserOrNode.isNode) {
-  _riot.default.mount('*');
-} // export default {
-//   riot,
+// export default {
 //   _,
 // };
-
-
-global.riot = _riot.default;
 global._ = _underscore.default;
-},{"./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag"}]},{},["index.js"], "spalate")
+},{"./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","./scripts/main.js":"scripts/main.js"}]},{},["index.js"], "spalate")
