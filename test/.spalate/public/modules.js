@@ -5953,7 +5953,7 @@ var global = arguments[3];
 },{"node-fetch":"../../node_modules/node-fetch/browser.js"}],"tags/app.tag":[function(require,module,exports) {
 var riot = require('riot');
 
-riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul> <li>Text Text Text Text Text Text Text Text </li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
+riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul> <li>Text Text Text Text Text Text Text Text </li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
   this.title = 'Hello, spalate with parcel!';
 });
 },{"riot":"../node_modules/riot/riot.js"}],"tags/*.tag":[function(require,module,exports) {
@@ -6257,7 +6257,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55962" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57401" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

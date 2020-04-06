@@ -8,7 +8,7 @@
   <ul>
     <li>Text Text Text Text Text Text Text Text </li>
     <li each='{item in [1, 2, 3, 4]}' item='{item}'>
-      {item}
+      {item} aaa bbb ccc
     </li>
   </ul>
 
