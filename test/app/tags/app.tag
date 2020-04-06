@@ -6,9 +6,15 @@
   </div>
 
   <ul>
-    <li>aaaaaaaaaaaaa bbbbbbbb cccc dddd</li>
-    <item each='{item in [1, 2, 3, 4]}' item='{item}'></item>
+    <li>Text Text Text Text Text Text Text Text </li>
+    <li each='{item in [1, 2, 3, 4]}' item='{item}'>
+      {item}
+    </li>
   </ul>
+
+  <div>
+    <img src='/images/kenkyo.png' />
+  </div>
 
   <script>
     this.title = 'Hello, spalate with parcel!';
