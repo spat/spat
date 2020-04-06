@@ -19,7 +19,9 @@
 
   <script>
     this.title = 'Hello, spalate with parcel!';
-    // console.log(Firestore);
+
+    this.on('mount', () => {
+    });
   </script>
 </app>
 

@@ -3,5 +3,8 @@ import riot from 'riot'
 
 if (isBrowser) {
   console.log('ブラウザだよ');
-  riot.mount('*');
+
+  window.onload = () => {
+    riot.mount('*');
+  };
 }

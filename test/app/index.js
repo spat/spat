@@ -1,7 +1,14 @@
-import _ from 'underscore'
 import './tags/*.tag'
 import './tags/**/*.tag'
 import firerest from 'firerest'
+
+
+// グローバル化
+import _ from 'underscore'
+import riot from 'riot'
+
+global._ = _;
+global.riot = riot;
 
 import { isBrowser, isNode } from 'browser-or-node';
 global.isBrowser = isBrowser;
@@ -15,4 +22,3 @@ import './scripts/main.js'
 //   _,
 // };
 
-global._ = _;

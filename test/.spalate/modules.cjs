@@ -122,6 +122,7 @@ const riot = require('riot');
 
 riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
   this.title = 'Hello, spalate with parcel!';
+  this.on('mount', () => {});
 });
 },{}],"tags/*.tag":[function(require,module,exports) {
 module.exports = {
@@ -143,12 +144,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 if (_browserOrNode.isBrowser) {
   console.log('ブラウザだよ');
 
-  _riot.default.mount('*');
+  window.onload = () => {
+    _riot.default.mount('*');
+  };
 }
 },{}],"index.js":[function(require,module,exports) {
 "use strict";
-
-var _underscore = _interopRequireDefault(require("underscore"));
 
 require("./tags/*.tag");
 
@@ -156,18 +157,23 @@ require("./tags/**/*.tag");
 
 var _firerest = _interopRequireDefault(require("firerest"));
 
+var _underscore = _interopRequireDefault(require("underscore"));
+
+var _riot = _interopRequireDefault(require("riot"));
+
 var _browserOrNode = require("browser-or-node");
 
 require("./scripts/main.js");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// グローバル化
+global._ = _underscore.default;
+global.riot = _riot.default;
 global.isBrowser = _browserOrNode.isBrowser;
 global.isNode = _browserOrNode.isNode;
 console.log('isNode', _browserOrNode.isNode);
-console.log('isBrowser', _browserOrNode.isBrowser);
-// export default {
+console.log('isBrowser', _browserOrNode.isBrowser); // export default {
 //   _,
 // };
-global._ = _underscore.default;
 },{"./tags/*.tag":"tags/*.tag","./tags/**/*.tag":"tags/**/*.tag","./scripts/main.js":"scripts/main.js"}]},{},["index.js"], "spalate")
