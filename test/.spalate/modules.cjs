@@ -120,7 +120,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 })({"tags/app.tag":[function(require,module,exports) {
 const riot = require('riot');
 
-riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul> <li>Text Text Text Text Text Text Text Text </li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
+riot.tag2('app', '<h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}" item="{item}"> {item} aaa bbb ccc </li> </ul> <div> <img src="/images/kenkyo.png"> </div>', '', 'class="p16"', function (opts) {
   this.title = 'Hello, spalate with parcel!';
 });
 },{}],"tags/*.tag":[function(require,module,exports) {
@@ -149,6 +149,8 @@ var _browserOrNode = require("browser-or-node");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
+global.isBrowser = _browserOrNode.isBrowser;
+global.isNode = _browserOrNode.isNode;
 console.log('isNode', _browserOrNode.isNode);
 console.log('isBrowser', _browserOrNode.isBrowser);
 console.log('--------------------');

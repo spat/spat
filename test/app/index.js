@@ -8,6 +8,9 @@ console.log('index.js: ユーザー定義のファイルが呼び出されたよ
 
 import { isBrowser, isNode } from 'browser-or-node';
 
+global.isBrowser = isBrowser;
+global.isNode = isNode;
+
 console.log('isNode', isNode);
 console.log('isBrowser', isBrowser);
 
