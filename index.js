@@ -33,17 +33,9 @@ var main = async () => {
   // app.set('views', path.join(process.cwd(), 'views'));
   
   app.set('view engine', 'pug');
-  
-  var target = `${process.cwd()}/app/index.js`;
-  const bundler = new Bundler(target, {
-    target: 'browser',
-    bundleNodeModules: true,
-    outDir: 'app/spalate/public/',
-    outFile: 'modules.js',
-    hmr: true,
-    global: 'spalate',
-    cache: false,
-  });
+
+  // setup parcel
+  var bundler = createParcelBundler('browser');
   app.use(bundler.middleware());
   
   // setup routing
@@ -61,21 +53,44 @@ var main = async () => {
 };
 
 
+var createParcelBundler = (target) => {
+  var baseDir = 'app/spalate';
+  var entry = path.join(process.cwd(), 'app/index.js');
+  var config;
+
+  if (target === 'node') {
+    config = {
+      target: 'node',
+      bundleNodeModules: false,
+      outDir: `${baseDir}`,
+      outFile: 'modules.cjs',
+      hmr: true,
+      global: 'spalate',
+      cache: false,
+      sourceMaps: false,  
+    };
+  }
+  else {
+    config = {
+      target: 'browser',
+      bundleNodeModules: true,
+      outDir: `${baseDir}/public`,
+      outFile: 'modules.js',
+      hmr: true,
+      global: 'spalate',
+      cache: false,  
+    };
+  }
+
+  var bundler = new Bundler(entry, config);
+
+  return bundler;
+};
+
 
 var bundleServerModules = async () => {
-  var target = path.join(process.cwd(), 'app/index.js');
-  // for node
-  var moduleBundler = new Bundler(target, {
-    target: 'node',
-    bundleNodeModules: false,
-    outDir: 'app/spalate/',
-    outFile: 'modules.cjs',
-    hmr: true,
-    global: 'spalate',
-    cache: false,
-    sourceMaps: false,
-  });
-  await moduleBundler.bundle();
+  var bundler = createParcelBundler('node');
+  await bundler.bundle();
 };
 
 

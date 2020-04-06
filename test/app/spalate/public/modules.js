@@ -6217,6 +6217,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 console.log('index.js: ユーザー定義のファイルが呼び出されたよ');
 console.log('isNode', _browserOrNode.isNode);
 console.log('isBrowser', _browserOrNode.isBrowser);
+console.log('--------------------');
 
 if (!_browserOrNode.isNode) {
   _riot.default.mount('*');
@@ -6256,7 +6257,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50217" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53262" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
