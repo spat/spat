@@ -61,7 +61,7 @@ var createParcelBundler = (target) => {
       bundleNodeModules: false,
       outDir: `${SPALATE_OUTPUT_DIR}`,
       outFile: 'modules.cjs',
-      hmr: true,
+      hmr: false,
       global: 'spalate',
       cache: false,
       sourceMaps: false,  
@@ -73,7 +73,7 @@ var createParcelBundler = (target) => {
       bundleNodeModules: true,
       outDir: `${SPALATE_OUTPUT_DIR}/public`,
       outFile: 'modules.js',
-      hmr: true,
+      hmr: process.env.NODE_ENV !== 'production',
       global: 'spalate',
       cache: false,  
     };
