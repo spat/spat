@@ -5,9 +5,11 @@ const express = require('express');
 const Bundler = require('parcel-bundler');
 require(`${__dirname}/src/main.js`);
 
+var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
+
 var main = async () => {
   await bundleServerModules();
-  require(`${process.cwd()}/app/spalate/modules.cjs`);
+  require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
 
   const app = express();
 
@@ -22,7 +24,7 @@ var main = async () => {
   
   // setup static
   app.use(express.static(`${process.cwd()}/public`));
-  app.use('/spalate', express.static(`${process.cwd()}/app/spalate/public`));
+  app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/public`));
   
   // setup pug
   app.set('views', utils.path.current('views'));
@@ -50,7 +52,6 @@ var main = async () => {
 
 
 var createParcelBundler = (target) => {
-  var baseDir = 'app/spalate';
   var entry = path.join(process.cwd(), 'app/index.js');
   var config;
 
@@ -58,7 +59,7 @@ var createParcelBundler = (target) => {
     config = {
       target: 'node',
       bundleNodeModules: false,
-      outDir: `${baseDir}`,
+      outDir: `${SPALATE_OUTPUT_DIR}`,
       outFile: 'modules.cjs',
       hmr: true,
       global: 'spalate',
@@ -70,7 +71,7 @@ var createParcelBundler = (target) => {
     config = {
       target: 'browser',
       bundleNodeModules: true,
-      outDir: `${baseDir}/public`,
+      outDir: `${SPALATE_OUTPUT_DIR}/public`,
       outFile: 'modules.js',
       hmr: true,
       global: 'spalate',
