@@ -4265,9 +4265,6 @@ const riot = require('riot');
 
 riot.tag2('app', '<div class="p16"> <h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <div class="mb16"> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}">item {item}</li> </ul> </div> <div class="mb16"> <ul class="ml32"> <li each="{item in items}">{item.data.title}</li> </ul> </div> <div class="mb16"><img src="/images/kenkyo.png"></div> </div>', '', '', function (opts) {
   this.title = 'Hello, spalate with parcel!';
-
-  var hoge = async () => {};
-
   this.on('mount', async () => {
     var ref = db.collection('groups');
     var ss = await ref.get();
@@ -63938,7 +63935,7 @@ _firebase.default.initializeApp(config);
 
 var _default = _firebase.default;
 exports.default = _default;
-},{"firebase":"../node_modules/firebase/dist/index.cjs.js"}],"index.js":[function(require,module,exports) {
+},{"firebase":"../node_modules/firebase/dist/index.cjs.js"}],"client.js":[function(require,module,exports) {
 var global = arguments[3];
 "use strict";
 
@@ -63983,7 +63980,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62130" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63076" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -64159,5 +64156,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","client.js"], null)
 //# sourceMappingURL=/modules.js.map

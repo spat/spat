@@ -199,7 +199,7 @@ var createParcelBundler = target => {
       sourceMaps: false
     };
   } else {
-    var entry = path.join(process.cwd(), 'app/index.js');
+    var entry = path.join(process.cwd(), 'app/client.js');
     config = {
       target: 'browser',
       bundleNodeModules: true,
@@ -241,9 +241,6 @@ const riot = require('riot');
 
 riot.tag2('app', '<div class="p16"> <h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <div class="mb16"> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}">item {item}</li> </ul> </div> <div class="mb16"> <ul class="ml32"> <li each="{item in items}">{item.data.title}</li> </ul> </div> <div class="mb16"><img src="/images/kenkyo.png"></div> </div>', '', '', function (opts) {
   this.title = 'Hello, spalate with parcel!';
-
-  var hoge = async () => {};
-
   this.on('mount', async () => {
     var ref = db.collection('groups');
     var ss = await ref.get();

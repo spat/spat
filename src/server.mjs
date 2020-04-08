@@ -25,7 +25,7 @@ var createParcelBundler = (target) => {
     };
   }
   else {
-    var entry = path.join(process.cwd(), 'app/index.js');
+    var entry = path.join(process.cwd(), 'app/client.js');
     config = {
       target: 'browser',
       bundleNodeModules: true,
