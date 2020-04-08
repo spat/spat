@@ -9,9 +9,7 @@ global.spalate = spalate;
 import riot from 'riot'
 
 spalate.start = () => {
-  window.addEventListener('load', () => {
-    riot.mount('*');
-  }, false);
+  riot.mount('*');
 };
 
 export default spalate;
