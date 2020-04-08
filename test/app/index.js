@@ -1,23 +1,8 @@
-import './tags/*.pug'
-import './tags/**/*.pug'
-import firerest from 'firerest'
-
-// グローバル化
-import _ from 'underscore'
-import riot from 'riot'
-
-global._ = _;
-global.riot = riot;
-
-import { isBrowser, isNode } from 'browser-or-node';
-global.isBrowser = isBrowser;
-global.isNode = isNode;
-console.log('isNode', isNode);
-console.log('isBrowser', isBrowser);
+import client from './node_modules/@spalate/client'
+import './tags'
 
 import './scripts/main.js'
 
-// export default {
-//   _,
-// };
-
+import firebase from "~/plugins/firebase.js"
+var db = firebase.firestore();
+global.db = db;

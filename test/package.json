@@ -10,8 +10,13 @@
   "license": "MIT",
   "description": "",
   "dependencies": {
+    "firebase": "^7.13.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#6b309b94a32a33ae8ce8097bd8908131964272aa",
     "riot": "^3.13.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0"
   }
 }

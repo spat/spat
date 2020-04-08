@@ -10,6 +10,10 @@ app
         li isNode: {isNode}
         li isBrowser: {isBrowser}
         li(each='{item in [1, 2, 3, 4]}') item {item}
+
+    div.mb16
+      ul.ml32
+        li(each='{item in items}') {item.data.title}
     
     div.mb16
       img(src='/images/kenkyo.png')
@@ -17,5 +21,16 @@ app
   script.
     this.title = 'Hello, spalate with parcel!';
 
-    this.on('mount', () => {
+    this.on('mount', async () => {
+      var ref = db.collection('groups');
+      var ss = await ref.get();
+
+      this.items = ss.docs.map(doc => {
+        return {
+          id: doc.id,
+          data: doc.data(),
+        }
+      });
+
+      this.update();
     });

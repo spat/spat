@@ -1,0 +1,2 @@
+import './*.pug'
+import './**/*.pug'

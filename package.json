@@ -23,6 +23,7 @@
     "browser-or-node": "^1.2.1",
     "express": "^4.17.1",
     "firerest": "^0.1.6",
+    "fs-extra": "^9.0.0",
     "parcel-bundler": "^1.12.4",
     "pug": "^2.0.4",
     "riot": "^3.13.2",
