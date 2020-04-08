@@ -1,2 +1,0 @@
-import './*.pug'
-import './**/*.pug'

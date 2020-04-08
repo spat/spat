@@ -68,12 +68,19 @@ var bundler = createParcelBundler('browser');
 app.use(bundler.middleware());
 
 // setup routing
-app.get('/', async (req, res) => {
-  // var ss = await db.collection('groups').get();
+import routes from '../../scripts/routes.js'
 
-  res.render('index', {
+Object.keys(routes).forEach(key => {
+  console.log(key);
+  app.get(key, async (req, res) => {
+    // var ss = await db.collection('groups').get();
+  
+    res.render('index', {
+    });
   });
+  
 });
+
 
 export default app;
 

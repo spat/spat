@@ -1,0 +1,35 @@
+page-groups-single
+  div.p32
+    h1.mb16 {item.data.title}
+          
+    div.mb16
+      img(src='/images/kenkyo.png')
+
+  script.
+
+    this.fetch = async () => {
+      var ref = db.doc(location.pathname);
+
+      try {
+        var ss = await ref.get({source: 'cache'});
+      }
+      catch(e) {
+        if (e.code === 'unavailable') {
+          var ss = await ref.get({source: 'server'});
+        }
+      }
+
+      console.log('fromCache:', ss.metadata.fromCache);
+      console.log('group name:', ss.data().title);
+
+      this.item = {
+        id: ss.id,
+        ref: ss.ref,
+        data: ss.data(),
+      }
+      this.update();
+    };
+
+    this.on('mount', async () => {
+      this.fetch();
+    });

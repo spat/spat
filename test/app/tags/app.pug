@@ -1,36 +1,20 @@
 app
-  div.p16
-    h1 {title}
-
-    div.p16
-      div.s64.bg-red
-    
-    div.mb16
-      ul.ml32
-        li isNode: {isNode}
-        li isBrowser: {isBrowser}
-        li(each='{item in [1, 2, 3, 4]}') item {item}
-
-    div.mb16
-      ul.ml32
-        li(each='{item in items}') {item.data.title}
-    
-    div.mb16
-      img(src='/images/kenkyo.png')
+  div(data-is='{pageTag}')
 
   script.
     this.title = 'Hello, spalate with parcel!';
 
     this.on('mount', async () => {
-      var ref = db.collection('groups');
-      var ss = await ref.get();
+      var path = location.pathname;
+      if (path === '/') {
+        var route = routes[location.pathname];
+      }
+      else {
+        var route = routes['/groups/:id'];
+      }
 
-      this.items = ss.docs.map(doc => {
-        return {
-          id: doc.id,
-          data: doc.data(),
-        }
-      });
-
-      this.update();
+      if (route.tag) {
+        this.pageTag = route.tag;
+        this.update();
+      }
     });
