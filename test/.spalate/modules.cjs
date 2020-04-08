@@ -117,7 +117,60 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../spalate.config.js":[function(require,module,exports) {
+})({"node_modules/@spalate/internal/spalate-app.pug":[function(require,module,exports) {
+const riot = require('riot');
+
+riot.tag2('spalate-app', '<div>spalate app でーす</div>', '', '', function(opts) {
+});
+},{}],"tags/app.pug":[function(require,module,exports) {
+const riot = require('riot');
+
+riot.tag2('app', '<div class="p16"> <h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <div class="mb16"> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}">item {item}</li> </ul> </div> <div class="mb16"> <ul class="ml32"> <li each="{item in items}">{item.data.title}</li> </ul> </div> <div class="mb16"><img src="/images/kenkyo.png"></div> </div>', '', '', function (opts) {
+  this.title = 'Hello, spalate with parcel!';
+  this.on('mount', async () => {
+    var ref = db.collection('groups');
+    var ss = await ref.get();
+    this.items = ss.docs.map(doc => {
+      return {
+        id: doc.id,
+        data: doc.data()
+      };
+    });
+    this.update();
+  });
+});
+},{}],"tags/*.pug":[function(require,module,exports) {
+module.exports = {
+  "app": require("./app.pug")
+};
+},{"./app.pug":"tags/app.pug"}],"tags/**/*.pug":[function(require,module,exports) {
+module.exports = {
+  "app": require("./../app.pug")
+};
+},{"./../app.pug":"tags/app.pug"}],"node_modules/@spalate/spalate.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _browserOrNode = require("browser-or-node");
+
+require("./internal/spalate-app.pug");
+
+require("../../tags/*.pug");
+
+require("../../tags/**/*.pug");
+
+console.log('isNode', _browserOrNode.isNode);
+console.log('isBrowser', _browserOrNode.isBrowser);
+var _default = {
+  isNode: _browserOrNode.isNode,
+  isBrowser: _browserOrNode.isBrowser
+};
+exports.default = _default;
+},{"./internal/spalate-app.pug":"node_modules/@spalate/internal/spalate-app.pug","../../tags/*.pug":"tags/*.pug","../../tags/**/*.pug":"tags/**/*.pug"}],"../spalate.config.js":[function(require,module,exports) {
 module.exports = {
   // env: 'staging',
   server: {},
@@ -142,24 +195,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _spalateConfig.default.env = _spalateConfig.default.env || 'temp';
 var _default = _spalateConfig.default;
 exports.default = _default;
-},{"../../../spalate.config.js":"../spalate.config.js"}],"node_modules/@spalate/spalate.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _browserOrNode = require("browser-or-node");
-
-console.log('isNode', _browserOrNode.isNode);
-console.log('isBrowser', _browserOrNode.isBrowser);
-var _default = {
-  isNode: _browserOrNode.isNode,
-  isBrowser: _browserOrNode.isBrowser
-};
-exports.default = _default;
-},{}],"node_modules/@spalate/server.mjs":[function(require,module,exports) {
+},{"../../../spalate.config.js":"../spalate.config.js"}],"node_modules/@spalate/server.mjs":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -171,17 +207,17 @@ var _spalate = _interopRequireDefault(require("./spalate.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// config
+// spalate は global とする
+global.spalate = _spalate.default; // ここからはサーバー固有の処理
+
 const path = require('path');
 
 const express = require('express');
 
-const Bundler = require('parcel-bundler');
-
-const config = require('./config.js'); // spalate は global とする
+const Bundler = require('parcel-bundler'); // config
 
 
-global.spalate = _spalate.default;
+const config = require('./config.js');
 
 var createParcelBundler = target => {
   var config;
@@ -236,38 +272,7 @@ app.get('/', async (req, res) => {
 });
 var _default = app;
 exports.default = _default;
-},{"./config.js":"node_modules/@spalate/config.js","./spalate.js":"node_modules/@spalate/spalate.js"}],"tags/app.pug":[function(require,module,exports) {
-const riot = require('riot');
-
-riot.tag2('app', '<div class="p16"> <h1>{title}</h1> <div class="p16"> <div class="s64 bg-red"></div> </div> <div class="mb16"> <ul class="ml32"> <li>isNode: {isNode}</li> <li>isBrowser: {isBrowser}</li> <li each="{item in [1, 2, 3, 4]}">item {item}</li> </ul> </div> <div class="mb16"> <ul class="ml32"> <li each="{item in items}">{item.data.title}</li> </ul> </div> <div class="mb16"><img src="/images/kenkyo.png"></div> </div>', '', '', function (opts) {
-  this.title = 'Hello, spalate with parcel!';
-  this.on('mount', async () => {
-    var ref = db.collection('groups');
-    var ss = await ref.get();
-    this.items = ss.docs.map(doc => {
-      return {
-        id: doc.id,
-        data: doc.data()
-      };
-    });
-    this.update();
-  });
-});
-},{}],"tags/*.pug":[function(require,module,exports) {
-module.exports = {
-  "app": require("./app.pug")
-};
-},{"./app.pug":"tags/app.pug"}],"tags/**/*.pug":[function(require,module,exports) {
-module.exports = {
-  "app": require("./../app.pug")
-};
-},{"./../app.pug":"tags/app.pug"}],"tags/index.js":[function(require,module,exports) {
-"use strict";
-
-require("./*.pug");
-
-require("./**/*.pug");
-},{"./*.pug":"tags/*.pug","./**/*.pug":"tags/**/*.pug"}],"plugins/firebase.js":[function(require,module,exports) {
+},{"./spalate.js":"node_modules/@spalate/spalate.js","./config.js":"node_modules/@spalate/config.js"}],"plugins/firebase.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -297,8 +302,6 @@ exports.default = _default;
 
 var _server = _interopRequireDefault(require("./node_modules/@spalate/server"));
 
-require("./tags");
-
 var _firebase = _interopRequireDefault(require("~/plugins/firebase.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -313,4 +316,4 @@ _server.default.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
 });
-},{"./node_modules/@spalate/server":"node_modules/@spalate/server.mjs","./tags":"tags/index.js","~/plugins/firebase.js":"plugins/firebase.js"}]},{},["server.js"], "spalate")
+},{"./node_modules/@spalate/server":"node_modules/@spalate/server.mjs","~/plugins/firebase.js":"plugins/firebase.js"}]},{},["server.js"], "spalate")

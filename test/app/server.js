@@ -1,5 +1,4 @@
 import server from './node_modules/@spalate/server'
-import './tags'
 
 import firebase from "~/plugins/firebase.js"
 var db = firebase.firestore();

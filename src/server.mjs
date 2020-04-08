@@ -1,12 +1,16 @@
-// config
-const path = require('path');
-const express = require('express');
-const Bundler = require('parcel-bundler');
-const config = require('./config.js');
 
 // spalate は global とする
 import spalate from './spalate.js'
 global.spalate = spalate;
+
+
+// ここからはサーバー固有の処理
+
+const path = require('path');
+const express = require('express');
+const Bundler = require('parcel-bundler');
+// config
+const config = require('./config.js');
 
 var createParcelBundler = (target) => {
   var config;
