@@ -18,7 +18,7 @@ global.routes = routes;
 
 setTimeout(() => {
   spalate.start();
-}, 2000);
+}, 1024);
 
 // import './scripts/main.js'import spalate from '../../src/spalate';
 

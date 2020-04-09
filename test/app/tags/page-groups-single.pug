@@ -10,8 +10,8 @@ page-groups-single
       data: {}
     };
 
-    this.fetch = async () => {
-      var ref = db.doc(location.pathname);
+    this.fetch = async ({req, res}) => {
+      var ref = db.doc(req.path);
 
       try {
         var ss = await ref.get({source: 'cache'});
@@ -25,14 +25,27 @@ page-groups-single
       console.log('fromCache:', ss.metadata.fromCache);
       console.log('group name:', ss.data().title);
 
-      this.item = {
+      var item = {
         id: ss.id,
         ref: ss.ref,
         data: ss.data(),
-      }
-      this.update();
+      };
+
+      return {
+        item,
+      };
     };
 
-    this.on('mount', () => {
-      this.fetch();
+    this.on('mount', async () => {
+      if (!spalate.isBrowser) return ;
+
+      var res = await this.fetch({
+        req: {
+          path: location.pathname,
+        }
+      });
+      Object.assign(this, res);
+
+      this.item.data.title += ' client render';
+      this.update();
     });

@@ -7,7 +7,7 @@ module.exports = class Ssriot {
     this.tagName = tagName;
   }
 
-  async render() {
+  async render({req, res}) {
     this.template = riot.util.templates[this.tagName];
 
     var noop = function() { };
@@ -20,7 +20,10 @@ module.exports = class Ssriot {
     this.template.fn.call(this.dummyTag, {});
 
     if (this.dummyTag.fetch) {
-      this.data = await this.dummyTag.fetch();
+      this.data = await this.dummyTag.fetch({
+        req,
+        res,
+      });
     }
 
     var root = document.createElement('div');

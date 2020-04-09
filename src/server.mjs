@@ -92,7 +92,9 @@ Object.keys(routes).forEach(key => {
     }
 
     var ssr = new Ssriot(route.tag);
-    await ssr.render();
+    await ssr.render({
+      req, res
+    });
   
     res.render('index', {
       content: ssr.content,
