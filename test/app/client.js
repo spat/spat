@@ -15,7 +15,10 @@ global.db = db;
 import routes from '~/scripts/routes.js'
 global.routes = routes;
 
-spalate.start();
+
+setTimeout(() => {
+  spalate.start();
+}, 2000);
 
 // import './scripts/main.js'import spalate from '../../src/spalate';
 

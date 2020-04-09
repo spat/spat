@@ -16,14 +16,14 @@ page-index
       ul.ml32
         li(each='{item in items}')
           a(href='/{item.ref.path}') {item.data.title}
-          
+
     div.mb16
       img(src='/images/kenkyo.png')
 
   script.
     this.title = 'Hello, spalate with parcel!';
 
-    this.on('mount', async () => {
+    this.fetch = async () => {
       var ref = db.collection('groups');
       var ss = await ref.get({source: "cache"});
       
@@ -31,14 +31,25 @@ page-index
         var ss = await ref.get({source: "server"});
       }
 
-      this.items = ss.docs.map(doc => {
+      var items = ss.docs.map(doc => {
         return {
           id: doc.id,
           ref: doc.ref,
           data: doc.data(),
         }
       });
-      console.log('fromCache:', ss.metadata.fromCache);
 
+      return {
+        items,
+      };
+    };
+
+    this.on('mount', async () => {
+      if (!spalate.isBrowser) return ;
+
+      this.title = 'mounted';
+
+      var res = await this.fetch();
+      Object.assign(this, res);
       this.update();
     });

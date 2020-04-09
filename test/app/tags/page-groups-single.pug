@@ -6,6 +6,9 @@ page-groups-single
       img(src='/images/kenkyo.png')
 
   script.
+    this.item = {
+      data: {}
+    };
 
     this.fetch = async () => {
       var ref = db.doc(location.pathname);
@@ -30,6 +33,6 @@ page-groups-single
       this.update();
     };
 
-    this.on('mount', async () => {
+    this.on('mount', () => {
       this.fetch();
     });
