@@ -67,6 +67,15 @@ app.set('view engine', 'pug');
 var bundler = createParcelBundler('browser');
 app.use(bundler.middleware());
 
+
+// riot build
+import Ssriot from './ssriot.js'
+
+var riot = require('riot');
+var sdom = require('riot/lib/server/sdom.js');
+riot.util.tmpl.errorHandler = function() {};
+riot.mixin({ _ssr: true });
+
 // setup routing
 import routes from '../../scripts/routes.js'
 
@@ -74,8 +83,19 @@ Object.keys(routes).forEach(key => {
   console.log(key);
   app.get(key, async (req, res) => {
     // var ss = await db.collection('groups').get();
+
+    if (key === '/') {
+      var route = routes[key];
+    }
+    else {
+      var route = routes['/groups/:id'];
+    }
+
+    var ssr = new Ssriot(route.tag);
+    await ssr.render();
   
     res.render('index', {
+      content: ssr.content,
     });
   });
   
