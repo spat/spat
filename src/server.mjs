@@ -77,7 +77,15 @@ riot.util.tmpl.errorHandler = function() {};
 riot.mixin({ _ssr: true });
 
 // setup routing
+import URL from 'url'
 import routes from '../../scripts/routes.js'
+
+
+app.use((req, res, next) => {
+  req.Url = URL.parse(req.url, true);
+
+  next();
+});
 
 Object.keys(routes).forEach(key => {
   console.log(key);

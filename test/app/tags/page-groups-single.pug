@@ -11,7 +11,7 @@ page-groups-single
     };
 
     this.fetch = async ({req, res}) => {
-      var ref = db.doc(req.path);
+      var ref = db.doc(req.Url.pathname);
 
       try {
         var ss = await ref.get({source: 'cache'});
@@ -37,15 +37,9 @@ page-groups-single
     };
 
     this.on('mount', async () => {
-      if (!spalate.isBrowser) return ;
+    });
 
-      var res = await this.fetch({
-        req: {
-          path: location.pathname,
-        }
-      });
-      Object.assign(this, res);
-
-      this.item.data.title += ' client render';
-      this.update();
+    this.on('show', () => {
+      this.item;
+      this.item.data.title += ' render client';
     });

@@ -20,5 +20,3 @@ setTimeout(() => {
   spalate.start();
 }, 1024);
 
-// import './scripts/main.js'import spalate from '../../src/spalate';
-

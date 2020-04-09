@@ -1,20 +1,22 @@
 app
-  div(data-is='{pageTag}')
+  div(ref='page', data-is='{pageTag}')
 
   script.
     this.title = 'Hello, spalate with parcel!';
 
     this.on('mount', async () => {
-      var path = location.pathname;
-      if (path === '/') {
-        var route = routes[location.pathname];
-      }
-      else {
-        var route = routes['/groups/:id'];
+    });
+
+    this.gotoPage = async (pageTag, req, res) => {
+      this.pageTag = pageTag;
+      this.update();
+
+      if (this.refs.page.fetch) {
+        var data = await this.refs.page.fetch({req, res});
+        Object.assign(this.refs.page, data);
+        this.refs.page.update();
       }
 
-      if (route.tag) {
-        this.pageTag = route.tag;
-        this.update();
-      }
-    });
+      this.refs.page.trigger('show');
+      this.refs.page.update();
+    };
