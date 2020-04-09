@@ -25,6 +25,7 @@
     "firerest": "^0.1.6",
     "fs-extra": "^9.0.0",
     "parcel-bundler": "^1.12.4",
+    "path-to-regexp": "^6.1.0",
     "pug": "^2.0.4",
     "riot": "git://github.com/phi-jp/riot.git#89ad782f4d81dbeab017c2dbfa0f3694c6908b62",
     "underscore": "^1.10.2"
