@@ -39,7 +39,7 @@ var createParcelBundler = (target) => {
       // 名前がバッティングするので off に
       // global: 'spalate',
       sourceMaps: true,
-      cache: false,  
+      cache: true,
     };
   }
 
