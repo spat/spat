@@ -1,33 +1,31 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const riot = require('riot');
 const express = require('express');
 const Bundler = require('parcel-bundler');
-require(`${__dirname}/src/main.js`);
 
 var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
+
+// コピーする
+fs.copySync(`${__dirname}/src`, 'app/node_modules/@spalate');
+
+// config
+// const config = require(`./src/config.js`);
 
 var main = async () => {
   await bundleServerModules();
   require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
 
-  const app = express();
+  return ;
 
-  utils = {
-    path: {
-      // 今実行中のファイルディレクトリ(spalate の root)
-      current: (p) => {
-        return path.join(__dirname, p);
-      },
-    }
-  };
+  const app = express();
   
   // setup static
   app.use(express.static(`${process.cwd()}/public`));
   app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/public`));
   
   // setup pug
-  app.set('views', utils.path.current('views'));
+  app.set('views', path.join(__dirname, 'views'));
   // app.set('views', path.join(process.cwd(), 'views'));
   
   app.set('view engine', 'pug');
@@ -52,10 +50,10 @@ var main = async () => {
 
 
 var createParcelBundler = (target) => {
-  var entry = path.join(process.cwd(), 'app/index.js');
   var config;
 
   if (target === 'node') {
+    var entry = path.join(process.cwd(), 'app/server.js');
     config = {
       target: 'node',
       bundleNodeModules: false,
@@ -68,6 +66,7 @@ var createParcelBundler = (target) => {
     };
   }
   else {
+    var entry = path.join(process.cwd(), 'app/index.js');
     config = {
       target: 'browser',
       bundleNodeModules: true,

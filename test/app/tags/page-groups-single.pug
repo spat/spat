@@ -1,0 +1,48 @@
+page-groups-single
+  div.p32
+    h1.mb16 {item.data.title}
+          
+    div.mb16
+      img(src='/images/kenkyo.png')
+
+    div
+      a(href='/') TOP
+
+  script.
+    this.item = {
+      data: {}
+    };
+
+    this.fetch = async ({req, res}) => {
+      var ref = db.doc(req.Url.pathname);
+
+      try {
+        var ss = await ref.get({source: 'cache'});
+      }
+      catch(e) {
+        if (e.code === 'unavailable') {
+          var ss = await ref.get({source: 'server'});
+        }
+      }
+
+      console.log('fromCache:', ss.metadata.fromCache);
+      console.log('group name:', ss.data().title);
+
+      var item = {
+        id: ss.id,
+        ref: ss.ref,
+        data: ss.data(),
+      };
+
+      return {
+        item,
+      };
+    };
+
+    this.on('mount', async () => {
+    });
+
+    this.on('show', () => {
+      this.item;
+      this.item.data.title += ' render client';
+    });
