@@ -1,0 +1,9 @@
+item-group
+  a(href='/{opts.item.ref.path}') {opts.item.data.title}
+
+  script.
+    this.on('mount', () => {
+      //- document.addEventListener('click', () => {
+      //-   console.log('foo');
+      //- });
+    });

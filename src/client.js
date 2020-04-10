@@ -24,9 +24,10 @@ spalate.router = router;
 
 // ここからは client 用
 import riot from 'riot'
+riot.util.tmpl.errorHandler = function() {};
 
 spalate.start = () => {
-  riot.mount('*');
+  riot.mount('app');
 
   // ルーティング実行
   spalate.router.exec();

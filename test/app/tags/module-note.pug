@@ -1,0 +1,14 @@
+module-note
+  h2 {data.title}
+
+  script.
+    this.fetch = async () => {
+      var res = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+      var data = await res.json();
+
+      console.log(data);
+
+      return {
+        data
+      };
+    };

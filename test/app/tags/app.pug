@@ -11,10 +11,28 @@ app
       this.pageTag = pageTag;
       this.update();
 
+      // fetch がある場合は実行する
       if (this.refs.page.fetch) {
         var data = await this.refs.page.fetch({req, res});
         Object.assign(this.refs.page, data);
         this.refs.page.update();
+
+        // すべてのタグを配列化
+        var tags = Object.values(this.refs.page.tags).flat();
+        // fetch を持っているタグのみを取得
+        tags = tags.filter(tag => tag.fetch);
+        // fetch する
+        var promises = tags.map(async (tag) => {
+          var res = await tag.fetch();
+          Object.assign(tag, res);
+          tag.update();
+        });
+
+        await Promise.all(promises);
+      }
+
+      if (spalate.isBrowser) {
+        this.refs.page.trigger('created');
       }
 
       this.refs.page.trigger('show');

@@ -5,17 +5,20 @@ page-index
     div.p16
       div.s64.bg-red
     
+    
     div.mb16
       ul.ml32
-        li isNode: {isNode}
-        li isBrowser: {isBrowser}
+        li isNode: {spalate.isNode}
+        li isBrowser: {spalate.isBrowser}
         li(each='{item in [1, 2, 3, 4]}') item {item}
 
     div.mb16
       h2 グループ一覧
-      ul.ml32
-        li(each='{item in items}')
-          a(href='/{item.ref.path}') {item.data.title}
+      div.ml32
+        div(each='{item in items}', data-is='item-group', item='{item}')
+    
+    div.mb16
+      div(data-is='module-note')
 
     div.mb16
       img(src='/images/kenkyo.png')
@@ -44,9 +47,15 @@ page-index
       };
     };
 
-    this.on('mount', async () => {
-      if (!spalate.isBrowser) return ;
+    this.on('created', async () => {
+      console.log('page-index');
 
+      document.addEventListener('click', () => {
+        console.log('hoge');
+      });
+    });
+
+    this.on('show', async () => {
       this.title = 'mounted';
 
       var res = await this.fetch();

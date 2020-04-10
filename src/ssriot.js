@@ -1,6 +1,9 @@
-var riot = require('riot');
-var sdom = require('riot/lib/server/sdom.js');
+const riot = require('riot');
+const sdom = require('riot/lib/server/sdom.js');
 riot.util.tmpl.errorHandler = function() {};
+const fetch = require('node-fetch');
+
+global.fetch = fetch;
 
 module.exports = class Ssriot {
   constructor(tagName) {
@@ -8,31 +11,12 @@ module.exports = class Ssriot {
   }
 
   async render({req, res}) {
-    this.template = riot.util.templates[this.tagName];
+    var element = document.createElement('div');
+    element.setAttribute('data-is', 'app');
+    
+    this.tag = riot.mount(element)[0];
+    await this.tag.gotoPage(this.tagName, req, res);
 
-    var noop = function() { };
-    this.dummyTag = {
-      on: noop,
-      one: noop,
-      mixin: noop,
-    };
-
-    this.template.fn.call(this.dummyTag, {});
-
-    if (this.dummyTag.fetch) {
-      this.data = await this.dummyTag.fetch({
-        req,
-        res,
-      });
-    }
-
-    var root = document.createElement('div');
-    root.setAttribute('data-is', this.tagName);
-
-    this.tag = riot.mount(root)[0];
-    Object.assign(this.tag, this.data);
-
-    this.tag.update();
     this.content = sdom.serialize(this.tag.root);
   }
 };
