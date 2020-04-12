@@ -11,25 +11,8 @@ app
       this.pageTag = pageTag;
       this.update();
 
-      // fetch がある場合は実行する
-      if (this.refs.page.fetch) {
-        var data = await this.refs.page.fetch({req, res});
-        Object.assign(this.refs.page, data);
-        this.refs.page.update();
-
-        // すべてのタグを配列化
-        var tags = Object.values(this.refs.page.tags).flat();
-        // fetch を持っているタグのみを取得
-        tags = tags.filter(tag => tag.fetch);
-        // fetch する
-        var promises = tags.map(async (tag) => {
-          var res = await tag.fetch();
-          Object.assign(tag, res);
-          tag.update();
-        });
-
-        await Promise.all(promises);
-      }
+      // fetch 実行
+      await this.fetch(this.refs.page, req, res);
 
       if (spalate.isBrowser) {
         this.refs.page.trigger('created');
@@ -37,4 +20,25 @@ app
 
       this.refs.page.trigger('show');
       this.refs.page.update();
+    };
+
+    this.fetch = async (tag, req, res) => {
+      if (tag.fetch) {
+        var data = await tag.fetch({req, res});
+        Object.assign(tag, data);
+        tag.update();
+      }
+
+      // すべてのタグをまとめて配列化
+      var tags = Object.values(tag.tags).flat();
+
+      // 子タグがない場合は何もしない
+      if (tags.length <= 0) return ;
+
+      // fetch する
+      var promises = tags.map(async (tag) => {
+        return this.fetch(tag);
+      });
+
+      await Promise.all(promises);
     };
