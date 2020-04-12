@@ -1,8 +1,11 @@
 {
-  "name": "spalate-with-parcel",
-  "version": "1.0.0",
+  "name": "spalate",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
+  "bin": {
+    "spalate": "./spalate"
+  },
   "directories": {
     "test": "test"
   },
