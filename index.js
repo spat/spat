@@ -7,18 +7,17 @@ const Bundler = require('parcel-bundler');
 var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 
 // コピーする
-try {
+if (!process.env.PORT) {
   fs.copySync(`${__dirname}/src`, `${process.cwd()}/app/.spalate/modules`);
-}
-catch (e) {
-  console.log(e);
 }
 
 // config
 // const config = require(`./src/config.js`);
 
 var main = async () => {
-  await bundleServerModules();
+  if (!process.env.PORT) {
+    await bundleServerModules();
+  }
   require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
 };
 
