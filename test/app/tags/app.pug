@@ -14,6 +14,9 @@ app
       // fetch 実行
       await this.fetch(this.refs.page, req, res);
 
+      // head 取得
+      this.head = this.getHead(this.refs.page);
+
       if (spalate.isBrowser) {
         this.refs.page.trigger('created');
       }
@@ -42,3 +45,13 @@ app
 
       await Promise.all(promises);
     };
+
+    this.getHead = (tag) => {
+      var head = {};
+      if (tag.head) {
+        var data = tag.head();
+        Object.assign(head, data);
+      }
+
+      return head;
+    }

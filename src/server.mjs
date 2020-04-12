@@ -105,6 +105,7 @@ Object.keys(routes).forEach(key => {
     });
   
     res.render('index', {
+      head: ssr.tag.head,
       content: ssr.content,
       pretty: true,
     });

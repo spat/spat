@@ -39,6 +39,12 @@ page-groups-single
       };
     };
 
+    this.head = () => {
+      return {
+        title: `${this.item.data.title} | spalate`,
+      };
+    };
+
     this.on('created', async () => {
     });
 
