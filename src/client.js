@@ -16,10 +16,9 @@ import riot from 'riot'
 riot.util.tmpl.errorHandler = function() {};
 
 spalate.start = () => {
-  // var appTag = document.querySelector('[data-is=app]');
-  // appTag.innerHTML = '';
-
-  var appTag = riot.mount('app')[0];
+  var clientElement = document.createElement('div');
+  clientElement.setAttribute('render', 'client');
+  var appTag = riot.mount(clientElement, 'app')[0];
 
   // routes を登録
   Object.keys(routes).forEach(key => {
@@ -32,6 +31,16 @@ spalate.start = () => {
   // ルーティング実行
   spalate.router.start();
   spalate.router.exec();
+  
+  // スクロールのリセット対策
+  var serverElement = document.querySelector('[data-is=app]');
+  clientElement.style.height = serverElement.clientHeight;
+  setTimeout(() => {
+    clientElement.style.height = '';
+  }, 512);
+
+  // server でレンダリングした要素を client でレンダリングした要素に入れ替える
+  serverElement.parentElement.replaceChild(clientElement, serverElement);
 };
 
 // global 化

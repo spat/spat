@@ -11,10 +11,5 @@ db.enablePersistence();
 // db.disableNetwork();
 global.db = db;
 
-
-
-
-setTimeout(() => {
-  spalate.start();
-}, 1024);
+spalate.start();
 

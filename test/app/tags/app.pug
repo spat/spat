@@ -25,11 +25,12 @@ app
       this.head = this.getHead(tag);
 
       if (spalate.isBrowser) {
+        // TODO: created は初めてのときのみ実行する(client 用の mount)
         tag.trigger('created');
-      }
 
-      tag.trigger('show');
-      tag.update();
+        tag.trigger('show');
+        tag.update();
+      }
     };
 
     this.fetch = async (tag, req, res) => {
