@@ -41,7 +41,7 @@ app
       }
 
       // すべてのタグをまとめて配列化
-      var tags = Object.values(tag.tags).flat();
+      var tags = _.flatten(Object.values(tag.tags));
 
       // 子タグがない場合は何もしない
       if (tags.length <= 0) return ;
