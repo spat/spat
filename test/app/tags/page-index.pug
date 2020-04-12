@@ -5,7 +5,6 @@ page-index
     div.p16
       div.s64.bg-red
     
-    
     div.mb16
       ul.ml32
         li isNode: {spalate.isNode}
@@ -18,7 +17,9 @@ page-index
         div(each='{item in items}', data-is='item-group', item='{item}')
     
     div.mb16
-      div(data-is='module-note')
+      div(data-is='module-note', note-id='1')
+      div(data-is='module-note', note-id='2')
+      div(data-is='module-note', note-id='3')
 
     div.mb16
       img(src='/images/kenkyo.png')
