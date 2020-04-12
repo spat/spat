@@ -7,7 +7,7 @@ const Bundler = require('parcel-bundler');
 var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 
 // コピーする
-fs.copySync(`${__dirname}/src`, 'app/node_modules/@spalate');
+fs.copySync(`${__dirname}/src`, `${process.cwd()}/app/node_modules/@spalate`);
 
 // config
 // const config = require(`./src/config.js`);
@@ -40,6 +40,7 @@ var createParcelBundler = () => {
 
 var bundleServerModules = async () => {
   var bundler = createParcelBundler();
+
 
   await bundler.bundle();
 };
