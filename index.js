@@ -15,39 +15,7 @@ fs.copySync(`${__dirname}/src`, 'app/node_modules/@spalate');
 var main = async () => {
   await bundleServerModules();
   require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
-
-  return ;
-
-  const app = express();
-  
-  // setup static
-  app.use(express.static(`${process.cwd()}/public`));
-  app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/public`));
-  
-  // setup pug
-  app.set('views', path.join(__dirname, 'views'));
-  // app.set('views', path.join(process.cwd(), 'views'));
-  
-  app.set('view engine', 'pug');
-
-  // setup parcel
-  var bundler = createParcelBundler('browser');
-  app.use(bundler.middleware());
-  
-  // setup routing
-  app.get('/', async (req, res) => {
-    res.render('index', {
-    });
-  });
-  
-  // Start the server
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-    console.log('Press Ctrl+C to quit.');
-  });
 };
-
 
 var createParcelBundler = (target) => {
   var config;
