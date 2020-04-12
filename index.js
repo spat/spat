@@ -7,7 +7,12 @@ const Bundler = require('parcel-bundler');
 var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 
 // コピーする
-fs.copySync(`${__dirname}/src`, `${process.cwd()}/app/node_modules/@spalate`);
+try {
+  fs.copySync(`${__dirname}/src`, `${process.cwd()}/app/.spalate/modules`);
+}
+catch (e) {
+  console.log(e);
+}
 
 // config
 // const config = require(`./src/config.js`);
