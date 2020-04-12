@@ -2,7 +2,6 @@
 
 // spalate は global とする
 import spalate from './spalate.js'
-global.spalate = spalate;
 
 // router
 import Router from './internal/router'
@@ -31,5 +30,13 @@ spalate.start = () => {
   // ルーティング実行
   spalate.router.exec();
 };
+
+// global 化
+if (global.spalate) {
+  Object.assign(global.spalate, spalate)
+}
+else {
+  global.spalate = spalate;
+}
 
 export default spalate;

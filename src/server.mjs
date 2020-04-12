@@ -12,7 +12,6 @@ const Bundler = require('parcel-bundler');
 
 // config
 const config = require('./config.js');
-console.log(config);
 // client 側の config を spalate.config とする
 spalate.config = config.client;
 

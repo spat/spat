@@ -36,10 +36,11 @@ module.exports = class Ssriot {
 
   scripts() {
     return `
-    <script src="/spalate/modules.js"></script>
     <script>
+    var spalate = {};
     spalate.config = ${JSON.stringify(spalate.config)};
     </script>
+    <script src="/spalate/modules.js"></script>
 `;
   }
 };
