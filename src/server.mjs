@@ -9,8 +9,12 @@ global.spalate = spalate;
 const path = require('path');
 const express = require('express');
 const Bundler = require('parcel-bundler');
+
 // config
 const config = require('./config.js');
+console.log(config);
+// client 側の config を spalate.config とする
+spalate.config = config.client;
 
 var createParcelBundler = (target) => {
   var config;
@@ -106,7 +110,12 @@ Object.keys(routes).forEach(key => {
   
     res.render('index', {
       head: ssr.tag.head,
-      content: ssr.content,
+      content: ssr.tagContent,
+      spalate: ssr,
+      // methods: {
+      //   head: ssr.head,
+      // },
+
       pretty: true,
     });
   });

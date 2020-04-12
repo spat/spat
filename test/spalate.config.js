@@ -2,9 +2,11 @@ module.exports = {
   // env: 'staging',
 
   server: {
-
+    note: 'サーバーの情報',
   },
   client: {
-    title: 'spalate with parcel',
+    head: {
+      title: 'spalate with parcel',
+    },
   }
 };

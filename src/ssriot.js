@@ -17,6 +17,29 @@ module.exports = class Ssriot {
     this.tag = riot.mount(element)[0];
     await this.tag.gotoPage(this.tagName, req, res);
 
-    this.content = sdom.serialize(this.tag.root);
+    this.tagContent = sdom.serialize(this.tag.root);
+  }
+
+  head() {
+    
+  }
+
+  styles() {
+
+  }
+
+  content() {
+    return `
+    ${this.tagContent}
+`;
+  }
+
+  scripts() {
+    return `
+    <script src="/spalate/modules.js"></script>
+    <script>
+    spalate.config = ${JSON.stringify(spalate.config)};
+    </script>
+`;
   }
 };

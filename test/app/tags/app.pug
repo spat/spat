@@ -48,10 +48,12 @@ app
 
     this.getHead = (tag) => {
       var head = {};
+      Object.assign(head, spalate.config.head);
       if (tag.head) {
         var data = tag.head();
         Object.assign(head, data);
+        console.log(head);
       }
 
       return head;
-    }
+    };
