@@ -91,8 +91,62 @@ class Router {
   }
 
   exec() {
-    this.emit(location.href);
-    // this.emit(location.pathname + location.search + location.hash);
+    this.emit(location.pathname + location.search + location.hash);
+  }
+
+  go() {
+
+  }
+
+  // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
+  push(path) {
+    history.pushState(null, null, path);
+
+    this.emit(path);
+  }
+
+  replace() {
+
+  }
+
+  back() {
+
+  }
+
+  start() {
+    var TOUCH_EVENT = ('undefined' !== typeof document) && document.ontouchstart ? 'touchstart' : 'click';
+    document.addEventListener(TOUCH_EVENT, this._onclick.bind(this));
+  }
+
+  // a タグクリックした際のイベント
+  _onclick(e) {
+    // 他にキーを押していた場合は無視
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.defaultPrevented) return;
+
+    var elm = e.target;
+    while(elm) {
+      if (elm.nodeName === 'A') break;
+      elm = elm.parentNode;
+    }
+
+    // check anchor
+    if (!elm || elm.nodeName !== 'A') {
+      return;
+    }
+
+    // check cross origin
+    if (elm.hostname !== location.hostname) {
+      return ;
+    }
+
+    // href があり, かつ今の href と違うときのみ
+    if (elm.getAttribute('href') && elm.href !== location.href) {
+      // var link = elm.getAttribute('href');
+      var link = elm.pathname + elm.search + elm.hash;
+      this.push(link);
+    }
+
+    e.preventDefault();
   }
 }
 

@@ -1,5 +1,6 @@
 app
-  div(ref='page', data-is='{pageTag}')
+  div(ref='pages')
+    //- div(ref='page')
 
   script.
     this.title = 'Hello, spalate with parcel!';
@@ -7,22 +8,28 @@ app
     this.on('mount', async () => {
     });
 
+    var sleep = (msec) => new Promise(resolve => setTimeout(resolve, msec));
+
     this.gotoPage = async (pageTag, req, res) => {
-      this.pageTag = pageTag;
-      this.update();
+      this.refs.pages.innerHTML = '';
+      
+      var element = document.createElement('div');
+      element.setAttribute('data-is', pageTag);
+      var tag = riot.mount(element, pageTag)[0];
+      this.refs.pages.appendChild(element);
 
       // fetch 実行
-      await this.fetch(this.refs.page, req, res);
+      await this.fetch(tag, req, res);
 
       // head 取得
-      this.head = this.getHead(this.refs.page);
+      this.head = this.getHead(tag);
 
       if (spalate.isBrowser) {
-        this.refs.page.trigger('created');
+        tag.trigger('created');
       }
 
-      this.refs.page.trigger('show');
-      this.refs.page.update();
+      tag.trigger('show');
+      tag.update();
     };
 
     this.fetch = async (tag, req, res) => {
