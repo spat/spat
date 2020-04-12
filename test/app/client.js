@@ -12,8 +12,6 @@ db.enablePersistence();
 global.db = db;
 
 
-import routes from '~/scripts/routes.js'
-global.routes = routes;
 
 
 setTimeout(() => {

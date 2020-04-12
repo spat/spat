@@ -17,43 +17,30 @@ var main = async () => {
   require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
 };
 
-var createParcelBundler = (target) => {
+var createParcelBundler = () => {
   var config;
 
-  if (target === 'node') {
-    var entry = path.join(process.cwd(), 'app/server.js');
-    config = {
-      target: 'node',
-      bundleNodeModules: false,
-      outDir: `${SPALATE_OUTPUT_DIR}`,
-      outFile: 'modules.cjs',
-      hmr: false,
-      global: 'spalate',
-      cache: false,
-      sourceMaps: false,  
-    };
-  }
-  else {
-    var entry = path.join(process.cwd(), 'app/index.js');
-    config = {
-      target: 'browser',
-      bundleNodeModules: true,
-      outDir: `${SPALATE_OUTPUT_DIR}/public`,
-      outFile: 'modules.js',
-      hmr: process.env.NODE_ENV !== 'production',
-      global: 'spalate',
-      cache: false,  
-    };
-  }
+  var entry = path.join(process.cwd(), 'app/server.js');
+  config = {
+    target: 'node',
+    bundleNodeModules: false,
+    outDir: `${SPALATE_OUTPUT_DIR}`,
+    outFile: 'modules.cjs',
+    hmr: false,
+    global: 'spalate',
+    cache: false,
+    sourceMaps: false,  
+    watch: true,
+  };
 
   var bundler = new Bundler(entry, config);
 
   return bundler;
 };
 
-
 var bundleServerModules = async () => {
-  var bundler = createParcelBundler('node');
+  var bundler = createParcelBundler();
+
   await bundler.bundle();
 };
 
