@@ -15,22 +15,26 @@ app
       
       var element = document.createElement('div');
       element.setAttribute('data-is', pageTag);
-      var tag = riot.mount(element, pageTag)[0];
+      var pageTag = riot.mount(element, pageTag)[0];
       this.refs.pages.appendChild(element);
 
       // fetch 実行
-      await this.fetch(tag, req, res);
+      await this.fetch(pageTag, req, res);
 
       // head 取得
-      this.head = this.getHead(tag);
+      this.head = this.getHead(pageTag);
+
+      // TODO: ちゃんと他も反映されるように作り込む
 
       if (spalate.isBrowser) {
         // TODO: created は初めてのときのみ実行する(client 用の mount)
-        tag.trigger('created');
+        pageTag.trigger('created');
 
-        tag.trigger('show');
-        tag.update();
+        pageTag.trigger('show');
+        pageTag.update();
       }
+
+      this.pageTag = pageTag;
     };
 
     this.fetch = async (tag, req, res) => {
@@ -41,7 +45,7 @@ app
       }
 
       // すべてのタグをまとめて配列化
-      var tags = Object.values(tag.tags).flat();
+      var tags = _.flatten(Object.values(tag.tags));
 
       // 子タグがない場合は何もしない
       if (tags.length <= 0) return ;

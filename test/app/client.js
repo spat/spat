@@ -1,4 +1,4 @@
-import spalate from './node_modules/@spalate/client'
+import spalate from '.spalate/modules/client'
 
 import firebase from '~/plugins/firebase.js'
 var db = firebase.firestore();

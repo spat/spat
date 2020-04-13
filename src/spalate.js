@@ -11,8 +11,11 @@ import '../../tags/*.pug'
 import '../../tags/**/*.pug'
 
 // riot はグローバルで使えるようにする
-import riot from 'riot';
+import riot from 'riot'
 global.riot = riot;
+// underscore はグローバルで使えるようにする
+import _ from 'underscore'
+global._ = _;
 
 export default {
   isNode,
