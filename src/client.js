@@ -22,9 +22,15 @@ spalate.start = () => {
 
   // routes を登録
   Object.keys(routes).forEach(key => {
-    router.on(key, (req, res) => {
+    router.on(key, async (req, res) => {
       var route = routes[key];
-      appTag.gotoPage(route.tag, req, res);
+      await appTag.gotoPage(route.tag, req, res);
+
+      // meta の設定
+      var titleElement = document.querySelector('title');
+      if (titleElement) {
+        document.querySelector('title').textContent = appTag.head.title;
+      }
     });
   });
 
