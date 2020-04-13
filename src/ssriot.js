@@ -13,7 +13,7 @@ module.exports = class Ssriot {
   async render({req, res}) {
     var element = document.createElement('div');
     element.setAttribute('render', 'server');
-    element.setAttribute('data-is', 'app');
+    element.setAttribute('data-is', 'spalate-app');
     
     this.tag = riot.mount(element)[0];
     await this.tag.gotoPage(this.tagName, req, res);

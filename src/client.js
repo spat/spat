@@ -18,7 +18,7 @@ riot.util.tmpl.errorHandler = function() {};
 spalate.start = () => {
   var clientElement = document.createElement('div');
   clientElement.setAttribute('render', 'client');
-  var appTag = riot.mount(clientElement, 'app')[0];
+  var appTag = riot.mount(clientElement, 'spalate-app')[0];
 
   // routes を登録
   Object.keys(routes).forEach(key => {
@@ -39,7 +39,7 @@ spalate.start = () => {
   spalate.router.exec();
   
   // スクロールのリセット対策
-  var serverElement = document.querySelector('[data-is=app]');
+  var serverElement = document.querySelector('[data-is=spalate-app]');
   clientElement.style.height = serverElement.clientHeight;
   setTimeout(() => {
     clientElement.style.height = '';

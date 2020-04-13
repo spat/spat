@@ -132,6 +132,7 @@ Object.keys(routes).forEach(key => {
       var route = routes['/groups/:id'];
     }
 
+    // TODO: 失敗したらわかるように全ページレンダリングしてエラーでないかのテスト機構作る？
     var ssr = new Ssriot(route.tag);
     await ssr.render({
       req, res
