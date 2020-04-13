@@ -11,5 +11,7 @@ db.enablePersistence();
 // db.disableNetwork();
 global.db = db;
 
+import './styles/main.less'
+
 spalate.start();
 

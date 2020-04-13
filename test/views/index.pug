@@ -4,7 +4,10 @@ html
 
     title= head.title
 
+    meta(name="viewport", content="width=device-width,height=device-height,user-scalable=no,initial-scale=1,maximum-scale=1,viewport-fit=cover")
+
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/gh/phi-jp/meltline@v0.1.10/meltline.css")
+    link(rel="stylesheet", href='/spalate/modules.css')
     //- script(src='https://cdnjs.cloudflare.com/ajax/libs/riot/3.13.2/riot+compiler.min.js')
   body
     | !{spalate.content()}
