@@ -124,13 +124,7 @@ Object.keys(routes).forEach(key => {
   console.log(key);
   app.get(key, async (req, res) => {
     // var ss = await db.collection('groups').get();
-
-    if (key === '/') {
-      var route = routes[key];
-    }
-    else {
-      var route = routes['/groups/:id'];
-    }
+    var route = routes[key];
 
     // TODO: 失敗したらわかるように全ページレンダリングしてエラーでないかのテスト機構作る？
     var ssr = new Ssriot(route.tag);
