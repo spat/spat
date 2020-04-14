@@ -15,7 +15,7 @@
     "firebase": "^7.13.2",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#6b309b94a32a33ae8ce8097bd8908131964272aa",
-    "riot": "git://github.com/phi-jp/riot.git#89ad782f4d81dbeab017c2dbfa0f3694c6908b62"
+    "riot": "git://github.com/phi-jp/riot.git#4f5be4637bc7488d51774774e3d6f2b7b0f2243a"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

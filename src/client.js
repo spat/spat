@@ -47,6 +47,10 @@ spalate.start = () => {
 
   // server でレンダリングした要素を client でレンダリングした要素に入れ替える
   serverElement.parentElement.replaceChild(clientElement, serverElement);
+
+  // サーバーでレンダリングしていた riot style を消す(重複するので)
+  var serverElement = document.querySelector('style[render=server]');
+  serverElement.parentNode.removeChild(serverElement);
 };
 
 // global 化
