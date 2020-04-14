@@ -115,6 +115,9 @@ class Router {
 
   start() {
     var TOUCH_EVENT = ('undefined' !== typeof document) && document.ontouchstart ? 'touchstart' : 'click';
+
+    window.addEventListener('popstate', this._onpopstate.bind(this));
+    window.addEventListener('hashchange', this._onpopstate.bind(this));
     document.addEventListener(TOUCH_EVENT, this._onclick.bind(this));
   }
 
@@ -147,6 +150,10 @@ class Router {
     }
 
     e.preventDefault();
+  }
+
+  _onpopstate(e) {
+    this.exec();
   }
 }
 
