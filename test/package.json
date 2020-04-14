@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "node ../spalate build",
-    "start": "node ../spalate start",
-    "dev": "node ../spalate dev",
+    "build": "spalate build",
+    "start": "spalate start",
+    "dev": "spalate dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,13 +13,10 @@
   "description": "",
   "dependencies": {
     "firebase": "^7.13.2",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#6b309b94a32a33ae8ce8097bd8908131964272aa",
-    "riot": "git://github.com/phi-jp/riot.git#4f5be4637bc7488d51774774e3d6f2b7b0f2243a"
+    "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#037609bc2fbb17ec3c6097f879c6d29fd5e1c256"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
-    "less": "^3.11.1"
+    "babel-preset-env": "^1.7.0"
   }
 }

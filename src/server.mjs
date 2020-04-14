@@ -62,7 +62,7 @@ app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/public`));
 app.use(express.static(`${process.cwd()}/public`));
 
 // setup pug
-app.set('views', path.join(process.cwd(), 'views'));
+app.set('views', path.join(process.cwd(), 'app/views'));
 
 app.set('view engine', 'pug');
 
@@ -121,7 +121,6 @@ app.use((req, res, next) => {
 });
 
 Object.keys(routes).forEach(key => {
-  console.log(key);
   app.get(key, async (req, res) => {
     // var ss = await db.collection('groups').get();
     var route = routes[key];
