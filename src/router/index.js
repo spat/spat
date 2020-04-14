@@ -25,7 +25,7 @@ class Layer {
     return params;
   }
 
-  run(req) {
+  run(req, res) {
     var index = 0;
 
     var next = () => {
@@ -37,10 +37,10 @@ class Layer {
 
       // next あり
       if (callback.length >= 3) {
-        callback(req, {}, next);
+        callback(req, res, next);
       }
       else {
-        callback(req, {});
+        callback(req, res);
         next();
       }
     }
@@ -74,13 +74,22 @@ class Router {
       var params = layer.match(url);
 
       if (params) {
-        layer.run({
+        var req = {
           url: url.path,
           query: url.query,
           Url: url,
           params: params,
           layer: layer,
-        });
+        };
+        var res = {
+          redirect: (status, url) => {
+            if (typeof status === 'string') {
+              url = status;
+            }
+            this.replace(url);
+          }
+        };
+        layer.run(req, res);
 
         // ループを抜ける
         return true;
@@ -101,12 +110,12 @@ class Router {
   // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
   push(path) {
     history.pushState(null, null, path);
-
     this.emit(path);
   }
 
-  replace() {
-
+  replace(path) {
+    history.replaceState(null, null, path);
+    this.emit(path);
   }
 
   back() {

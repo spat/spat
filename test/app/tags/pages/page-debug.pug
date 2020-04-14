@@ -6,12 +6,10 @@ page-debug
     div.mb16
       div isNode: {spalate.isNode}
       div isBrowser: {spalate.isBrowser}
-
-    div.mb16
-      h2.fs12.p8 グループ一覧
-      div
-        div.mb1(each='{item in items}', data-is='item-group', item='{item}')
     
+    div.mb16
+      a.p8(href='/debug/redirect') リダイレクトへのリンク
+
     div.mb16
       div(data-is='module-note', note-id='1')
       div(data-is='module-note', note-id='2')
@@ -44,24 +42,6 @@ page-debug
     this.title = 'Hello, spalate with parcel!';
 
     this.preload = async () => {
-      var ref = db.collection('groups');
-      var ss = await ref.get({source: "cache"});
-      
-      if (ss.empty) {
-        var ss = await ref.get({source: "server"});
-      }
-
-      var items = ss.docs.map(doc => {
-        return {
-          id: doc.id,
-          ref: doc.ref,
-          data: doc.data(),
-        }
-      });
-
-      return {
-        items,
-      };
     };
 
     this.head = () => {
