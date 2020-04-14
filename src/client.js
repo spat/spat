@@ -4,7 +4,7 @@
 import spalate from './spalate.js'
 
 // router
-import Router from './internal/router'
+import Router from './router'
 import routes from '../../scripts/routes'
 
 var router = new Router();
