@@ -64,10 +64,10 @@ spalate-app
 
     this.getHead = (tag) => {
       var head = {};
-      Object.assign(head, spalate.config.head);
+      spalate.utils.extendDeep(head, spalate.config.head);
       if (tag.head) {
         var data = tag.head();
-        Object.assign(head, data);
+        spalate.utils.extendDeep(head, data);
       }
 
       return head;
