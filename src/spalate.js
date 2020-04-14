@@ -7,6 +7,8 @@ import { isBrowser, isNode } from 'browser-or-node'
 // console.log('isNode', isNode);
 // console.log('isBrowser', isBrowser);
 
+var extendDeep = require('extend-deep');
+
 import './tags/*.pug'
 import '../../tags/*.pug'
 import '../../tags/**/*.pug'
@@ -21,4 +23,7 @@ global._ = _;
 export default {
   isNode,
   isBrowser,
+  utils: {
+    extendDeep
+  }
 };

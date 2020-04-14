@@ -31,6 +31,7 @@ module.exports = class Ssriot {
     }).join('\n');
 
     return `
+    <link rel="stylesheet", href='/spalate/modules.css' />
     <style render="server" type="text/css">${styleText}</style>
 `;
   }

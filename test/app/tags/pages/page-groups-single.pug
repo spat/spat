@@ -3,7 +3,7 @@ page-groups-single
     h1.mb16 {item.data.title}
           
     div.mb16
-      img(src='/images/kenkyo.png')
+      img(src='{item.data.image}')
 
     div
       a(href='/') TOP
@@ -47,6 +47,10 @@ page-groups-single
     this.head = () => {
       return {
         title: `${this.item.data.title} | spalate`,
+        description: '詳細だよー',
+        ogp: {
+          image: this.item.data.image,
+        }
       };
     };
 
@@ -54,6 +58,5 @@ page-groups-single
     });
 
     this.on('show', () => {
-      this.item;
       this.item.data.title += ' render client';
     });

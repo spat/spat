@@ -3,13 +3,27 @@ html
     meta(charset='utf-8')
 
     title= head.title
+    meta(name='description', content= head.description)
+    link(ref='shortcut icon', type='image/x-icon', href= head.favicon)
+
+    // ogp
+    meta(property='og:title', content= head.ogp.title || head.title)
+    meta(property='og:description', content= head.ogp.description || head.description)
+    meta(property='og:site_name', content= head.ogp.site_name)
+    meta(property='og:type', content= head.ogp.type)
+    meta(property='og:image', content= head.ogp.image)
 
     meta(name="viewport", content="width=device-width,height=device-height,user-scalable=no,initial-scale=1,maximum-scale=1,viewport-fit=cover")
+    meta(name="apple-mobile-web-app-capable" content="yes")
+    meta(name="apple-mobile-web-app-status-bar-style" content="default")
+    meta(name="apple-mobile-web-app-title" content= head.title)
+    //- meta(name="twitter:card" content="summary_large_image")
 
+    // styles
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/gh/phi-jp/meltline@v0.1.10/meltline.css")
-    link(rel="stylesheet", href='/spalate/modules.css')
-    //- script(src='https://cdnjs.cloudflare.com/ajax/libs/riot/3.13.2/riot+compiler.min.js')
     | !{spalate.styles()}
   body
+    // content
     | !{spalate.content()}
+    // scripts
     | !{spalate.scripts()}
