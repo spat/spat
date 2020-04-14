@@ -130,7 +130,11 @@ Object.keys(routes).forEach(key => {
     await ssr.render({
       req, res
     });
-  
+
+    // リダイレクト時は何もしない
+    if (res.statusCode === 301 || res.statusCode === 302) return ;
+
+    // 描画
     res.render('index', {
       head: ssr.tag.head,
       content: ssr.tagContent,

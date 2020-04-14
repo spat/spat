@@ -85,6 +85,7 @@ class Router {
           redirect: (status, url) => {
             if (typeof status === 'string') {
               url = status;
+              status = 302;
             }
             this.replace(url);
           }
