@@ -1,14 +1,14 @@
-page-index
+page-debug
   div.container
     div(data-is='module-header')
     //- h1 {title}
 
-    div.mb16.abc
+    div.mb16
       div isNode: {spalate.isNode}
       div isBrowser: {spalate.isBrowser}
 
     div.mb16
-      h2.fs12.p8.abc グループ一覧
+      h2.fs12.p8 グループ一覧
       div
         div.mb1(each='{item in items}', data-is='item-group', item='{item}')
     
@@ -16,6 +16,24 @@ page-index
       div(data-is='module-note', note-id='1')
       div(data-is='module-note', note-id='2')
       div(data-is='module-note', note-id='3')
+
+    div.p16
+      div.s64.bg-red
+
+    div.mb16
+      img(src='/images/kenkyo.png')
+    
+    div.mb16
+      ul.ml32
+        li(each='{item in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}') item {item}
+    
+    div.mb16
+      ul.ml32
+        li(each='{item in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}') item {item}
+    
+    div.mb16
+      ul.ml32
+        li(each='{item in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}') item {item}
 
   style(type='less').
     :scope {
