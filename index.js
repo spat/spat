@@ -8,16 +8,17 @@ var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 
 // コピーする
 if (!process.env.PORT) {
-  fs.copySync(`${__dirname}/src`, `${process.cwd()}/app/.spalate/modules`);
+  var output = `${process.cwd()}/app/.spalate/modules`;
+  fs.removeSync(output);
+  fs.copySync(`${__dirname}/src`, output);
 }
-
-// config
-// const config = require(`./src/config.js`);
 
 var main = async () => {
   if (!process.env.PORT) {
     await bundleServerModules();
   }
+
+  // 全てまとめたファイルを実行
   require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
 };
 
