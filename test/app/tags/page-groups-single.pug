@@ -1,5 +1,5 @@
 page-groups-single
-  div.p32
+  div.container.p32
     h1.mb16 {item.data.title}
           
     div.mb16
@@ -7,6 +7,11 @@ page-groups-single
 
     div
       a(href='/') TOP
+
+  style(type='less').
+    :scope {
+      display: block;
+    }
 
   script.
     this.item = {
