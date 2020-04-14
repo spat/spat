@@ -121,7 +121,6 @@ app.use((req, res, next) => {
 });
 
 Object.keys(routes).forEach(key => {
-  console.log(key);
   app.get(key, async (req, res) => {
     // var ss = await db.collection('groups').get();
     var route = routes[key];
