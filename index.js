@@ -3,14 +3,13 @@ const path = require('path');
 const riot = require('riot');
 const express = require('express');
 const Bundler = require('parcel-bundler');
+const builder = require('./src/builder');
 
 var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 
 // コピーする
 if (!process.env.PORT) {
-  var output = `${process.cwd()}/app/.spalate/modules`;
-  fs.removeSync(output);
-  fs.copySync(`${__dirname}/src`, output);
+  builder.copy();
 }
 
 var main = async () => {
