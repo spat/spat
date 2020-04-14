@@ -1,5 +1,11 @@
 item-group
-  a(href='/{opts.item.ref.path}') {opts.item.data.title}
+  a.block.bg-white.p16(href='/{opts.item.ref.path}')
+    div {opts.item.data.title}
+
+  style(type='less').
+    :scope {
+      display: block;
+    }
 
   script.
     this.on('mount', () => {
