@@ -13,12 +13,10 @@
   "description": "",
   "dependencies": {
     "firebase": "^7.13.2",
-    "parcel-bundler": "^1.12.4",
     "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#383be3c4c63eef9682643023acb8eeeae56ff0ec"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
-    "less": "^3.11.1"
+    "babel-preset-env": "^1.7.0"
   }
 }
