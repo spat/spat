@@ -1,5 +1,7 @@
 item-group
-  a.block.bg-white.p16(href='/{opts.item.ref.path}')
+  a.f.bg-white.p16(href='/{opts.item.ref.path}')
+    div.rect.w128.mr8
+      img(src='{opts.item.data.image}')
     div {opts.item.data.title}
 
   style(type='less').
