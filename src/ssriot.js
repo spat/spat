@@ -26,7 +26,13 @@ module.exports = class Ssriot {
   }
 
   styles() {
+    var styleText = Object.values(riot.util.templates).map(template => {
+      return template.css;
+    }).join('\n');
 
+    return `
+    <style render="server" type="text/css">${styleText}</style>
+`;
   }
 
   content() {

@@ -1,0 +1,16 @@
+module-header
+  div.h44.bg-color.f.fh spalate
+
+  style(type='less').
+    @hoge: blue;
+    :scope {
+      display: block;
+
+      .bg-color {
+        background-color: blue;
+      }
+
+      .abc {
+        color: @hoge;
+      }
+    }
