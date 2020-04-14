@@ -14,12 +14,12 @@ spalate-app
 
     var sleep = (msec) => new Promise(resolve => setTimeout(resolve, msec));
 
-    this.gotoPage = async (pageTag, req, res) => {
+    this.gotoPage = async (tagName, req, res) => {
       this.refs.pages.innerHTML = '';
       
       var element = document.createElement('div');
-      element.setAttribute('data-is', pageTag);
-      var pageTag = riot.mount(element, pageTag)[0];
+      element.setAttribute('data-is', tagName);
+      var pageTag = riot.mount(element, tagName)[0];
       this.refs.pages.appendChild(element);
 
       // preload 実行
