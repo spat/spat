@@ -25,7 +25,7 @@ page-index
   script.
     this.title = 'Hello, spalate with parcel!';
 
-    this.fetch = async () => {
+    this.preload = async () => {
       var ref = db.collection('groups');
       var ss = await ref.get({source: "cache"});
       

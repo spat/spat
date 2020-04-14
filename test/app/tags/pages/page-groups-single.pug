@@ -18,7 +18,7 @@ page-groups-single
       data: {}
     };
 
-    this.fetch = async ({req, res}) => {
+    this.preload = async ({req, res}) => {
       var ref = db.doc(req.Url.pathname);
 
       try {

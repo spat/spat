@@ -2,7 +2,7 @@ module-note
   h2 {data.title}
 
   script.
-    this.fetch = async () => {
+    this.preload = async () => {
       var res = await fetch('https://jsonplaceholder.typicode.com/todos/' + this.opts.noteId);
       var data = await res.json();
 

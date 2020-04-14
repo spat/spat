@@ -3,6 +3,7 @@ const sdom = require('riot/lib/server/sdom.js');
 riot.util.tmpl.errorHandler = function() {};
 const fetch = require('node-fetch');
 
+// ssr 対策
 global.fetch = fetch;
 
 module.exports = class Ssriot {
