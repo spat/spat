@@ -122,10 +122,8 @@ app.use((req, res, next) => {
 
 Object.keys(routes).forEach(key => {
   app.get(key, async (req, res) => {
-    // var ss = await db.collection('groups').get();
     var route = routes[key];
 
-    // TODO: 失敗したらわかるように全ページレンダリングしてエラーでないかのテスト機構作る？
     var ssr = new Ssriot(route.tag);
     await ssr.render({
       req, res
