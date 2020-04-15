@@ -110,12 +110,12 @@ class Router {
 
   // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
   push(path) {
-    history.pushState(null, null, path);
+    history.pushState(history.state, null, path);
     this.emit(path);
   }
 
   replace(path) {
-    history.replaceState(null, null, path);
+    history.replaceState(history.state, null, path);
     this.emit(path);
   }
 
