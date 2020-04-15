@@ -149,6 +149,24 @@ Object.keys(routes).forEach(key => {
   
 });
 
+// 404 対応
+app.use(async (req, res, next) => {
+  res.status(404);
+
+  var ssr = new Ssriot('page-error');
+  await ssr.render({
+    req, res
+  });
+
+  // 描画
+  res.render('index', {
+    head: ssr.tag.head,
+    content: ssr.tagContent,
+    spalate: ssr,
+    pretty: true,
+  });
+});
+
 
 export default app;
 
