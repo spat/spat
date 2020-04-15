@@ -41,4 +41,9 @@ module.exports = {
     var output = `${SPALATE_APP_DIR}/.spalate/modules`;
     fs.removeSync(output);
   },
+
+  // TODO: 失敗したらわかるように全ページレンダリングしてエラーでないかのテスト機構作る？
+  test() {
+
+  },
 };
