@@ -1,0 +1,9 @@
+page-debug-redirect
+  div.container.p32
+    h2 リダイレクトのテスト
+
+  script.
+    this.preload = ({req, res}) => {
+      console.log('debug ページにリダイレクトします!');
+      res.redirect(301, '/debug');
+    };

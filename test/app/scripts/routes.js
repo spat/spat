@@ -9,5 +9,14 @@ export default {
   '/': {
     tag: 'page-index',
   },
+
+  // debug
+  '/debug': {
+    tag: 'page-debug',
+  },
+  '/debug/redirect': {
+    tag: 'page-debug-redirect',
+  },
+
 };
 
