@@ -115,7 +115,7 @@ class Router {
   }
 
   replace(path) {
-    history.replaceState(null, null, path);
+    history.replaceState(history.state, null, path);
     this.emit(path);
   }
 
