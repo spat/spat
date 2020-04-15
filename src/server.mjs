@@ -36,7 +36,7 @@ var createParcelBundler = (target) => {
     config = {
       target: 'browser',
       bundleNodeModules: true,
-      outDir: `${SPALATE_OUTPUT_DIR}/public`,
+      outDir: `${SPALATE_OUTPUT_DIR}/static`,
       outFile: 'modules.js',
       hmr: process.env.NODE_ENV !== 'production',
       // 名前がバッティングするので off に
@@ -58,8 +58,8 @@ var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 const app = express();
 
 // setup static
-app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/public`));
-app.use(express.static(`${process.cwd()}/public`));
+app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/static`));
+app.use(express.static(`${process.cwd()}/static`));
 
 // setup pug
 app.set('views', path.join(process.cwd(), 'app/views'));
@@ -113,10 +113,8 @@ riot.mixin({ _ssr: true });
 import URL from 'url'
 import routes from '../../scripts/routes.js'
 
-
 app.use((req, res, next) => {
   req.Url = URL.parse(req.url, true);
-
   next();
 });
 
