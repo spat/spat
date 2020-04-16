@@ -1,20 +1,40 @@
 const builder = require('./src/builder');
 
-var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
 
-// コピーする
-if (!process.env.PORT) {
-  builder.copy();
-}
+var command = process.argv[2] || 'dev';
+
 
 var main = async () => {
-  if (!process.env.PORT) {
+
+  console.log('command:', command);
+
+  if (command === 'start') {
+    // 全てまとめたファイルを実行
+    var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
+    require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
+  }
+  else if (command === 'build') {
+    builder.copy();
+  
     var bundler = builder.bundle('node');
     await bundler.bundle();
+  
+    // 全てまとめたファイルを実行
+    var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
+    require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
   }
+  else if (command === 'dev') {
+    builder.copy();
+  
+    var bundler = builder.bundle('node');
+    await bundler.bundle();
+  
+    // 全てまとめたファイルを実行
+    var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
+    require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
+  }
+  
 
-  // 全てまとめたファイルを実行
-  require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
 };
 
 
