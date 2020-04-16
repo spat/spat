@@ -20,18 +20,23 @@ spalate.start = () => {
   clientElement.setAttribute('render', 'client');
   var appTag = riot.mount(clientElement, 'spalate-app')[0];
 
+  spalate.appTag = appTag;
+
   // routes を登録
   Object.keys(routes).forEach(key => {
-    router.on(key, async (req, res) => {
+    router.on(key, (req, res) => {
       var route = routes[key];
-      await appTag.gotoPage(route.tag, req, res);
 
-      // meta の設定
-      var titleElement = document.querySelector('title');
-      if (titleElement) {
-        document.querySelector('title').textContent = appTag.head.title;
-      }
+      spalate.goto(route, req, res);
     });
+  });
+
+  // 404 対応
+  router.on('(.*)', (req, res) => {
+    res.statusCode = 404;
+    spalate.goto({
+      tag: 'page-error',
+    }, req, res);
   });
 
   // ルーティング実行
@@ -51,6 +56,16 @@ spalate.start = () => {
   // サーバーでレンダリングしていた riot style を消す(重複するので)
   var serverElement = document.querySelector('style[render=server]');
   serverElement.parentNode.removeChild(serverElement);
+};
+
+spalate.goto = async (route, req, res) => {
+  await spalate.appTag.gotoPage(route.tag, req, res);
+
+  // meta の設定
+  var titleElement = document.querySelector('title');
+  if (titleElement) {
+    document.querySelector('title').textContent = spalate.appTag.head.title;
+  }
 };
 
 // global 化

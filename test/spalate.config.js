@@ -1,6 +1,4 @@
 module.exports = {
-  // env: 'staging',
-
   server: {
     note: 'サーバーの情報',
   },

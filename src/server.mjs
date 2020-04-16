@@ -122,10 +122,8 @@ app.use((req, res, next) => {
 
 Object.keys(routes).forEach(key => {
   app.get(key, async (req, res) => {
-    // var ss = await db.collection('groups').get();
     var route = routes[key];
 
-    // TODO: 失敗したらわかるように全ページレンダリングしてエラーでないかのテスト機構作る？
     var ssr = new Ssriot(route.tag);
     await ssr.render({
       req, res
@@ -147,6 +145,24 @@ Object.keys(routes).forEach(key => {
     });
   });
   
+});
+
+// 404 対応
+app.use(async (req, res, next) => {
+  res.status(404);
+
+  var ssr = new Ssriot('page-error');
+  await ssr.render({
+    req, res
+  });
+
+  // 描画
+  res.render('index', {
+    head: ssr.tag.head,
+    content: ssr.tagContent,
+    spalate: ssr,
+    pretty: true,
+  });
 });
 
 

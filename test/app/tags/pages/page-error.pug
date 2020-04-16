@@ -1,0 +1,14 @@
+page-error
+  div.s-full.f.fh
+    div.text-center
+      h2.fs64 {statusCode}
+      div
+        a(href='/') to TOP
+
+  script.
+    this.preload = ({req, res}) => {
+      return {
+        statusCode: res.statusCode,
+      };
+    };
+
