@@ -125,7 +125,6 @@ Object.keys(routes).forEach(key => {
     // キャッシュチェック
     app.get(key, async (req, res, next) => {
       // レンダリング済みだったらそっちを使う
-      var rendered = false;
       if (spalate.caches[req.url]) {
         res.send(spalate.caches[req.url]);
       }
