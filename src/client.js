@@ -42,20 +42,6 @@ spalate.start = () => {
   // ルーティング実行
   spalate.router.start();
   spalate.router.exec();
-  
-  // スクロールのリセット対策
-  var serverElement = document.querySelector('[data-is=spalate-app]');
-  clientElement.style.height = serverElement.clientHeight;
-  setTimeout(() => {
-    clientElement.style.height = '';
-  }, 512);
-
-  // server でレンダリングした要素を client でレンダリングした要素に入れ替える
-  serverElement.parentElement.replaceChild(clientElement, serverElement);
-
-  // サーバーでレンダリングしていた riot style を消す(重複するので)
-  var serverElement = document.querySelector('style[render=server]');
-  serverElement.parentNode.removeChild(serverElement);
 };
 
 spalate.goto = async (route, req, res) => {
@@ -65,6 +51,18 @@ spalate.goto = async (route, req, res) => {
   var titleElement = document.querySelector('title');
   if (titleElement) {
     document.querySelector('title').textContent = spalate.appTag.head.title;
+  }
+
+  // まだ client app が append されていなかったら
+  var clientElement = spalate.appTag.root;
+  if (!clientElement.parentNode) {
+    // app を server から client に入れ替える
+    var serverElement = document.querySelector('[data-is=spalate-app]');
+    serverElement.parentElement.replaceChild(clientElement, serverElement);
+
+    // サーバーでレンダリングしていた riot style を消す(重複するので)
+    var serverElement = document.querySelector('style[render=server]');
+    serverElement.parentNode.removeChild(serverElement);
   }
 };
 
