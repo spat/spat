@@ -118,8 +118,26 @@ app.use((req, res, next) => {
   next();
 });
 
+spalate.caches = {};
 Object.keys(routes).forEach(key => {
-  app.get(key, async (req, res) => {
+
+  if (config.server.cache) {
+    // キャッシュチェック
+    app.get(key, async (req, res, next) => {
+      // レンダリング済みだったらそっちを使う
+      var rendered = false;
+      if (spalate.caches[req.url]) {
+        res.send(spalate.caches[req.url]);
+      }
+      else {
+        next();
+      }
+    });
+  }
+
+
+  // 実際のレンダリング
+  app.get(key, async (req, res, next) => {
     var route = routes[key];
 
     var ssr = new Ssriot(route.tag);
@@ -127,8 +145,11 @@ Object.keys(routes).forEach(key => {
       req, res
     });
 
-    // リダイレクト時は何もしない
-    if (res.statusCode === 301 || res.statusCode === 302) return ;
+    // リダイレクト時は何もせず次へ
+    if (res.statusCode === 301 || res.statusCode === 302) {
+      next();
+      return ;
+    }
 
     // 描画
     res.render('index', {
@@ -140,6 +161,16 @@ Object.keys(routes).forEach(key => {
       // },
 
       pretty: true,
+    }, (err, content) => {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        if (config.server.cache) {
+          spalate.caches[req.url] = content;
+        }
+        res.send(content);
+      }
     });
   });
   
@@ -147,6 +178,8 @@ Object.keys(routes).forEach(key => {
 
 // 404 対応
 app.use(async (req, res, next) => {
+  console.error(`404: ${req.url}`);
+
   res.status(404);
 
   var ssr = new Ssriot('page-error');

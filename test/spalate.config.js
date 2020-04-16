@@ -1,6 +1,6 @@
 module.exports = {
   server: {
-    note: 'サーバーの情報',
+    // cache: true,
   },
   client: {
     head: {
