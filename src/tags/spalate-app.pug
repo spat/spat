@@ -31,9 +31,6 @@ spalate-app
       // TODO: ちゃんと他も反映されるように作り込む
 
       if (spalate.isBrowser) {
-        // TODO: created は初めてのときのみ実行する(client 用の mount)
-        pageTag.trigger('created');
-
         pageTag.trigger('show');
         pageTag.update();
       }
