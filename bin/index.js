@@ -1,4 +1,4 @@
-const builder = require('./src/builder');
+const builder = require('./builder');
 
 
 var command = process.argv[2] || 'dev';

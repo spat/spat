@@ -62,7 +62,7 @@ module.exports = {
     // app 内の .spalate を削除してコピーし直す
     var output = `${SPALATE_APP_OUTPUT_DIR}/modules`;
     fs.removeSync(output);
-    fs.copySync(`${__dirname}`, output);  
+    fs.copySync(`../src`, output);  
   },
 
   clean() {
