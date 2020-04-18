@@ -1,0 +1,58 @@
+spalate-modal(show="{visible}")
+
+  style(type='less').
+    :scope {
+      transform: translate3d(0, 0, 0);
+
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+
+      display: block;
+      z-index: 9999;
+
+      .modal-content {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+
+      @keyframes modal-fade-in {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+      }
+
+      @keyframes modal-push-in {
+        0% { transform: translateY(200px); opacity: 0; }
+        100% { transform: translateY(0px); opacity: 1; }
+      }
+    }
+  
+  script.
+    this.open = (tagName, options) => {
+      var element = document.createElement('div');
+      this.root.appendChild(element);
+
+      var modalTag = riot.mount(element, tagName, options)[0];
+      element.classList.add('modal-content');
+
+      // アニメーション
+      modalTag.refs.modal.style.animation = 'modal-push-in 256ms';
+
+      modalTag.close = () => {
+        this.close(modalTag);
+      };
+      modalTag.update();
+
+      // 
+      this.update({visible: true});
+    };
+
+    this.close = (modalTag) => {
+      modalTag.unmount();
+      this.update({visible: false});
+    };
