@@ -43,4 +43,8 @@ page-index
     };
 
     this.on('show', async () => {
+      var modal = spalate.modal.alert('Hello, world!', 'aaaaaaaaa');
+      await modal.waitClose();
+
+      console.log('モーダル閉じたよ!');
     });

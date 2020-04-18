@@ -1,8 +1,8 @@
-modal-alert.f.fh
+modal-alert.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
       div.bold.fs16.text-center.mb8 {opts.title || 'タイトル'}
-      p.text-center aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa aaaaaa
+      p.text-center {opts.description}
     div.w-full.h44
       button.s-full(onclick='{close}') OK
 
@@ -13,6 +13,7 @@ modal-alert.f.fh
       [ref='modal'] {
         background-color: rgba(255, 255, 255, 0.95);
         max-width: 300px;
+        width: 100%;
       }
     }
   
