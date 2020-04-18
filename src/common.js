@@ -1,5 +1,5 @@
 /*
- * client, server
+ * client, server 共通の処理
  */
 
 import { isBrowser, isNode } from 'browser-or-node'
@@ -20,10 +20,11 @@ global.riot = riot;
 import _ from 'underscore'
 global._ = _;
 
+
 export default {
   isNode,
   isBrowser,
   utils: {
     extendDeep
-  }
+  },
 };

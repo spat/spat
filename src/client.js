@@ -1,7 +1,11 @@
-// import config from './config.js'
-
 // spalate は global とする
-import spalate from './spalate.js'
+import common from './common.js'
+
+// view 側で定義している global な spalate にマージ
+Object.assign(global.spalate, common);
+
+var spalate = global.spalate;
+
 
 // router
 import Router from './router'
@@ -65,13 +69,5 @@ spalate.goto = async (route, req, res) => {
     serverElement.parentNode.removeChild(serverElement);
   }
 };
-
-// global 化
-if (global.spalate) {
-  Object.assign(global.spalate, spalate)
-}
-else {
-  global.spalate = spalate;
-}
 
 export default spalate;
