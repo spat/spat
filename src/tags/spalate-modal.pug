@@ -25,10 +25,18 @@ spalate-modal(show="{visible}")
         0% { opacity: 0; }
         100% { opacity: 1; }
       }
+      @keyframes modal-fade-out {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+      }
 
       @keyframes modal-push-in {
         0% { transform: translateY(200px); opacity: 0; }
         100% { transform: translateY(0px); opacity: 1; }
+      }
+      @keyframes modal-push-out {
+        0% { transform: translateY(0px); opacity: 1; }
+        100% { transform: translateY(200px); opacity: 0; }
       }
     }
   
@@ -41,18 +49,44 @@ spalate-modal(show="{visible}")
       element.classList.add('modal-content');
 
       // アニメーション
-      modalTag.refs.modal.style.animation = 'modal-push-in 256ms';
+      var animation = element.getAttribute('spat-animation') || 'push';
+      modalTag.refs.modal.style.animation = `modal-${animation}-in 256ms`;
 
-      modalTag.close = () => {
-        this.close(modalTag);
-      };
-      modalTag.update();
+      modalTag.promise = new Promise((resolve) => {
+        modalTag.close = async () => {
+          await this.close(modalTag);
+          resolve();
+        };
+        modalTag.waitClose = () => {
+          return modalTag.promise;
+        };
+        modalTag.update();
+      });
 
       // 
       this.update({visible: true});
+
+      return modalTag;
     };
 
     this.close = (modalTag) => {
-      modalTag.unmount();
-      this.update({visible: false});
+      return new Promise(resolve => {
+        // アニメーション
+        var animation = modalTag.root.getAttribute('spat-animation') || 'push';
+        modalTag.refs.modal.style.animation = `modal-${animation}-out 256ms forwards`;
+
+        modalTag.refs.modal.addEventListener('animationend', (e) => {
+          modalTag.unmount();
+          this.update({visible: false});
+
+          resolve();
+        });
+      });
+    };
+
+    this.alert = (title, description) => {
+      return this.open('modal-alert', {
+        title,
+        description,
+      });
     };

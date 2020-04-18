@@ -25,6 +25,7 @@ spalate.start = () => {
   var appTag = riot.mount(clientElement, 'spalate-app')[0];
 
   spalate.appTag = appTag;
+  spalate.modal = appTag.tags['spalate-modal'];
 
   // routes を登録
   Object.keys(routes).forEach(key => {
