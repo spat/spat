@@ -24,11 +24,11 @@ page-modals
           {
             label: '開く',
             onclick: () => {
-              spalate.modal.alert('Ttile', 'Message');
+              spalate.modal.alert('Message', 'Ttile');
             }
           },
           {
-            label: '開く(タイトルのみ)',
+            label: '開く(メッセージのみ)',
             onclick: () => {
               spalate.modal.alert('Hello, world!');
             }
@@ -67,10 +67,10 @@ page-modals
           {
             label: '開く',
             onclick: async () => {
-              var value = await spalate.modal.confirm('Ttile', 'Message', {
+              var value = await spalate.modal.confirm('Message', 'Ttile', {
                 dismissible: false,
               });
-              spalate.modal.alert('結果は?', value.toString());
+              spalate.modal.alert(value.toString(), '結果は?');
             }
           }
         ],
