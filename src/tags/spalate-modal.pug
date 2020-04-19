@@ -120,6 +120,11 @@ spalate-modal(show="{visible}")
     };
 
     this.alert = (title, description, options) => {
+      // タグ名をきめる
+      var templates = riot.util.templates;
+      var template = templates['alert'] || templates['modal-alert'] || templates['spalate-modal-alert'];
+      // オプションを作成
       var _options = {title, description, ...options};
-      return this.open('modal-alert', _options);
+
+      return this.open(template.name, _options);
     };
