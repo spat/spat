@@ -80,8 +80,10 @@ spalate-modal(show="{visible}")
           if (modalTag.isClose) return ;
 
           modalTag.isClose = true;
+          var value = modalTag.value;
+
           await this.close(modalTag);
-          resolve();
+          resolve(value);
         };
         modalTag.waitClose = () => {
           return modalTag.promise;
@@ -125,8 +127,11 @@ spalate-modal(show="{visible}")
       var template = templates['alert'] || templates['modal-alert'] || templates['spalate-modal-alert'];
       // オプションを作成
       var _options = {title, description, ...options};
+      var modal = this.open(template.name, _options);
 
-      return this.open(template.name, _options);
+      return modal.waitClose();
+    };
+
     };
 
 spalate-modal-alert.f.fh(spat-animation='push')
@@ -142,10 +147,14 @@ spalate-modal-alert.f.fh(spat-animation='push')
       background-color: rgba(0, 0, 0, 0.5);
 
       [ref='modal'] {
-        background-color: rgba(255, 255, 255, 0.95);
+        background-color: rgba(255, 255, 255, 0.90);
         max-width: 300px;
         width: 100%;
       }
     }
   
   script.
+    this.on('mount', () => {
+
+    });
+
