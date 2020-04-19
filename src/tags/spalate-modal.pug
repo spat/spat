@@ -95,7 +95,11 @@ spalate-modal(show="{visible}")
 
         modalTag.refs.modal.addEventListener('animationend', (e) => {
           modalTag.unmount();
-          this.update({visible: false});
+
+          // モーダルが全てなくなっていたら非表示にする
+          if (this.root.childNodes.length <= 0) {
+            this.update({visible: false});
+          }
 
           resolve();
         });
