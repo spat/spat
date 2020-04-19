@@ -23,7 +23,7 @@ page-modals
           {
             label: '開く',
             onclick: () => {
-              spalate.modal.alert('Hello, world!', 'aaaaaaaaa');
+              spalate.modal.alert('Ttile', 'Message');
             }
           },
           {
@@ -33,13 +33,37 @@ page-modals
             }
           },
           {
-            label: '複数開く',
+            label: '連続で開く',
+            onclick: async () => {
+              var modal;
+              modal = spalate.modal.alert('A');
+              await modal.waitClose();
+
+              modal = spalate.modal.alert('B');
+              await modal.waitClose();
+
+              modal = spalate.modal.alert('C');
+              await modal.waitClose();
+            }
+          },
+          {
+            label: '同時に開く',
             onclick: () => {
               spalate.modal.alert('A');
               spalate.modal.alert('B');
               spalate.modal.alert('C');
             }
           },
+          {
+            label: '背景タッチ無効(dismissible:true)',
+            onclick: () => {
+              spalate.modal.alert('OK でしか閉じれないよ', '', {
+                dismissible: false,
+              });
+            }
+          },
+
+          
         ],
       },
       {

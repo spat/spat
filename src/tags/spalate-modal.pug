@@ -60,10 +60,14 @@ spalate-modal(show="{visible}")
   
   script.
     this.open = (tagName, options) => {
+      var _options = Object.assign({
+        dismissible: true,
+      }, options);
+
       var element = document.createElement('div');
       this.root.appendChild(element);
 
-      var modalTag = riot.mount(element, tagName, options)[0];
+      var modalTag = riot.mount(element, tagName, _options)[0];
       element.classList.add('modal-content');
 
       // アニメーション
@@ -72,6 +76,10 @@ spalate-modal(show="{visible}")
 
       modalTag.promise = new Promise((resolve) => {
         modalTag.close = async () => {
+          // close 中だったら何もしない
+          if (modalTag.isClose) return ;
+
+          modalTag.isClose = true;
           await this.close(modalTag);
           resolve();
         };
@@ -81,7 +89,12 @@ spalate-modal(show="{visible}")
         modalTag.update();
       });
 
-      // 
+      // dismissible: true のときは背景 click で閉じれるようにする
+      if (_options.dismissible) {
+        modalTag.root.addEventListener('click', modalTag.close);
+      }
+
+      // 表示更新
       this.update({visible: true});
 
       return modalTag;
@@ -106,9 +119,7 @@ spalate-modal(show="{visible}")
       });
     };
 
-    this.alert = (title, description) => {
-      return this.open('modal-alert', {
-        title,
-        description,
-      });
+    this.alert = (title, description, options) => {
+      var _options = {title, description, ...options};
+      return this.open('modal-alert', _options);
     };
