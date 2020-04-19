@@ -1,12 +1,20 @@
 module-header
-  div.h44.bg-color.f.fh spalate
+  div.bg-white.box-shadow
+    div.statusbar
+    div.container.h44
+      div.h-full.f.fh.flex-between.px16
+        h1.fs15.bold
+          a.block(href='/') {opts.title || spalate.config.head.ogp.site_name}
 
   style(type='less').
-    @hoge: blue;
     :scope {
       display: block;
-
-      .bg-color {
-        background-color: white;
+      .box-shadow {
+        box-shadow: 0px 4px 5px rgba(1, 40, 64, 0.1);
       }
     }
+
+  script.
+    this.openMenu = () => {
+      spalate.modal.open('modal-menu')
+    };

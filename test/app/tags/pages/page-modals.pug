@@ -1,0 +1,56 @@
+page-modals
+  div.flex.flex-column.h-full
+    div(data-is='module-header', title='モーダル')
+    div.h-full.overflow-scroll(ref='body')
+      div.container.py12
+        div.bg-white.p16.mb16(each='{section in sections}')
+          div.bold.mb8 {section.label}
+          div.inline-block.mr8.mb8(each='{item in section.items}')
+            button.button(onclick='{item.onclick}') {item.label}
+    module-tabbar
+
+  style(type='less').
+    :scope {
+      display: block;
+    }
+
+  script.
+
+    this.sections = [
+      {
+        label: 'alert',
+        items: [
+          {
+            label: '開く',
+            onclick: () => {
+              spalate.modal.alert('Hello, world!', 'aaaaaaaaa');
+            }
+          },
+          {
+            label: '開く(タイトルのみ)',
+            onclick: () => {
+              spalate.modal.alert('Hello, world!');
+            }
+          },
+          {
+            label: '複数開く',
+            onclick: () => {
+              spalate.modal.alert('A');
+              spalate.modal.alert('B');
+              spalate.modal.alert('C');
+            }
+          },
+        ],
+      },
+      {
+        label: 'alert',
+        items: [
+          {
+            label: '開く',
+            onclick: () => {
+              spalate.modal.alert('Hello, world!', 'aaaaaaaaa');
+            }
+          }
+        ],
+      },
+    ];
