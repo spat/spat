@@ -1,8 +1,8 @@
 modal-alert.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
-      div.bold.fs16.text-center.mb8 {opts.title || 'タイトル'}
-      p.text-center {opts.description}
+      div.bold.fs16.text-center {opts.title || 'タイトル'}
+      p.text-center.mt8(if='{opts.description}') {opts.description}
     div.w-full.h44
       button.s-full(onclick='{close}') OK
 
