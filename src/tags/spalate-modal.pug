@@ -143,6 +143,17 @@ spalate-modal(show="{visible}")
       return modal.waitClose();
     };
 
+    this.prompt = (message, title, options) => {
+      // タグ名をきめる
+      var templates = riot.util.templates;
+      var template = templates['prompt'] || templates['modal-prompt'] || templates['spalate-modal-prompt'];
+      // オプションを作成
+      var _options = {message, title, ...options};
+      var modal = this.open(template.name, _options);
+      
+      return modal.waitClose();
+    };
+
 spalate-modal-alert.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
@@ -199,5 +210,45 @@ spalate-modal-confirm.f.fh(spat-animation='push')
     };
     this.cancel = () => {
       this.value = false;
+      this.close();
+    };
+
+
+spalate-modal-prompt.f.fh(spat-animation='push')
+  div.rounded-8(ref='modal')
+    div.p16.border
+      div.bold.fs16.text-center.mb8(if='{opts.title}') {opts.title}
+      p.text-center.mb16 {opts.message}
+      div
+        input.bg-white.w-full.fs15.border.px8.py4(ref='input', type='text', autofocus)
+    div.w-full.h44.f
+      button.s-full.border-right(onclick='{cancel}') Cancel
+      button.s-full.bold(onclick='{ok}') OK
+
+  style(type='less').
+    :scope {
+      background-color: rgba(0, 0, 0, 0.5);
+
+      [ref='modal'] {
+        background-color: rgba(255, 255, 255, 0.90);
+        max-width: 300px;
+        width: 100%;
+      }
+    }
+  
+  script.
+    this.on('mount', () => {
+      // default value
+      this.value = '';
+
+      this.refs.input.focus();
+    });
+
+    this.ok = () => {
+      this.value = this.refs.input.value;
+      this.close();
+    };
+    this.cancel = () => {
+      this.value = '';
       this.close();
     };
