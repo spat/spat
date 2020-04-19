@@ -62,12 +62,15 @@ page-modals
         ],
       },
       {
-        label: 'alert',
+        label: 'confirm',
         items: [
           {
             label: '開く',
-            onclick: () => {
-              spalate.modal.alert('Hello, world!', 'aaaaaaaaa');
+            onclick: async () => {
+              var value = await spalate.modal.confirm('Ttile', 'Message', {
+                dismissible: false,
+              });
+              spalate.modal.alert('結果は?', value.toString());
             }
           }
         ],
