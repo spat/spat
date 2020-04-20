@@ -75,4 +75,18 @@ page-modals
           }
         ],
       },
+      {
+        label: 'prompt',
+        items: [
+          {
+            label: '開く',
+            onclick: async () => {
+              var value = await spalate.modal.prompt('Message', 'Ttile', {
+                dismissible: false,
+              });
+              spalate.modal.alert(value.toString(), '結果は?');
+            }
+          }
+        ],
+      },
     ];
