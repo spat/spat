@@ -1,8 +1,11 @@
 
 // spalate は global とする
-import spalate from './spalate.js'
-global.spalate = spalate;
+import common from './common.js'
 
+var spalate = {};
+Object.assign(spalate, common);
+
+global.spalate = spalate;
 
 // ここからはサーバー固有の処理
 

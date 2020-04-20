@@ -3,8 +3,8 @@ export default {
   '/groups/:id': {
     tag: 'page-groups-single',
   },
-  '/users': {
-    tag: 'page-users',
+  '/modals': {
+    tag: 'page-modals',
   },
   '/': {
     tag: 'page-index',

@@ -1,0 +1,92 @@
+page-modals
+  div.flex.flex-column.h-full
+    div(data-is='module-header', title='モーダル')
+    div.h-full.overflow-scroll(ref='body')
+      div.container.py12
+        div.mb16(each='{section in sections}')
+          div.fs12.bold.ml8.mb4 {section.label}
+          div.bg-white.p16
+            div.inline-block.mr8.mb8(each='{item in section.items}')
+              button.button(onclick='{item.onclick}') {item.label}
+    module-tabbar
+
+  style(type='less').
+    :scope {
+      display: block;
+    }
+
+  script.
+
+    this.sections = [
+      {
+        label: 'alert',
+        items: [
+          {
+            label: '開く',
+            onclick: () => {
+              spalate.modal.alert('Message', 'Ttile');
+            }
+          },
+          {
+            label: '開く(メッセージのみ)',
+            onclick: () => {
+              spalate.modal.alert('Hello, world!');
+            }
+          },
+          {
+            label: '連続で開く',
+            onclick: async () => {
+              await spalate.modal.alert('A');
+              await spalate.modal.alert('B');
+              await spalate.modal.alert('C');
+            }
+          },
+          {
+            label: '同時に開く',
+            onclick: () => {
+              spalate.modal.alert('A');
+              spalate.modal.alert('B');
+              spalate.modal.alert('C');
+            }
+          },
+          {
+            label: '背景タッチ無効(dismissible:true)',
+            onclick: () => {
+              spalate.modal.alert('OK でしか閉じれないよ', '', {
+                dismissible: false,
+              });
+            }
+          },
+
+          
+        ],
+      },
+      {
+        label: 'confirm',
+        items: [
+          {
+            label: '開く',
+            onclick: async () => {
+              var value = await spalate.modal.confirm('Message', 'Ttile', {
+                dismissible: false,
+              });
+              spalate.modal.alert(value.toString(), '結果は?');
+            }
+          }
+        ],
+      },
+      {
+        label: 'prompt',
+        items: [
+          {
+            label: '開く',
+            onclick: async () => {
+              var value = await spalate.modal.prompt('Message', 'Ttile', {
+                dismissible: false,
+              });
+              spalate.modal.alert(value.toString(), '結果は?');
+            }
+          }
+        ],
+      },
+    ];
