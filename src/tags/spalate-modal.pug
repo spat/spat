@@ -84,6 +84,8 @@ spalate-modal(show="{visible}")
 
           await this.close(modalTag);
           resolve(value);
+
+          return value;
         };
         modalTag.waitClose = () => {
           return modalTag.promise;
