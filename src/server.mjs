@@ -31,8 +31,10 @@ app.use(express.static(`${process.cwd()}/static`));
 
 // setup pug
 app.set('views', path.join(process.cwd(), 'app/views'));
-
 app.set('view engine', 'pug');
+
+// setup useragent
+app.use(useragent.express());
 
 // setup parcel
 // global に bundler があるときのみ登録する
