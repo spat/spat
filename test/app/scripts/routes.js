@@ -8,6 +8,7 @@ export default {
   },
   '/': {
     tag: 'page-index',
+    // ssr: false,
   },
 
   // debug
