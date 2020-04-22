@@ -108,7 +108,7 @@ spalate-modal(show="{visible}")
       return new Promise(resolve => {
         // アニメーション
         var animation = modalTag.root.getAttribute('spat-animation') || 'push';
-        modalTag.refs.modal.style.animation = `modal-${animation}-out 256ms forwards`;
+        modalTag.refs.modal.style.animation = `modal-${animation}-out 128ms forwards`;
 
         modalTag.refs.modal.addEventListener('animationend', (e) => {
           modalTag.unmount();
