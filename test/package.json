@@ -7,6 +7,9 @@
     "start": "spalate start",
     "dev": "spalate dev",
     "clean": "spalate clean",
+    
+    "icon": "fontcustom compile ./static/images/icons --font_name icons --output static/icons/",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
