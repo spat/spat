@@ -8,6 +8,9 @@ var config = spalate.utils.extendDeep({
   },
   client: {
     env: process.env.NODE_ENV || 'development',
+    head: {
+      lang: 'ja',
+    }
   },
 }, user_config);
 
