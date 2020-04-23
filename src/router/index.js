@@ -163,7 +163,7 @@ class Router {
         }
       }
     }
-    
+
     next();
   }
 
@@ -181,6 +181,11 @@ class Router {
     // check anchor
     if (!elm || elm.nodeName !== 'A') {
       return;
+    }
+
+    // target がある場合はデフォルト処理にする
+    if (elm.target) {
+      return ;
     }
 
     // check cross origin
