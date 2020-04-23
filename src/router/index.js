@@ -55,6 +55,7 @@ class Layer {
 class Router {
   constructor(routes) {
     this._stack = [];
+    this._callbacks = [];
 
     this._base = '/';
   }
@@ -63,6 +64,12 @@ class Router {
   on(path, ...callbacks) {
     var layer = new Layer(path, callbacks);
     this._stack.push(layer);
+  }
+
+  // 共通処理を登録
+  use(callback) {
+    this._callbacks.push(callback);
+    return this;
   }
 
   // 発火
@@ -74,23 +81,8 @@ class Router {
       var params = layer.match(url);
 
       if (params) {
-        var req = {
-          url: url.path,
-          query: url.query,
-          Url: url,
-          params: params,
-          layer: layer,
-        };
-        var res = {
-          redirect: (status, url) => {
-            if (typeof status === 'string') {
-              url = status;
-              status = 302;
-            }
-            this.replace(url);
-          }
-        };
-        layer.run(req, res);
+        // ルーティング実行
+        this._run(url, layer, params);
 
         // ループを抜ける
         return true;
@@ -99,6 +91,7 @@ class Router {
 
     return this;
   }
+  
 
   exec() {
     this.emit(location.pathname + location.search + location.hash);
@@ -131,6 +124,49 @@ class Router {
     document.addEventListener(TOUCH_EVENT, this._onclick.bind(this));
   }
 
+  async _run(url, layer, params) {
+    // request オブジェクトを作成
+    var req = {
+      url: url.path,
+      query: url.query,
+      Url: url,
+      params: params,
+      layer: layer,
+    };
+    // レスポンスオブジェクトを作成
+    var res = {
+      redirect: (status, url) => {
+        if (typeof status === 'string') {
+          url = status;
+          status = 302;
+        }
+        this.replace(url);
+      }
+    };
+
+    var index = 0;
+    var next = () => {
+      var callback = this._callbacks[index++];
+
+      if (!callback) {
+        // use を実行し終わったら layer を実行
+        layer.run(req, res);
+      }
+      else {
+        // next あり
+        if (callback.length >= 3) {
+          callback(req, res, next);
+        }
+        else {
+          callback(req, res);
+          next();
+        }
+      }
+    }
+
+    next();
+  }
+
   // a タグクリックした際のイベント
   _onclick(e) {
     // 他にキーを押していた場合は無視
@@ -145,6 +181,11 @@ class Router {
     // check anchor
     if (!elm || elm.nodeName !== 'A') {
       return;
+    }
+
+    // target がある場合はデフォルト処理にする
+    if (elm.target) {
+      return ;
     }
 
     // check cross origin

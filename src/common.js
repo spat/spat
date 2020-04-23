@@ -9,17 +9,20 @@ import { isBrowser, isNode } from 'browser-or-node'
 
 var extendDeep = require('extend-deep');
 
-import './tags/*.pug'
-import '../../tags/*.pug'
-import '../../tags/**/*.pug'
+import './tags/*.pug';
+import '../../tags/*.pug';
+import '../../tags/**/*.pug';
 
 // riot はグローバルで使えるようにする
-import riot from 'riot'
+import riot from 'riot';
 global.riot = riot;
 // underscore はグローバルで使えるようにする
-import _ from 'underscore'
+import _ from 'underscore';
 global._ = _;
 
+// 
+import useragent from 'express-useragent';
+global.useragent = useragent;
 
 export default {
   isNode,

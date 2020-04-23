@@ -15,6 +15,11 @@ var router = new Router();
 
 spalate.router = router;
 
+router.use((req, res, next) => {
+  req.useragent = useragent.parse(navigator.userAgent);
+  next();
+});
+
 // ここからは client 用
 import riot from 'riot'
 riot.util.tmpl.errorHandler = function() {};
