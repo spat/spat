@@ -15,7 +15,7 @@ page-index
   script.
     this.title = 'Hello, spalate with parcel!';
 
-    this.preload = async () => {
+    this.preload = async ({req, res}) => {
       var ref = db.collection('groups');
       var ss = await ref.get({source: "cache"});
       
