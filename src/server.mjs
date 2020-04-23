@@ -82,7 +82,9 @@ Object.keys(routes).forEach(key => {
 
     var ssr = new Ssriot(route.tag);
     await ssr.render({
-      req, res
+      req,
+      res,
+      isSsr: route.ssr || config.server.ssr
     });
 
     // リダイレクト時は何もせず次へ
@@ -103,7 +105,7 @@ Object.keys(routes).forEach(key => {
       pretty: true,
     }, (err, content) => {
       if (err) {
-        res.send(err);
+        res.send(err.toString());
       }
       else {
         if (config.server.cache) {

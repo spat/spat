@@ -11,13 +11,19 @@ module.exports = class Ssriot {
     this.tagName = tagName;
   }
 
-  async render({req, res}) {
+  async render({req, res, isSsr}) {
     var element = document.createElement('div');
     element.setAttribute('render', 'server');
     element.setAttribute('data-is', 'spalate-app');
     
     this.tag = riot.mount(element)[0];
-    await this.tag.gotoPage(this.tagName, req, res);
+
+    if (isSsr) {
+      await this.tag.gotoPage(this.tagName, req, res);
+    }
+    else {
+      this.tag.head = spalate.config.head;
+    }
 
     this.tagContent = sdom.serialize(this.tag.root);
   }

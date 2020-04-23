@@ -56,7 +56,7 @@ spalate-app
 
       // preload する
       var promises = tags.map(async (tag) => {
-        return this.preload(tag);
+        return this.preload(tag, req, res);
       });
 
       await Promise.all(promises);

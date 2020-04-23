@@ -1,6 +1,7 @@
 module.exports = {
   server: {
     // cache: true,
+    // ssr: false,
   },
   client: {
     head: {
