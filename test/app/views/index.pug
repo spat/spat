@@ -1,10 +1,13 @@
+doctype
+
 html
-  head
+  head(lang= head.lang)
     meta(charset='utf-8')
 
     title= head.title
     meta(name='description', content= head.description)
-    link(ref='shortcut icon', type='image/x-icon', href= head.favicon)
+
+    link(rel='icon', href= head.favicon)
 
     // ogp
     meta(property='og:title', content= head.ogp.title || head.title)
@@ -20,6 +23,7 @@ html
     //- meta(name="twitter:card" content="summary_large_image")
 
     // styles
+    link(rel="stylesheet", href="/icons/icons.css")
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/gh/phi-jp/meltline@v0.1.10/meltline.css")
     | !{spalate.styles()}
   body
