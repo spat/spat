@@ -22,5 +22,10 @@ module.exports = {
       storageBucket: "chat-rabee-jp.appspot.com",
       messagingSenderId: "50741122756"
     },
+  },
+  test: {
+    pages: [
+      '/',
+    ],
   }
 };
