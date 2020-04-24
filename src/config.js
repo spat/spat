@@ -1,7 +1,7 @@
-import user_config from '../../../spalate.config.js'
+import user_config from '../../../spat.config.js'
 
 // デフォルト値を設定
-var config = spalate.utils.extendDeep({
+var config = spat.utils.extendDeep({
   server: {
     cache: false,
     ssr: true,

@@ -14,7 +14,7 @@ module.exports = class Ssriot {
   async render({req, res, isSsr}) {
     var element = document.createElement('div');
     element.setAttribute('render', 'server');
-    element.setAttribute('data-is', 'spalate-app');
+    element.setAttribute('data-is', 'spat-app');
     
     this.tag = riot.mount(element)[0];
 
@@ -22,7 +22,7 @@ module.exports = class Ssriot {
       await this.tag.gotoPage(this.tagName, req, res);
     }
     else {
-      this.tag.head = spalate.config.head;
+      this.tag.head = spat.config.head;
     }
 
     this.tagContent = sdom.serialize(this.tag.root);
@@ -38,7 +38,7 @@ module.exports = class Ssriot {
     }).join('\n');
 
     return `
-    <link rel="stylesheet", href='/spalate/modules.css' />
+    <link rel="stylesheet", href='/spat/modules.css' />
     <style render="server" type="text/css">${styleText}</style>
 `;
   }
@@ -52,10 +52,10 @@ module.exports = class Ssriot {
   scripts() {
     return `
     <script>
-    var spalate = {};
-    spalate.config = ${JSON.stringify(spalate.config)};
+    var spat = {};
+    spat.config = ${JSON.stringify(spat.config)};
     </script>
-    <script src="/spalate/modules.js"></script>
+    <script src="/spat/modules.js"></script>
 `;
   }
 };

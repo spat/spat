@@ -1,10 +1,10 @@
-// spalate は global とする
+// spat は global とする
 import common from './common.js'
 
-// view 側で定義している global な spalate にマージ
-Object.assign(global.spalate, common);
+// view 側で定義している global な spat にマージ
+Object.assign(global.spat, common);
 
-var spalate = global.spalate;
+var spat = global.spat;
 
 
 // router
@@ -13,7 +13,7 @@ import routes from '../../scripts/routes'
 
 var router = new Router();
 
-spalate.router = router;
+spat.router = router;
 
 router.use((req, res, next) => {
   req.useragent = useragent.parse(navigator.userAgent);
@@ -24,50 +24,50 @@ router.use((req, res, next) => {
 import riot from 'riot'
 riot.util.tmpl.errorHandler = function() {};
 
-spalate.start = () => {
+spat.start = () => {
   var clientElement = document.createElement('div');
   clientElement.setAttribute('render', 'client');
-  var appTag = riot.mount(clientElement, 'spalate-app')[0];
+  var appTag = riot.mount(clientElement, 'spat-app')[0];
 
-  spalate.appTag = appTag;
-  spalate.modal = appTag.tags['spalate-modal'];
+  spat.appTag = appTag;
+  spat.modal = appTag.tags['spat-modal'];
 
   // routes を登録
   Object.keys(routes).forEach(key => {
     router.on(key, (req, res) => {
       var route = routes[key];
 
-      spalate.goto(route, req, res);
+      spat.goto(route, req, res);
     });
   });
 
   // 404 対応
   router.on('(.*)', (req, res) => {
     res.statusCode = 404;
-    spalate.goto({
+    spat.goto({
       tag: 'page-error',
     }, req, res);
   });
 
   // ルーティング実行
-  spalate.router.start();
-  spalate.router.exec();
+  spat.router.start();
+  spat.router.exec();
 };
 
-spalate.goto = async (route, req, res) => {
-  await spalate.appTag.gotoPage(route.tag, req, res);
+spat.goto = async (route, req, res) => {
+  await spat.appTag.gotoPage(route.tag, req, res);
 
   // meta の設定
   var titleElement = document.querySelector('title');
   if (titleElement) {
-    document.querySelector('title').textContent = spalate.appTag.head.title;
+    document.querySelector('title').textContent = spat.appTag.head.title;
   }
 
   // まだ client app が append されていなかったら
-  var clientElement = spalate.appTag.root;
+  var clientElement = spat.appTag.root;
   if (!clientElement.parentNode) {
     // app を server から client に入れ替える
-    var serverElement = document.querySelector('[data-is=spalate-app]');
+    var serverElement = document.querySelector('[data-is=spat-app]');
     serverElement.parentElement.replaceChild(clientElement, serverElement);
 
     // サーバーでレンダリングしていた riot style を消す(重複するので)
@@ -76,4 +76,4 @@ spalate.goto = async (route, req, res) => {
   }
 };
 
-export default spalate;
+export default spat;

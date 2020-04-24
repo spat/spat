@@ -1,7 +1,7 @@
-spalate-app
+spat-app
   div(ref='pages')
 
-  div(data-is='spalate-modal')
+  div(data-is='spat-modal')
 
 
   style(type='less').
@@ -10,7 +10,7 @@ spalate-app
     }
 
   script.
-    this.title = 'Hello, spalate with parcel!';
+    this.title = 'Hello, spat with parcel!';
 
     this.on('mount', async () => {
     });
@@ -33,7 +33,7 @@ spalate-app
 
       // TODO: ちゃんと他も反映されるように作り込む
 
-      if (spalate.isBrowser) {
+      if (spat.isBrowser) {
         pageTag.trigger('show');
         pageTag.update();
       }
@@ -64,10 +64,10 @@ spalate-app
 
     this.getHead = (tag) => {
       var head = {};
-      spalate.utils.extendDeep(head, spalate.config.head);
+      spat.utils.extendDeep(head, spat.config.head);
       if (tag.head) {
         var data = tag.head();
-        spalate.utils.extendDeep(head, data);
+        spat.utils.extendDeep(head, data);
       }
 
       return head;

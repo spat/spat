@@ -10,8 +10,8 @@ var main = async () => {
 
   if (command === 'start') {
     // 全てまとめたファイルを実行
-    var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
-    require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
+    var SPAT_OUTPUT_DIR = `${process.cwd()}/.spat`;
+    require(`${SPAT_OUTPUT_DIR}/modules.cjs`);
   }
   else if (command === 'build') {
     builder.copy();
@@ -70,8 +70,8 @@ var main = async () => {
 
   
     // 全てまとめたファイルを実行
-    var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
-    require(`${SPALATE_OUTPUT_DIR}/modules.cjs`);
+    var SPAT_OUTPUT_DIR = `${process.cwd()}/.spat`;
+    require(`${SPAT_OUTPUT_DIR}/modules.cjs`);
   }
   else if (command === 'clean') {
     builder.clean();

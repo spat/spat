@@ -1,4 +1,4 @@
-import server from '.spalate/modules/server'
+import server from '.spat/modules/server'
 
 import firebase from "~/plugins/firebase.js"
 var db = firebase.firestore();

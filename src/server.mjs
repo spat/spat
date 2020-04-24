@@ -1,11 +1,11 @@
 
-// spalate は global とする
+// spat は global とする
 import common from './common.js'
 
-var spalate = {};
-Object.assign(spalate, common);
+var spat = {};
+Object.assign(spat, common);
 
-global.spalate = spalate;
+global.spat = spat;
 
 // ここからはサーバー固有の処理
 
@@ -15,18 +15,18 @@ const Bundler = require('parcel-bundler');
 
 // config
 const config = require('./config');
-// client 側の config を spalate.config とする
-spalate.config = config.client;
+// client 側の config を spat.config とする
+spat.config = config.client;
 
-var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
+var spat_OUTPUT_DIR = `${process.cwd()}/.spat`;
 
 
 // setup node express
 const app = express();
-spalate.app = app;
+spat.app = app;
 
 // setup static
-app.use('/spalate', express.static(`${SPALATE_OUTPUT_DIR}/static`));
+app.use('/spat', express.static(`${spat_OUTPUT_DIR}/static`));
 app.use(express.static(`${process.cwd()}/static`));
 
 // setup pug
@@ -59,15 +59,15 @@ app.use((req, res, next) => {
   next();
 });
 
-spalate.caches = {};
+spat.caches = {};
 Object.keys(routes).forEach(key => {
 
   if (config.server.cache) {
     // キャッシュチェック
     app.get(key, async (req, res, next) => {
       // レンダリング済みだったらそっちを使う
-      if (spalate.caches[req.url]) {
-        res.send(spalate.caches[req.url]);
+      if (spat.caches[req.url]) {
+        res.send(spat.caches[req.url]);
       }
       else {
         next();
@@ -97,7 +97,7 @@ Object.keys(routes).forEach(key => {
     res.render('index', {
       head: ssr.tag.head,
       content: ssr.tagContent,
-      spalate: ssr,
+      spat: ssr,
       // methods: {
       //   head: ssr.head,
       // },
@@ -109,7 +109,7 @@ Object.keys(routes).forEach(key => {
       }
       else {
         if (config.server.cache) {
-          spalate.caches[req.url] = content;
+          spat.caches[req.url] = content;
         }
         res.send(content);
       }
@@ -133,7 +133,7 @@ app.use(async (req, res, next) => {
   res.render('index', {
     head: ssr.tag.head,
     content: ssr.tagContent,
-    spalate: ssr,
+    spat: ssr,
     pretty: true,
   });
 });

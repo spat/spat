@@ -6,9 +6,9 @@ const fs = require('fs-extra');
 const path = require('path');
 const Bundler = require('parcel-bundler');
 
-// 実行パス直下の .spalate
-var SPALATE_OUTPUT_DIR = `${process.cwd()}/.spalate`;
-var SPALATE_APP_OUTPUT_DIR = `${process.cwd()}/app/.spalate`;
+// 実行パス直下の .spat
+var SPAT_OUTPUT_DIR = `${process.cwd()}/.spat`;
+var SPAT_APP_OUTPUT_DIR = `${process.cwd()}/app/.spat`;
 
 module.exports = {
   build() {
@@ -23,10 +23,10 @@ module.exports = {
       config = {
         target: 'node',
         bundleNodeModules: false,
-        outDir: `${SPALATE_OUTPUT_DIR}`,
+        outDir: `${SPAT_OUTPUT_DIR}`,
         outFile: 'modules.cjs',
         hmr: false,
-        global: 'spalate',
+        global: 'spat',
         cache: false,
         sourceMaps: false,
         watch: true,
@@ -37,11 +37,11 @@ module.exports = {
       config = {
         target: 'browser',
         bundleNodeModules: true,
-        outDir: `${SPALATE_OUTPUT_DIR}/static`,
+        outDir: `${SPAT_OUTPUT_DIR}/static`,
         outFile: 'modules.js',
         hmr: true,
         // 名前がバッティングするので off に
-        // global: 'spalate',
+        // global: 'spat',
         sourceMaps: true,
         publicUrl: './',
         cache: true,
@@ -57,18 +57,18 @@ module.exports = {
 
   copy() {
     // 削除
-    fs.removeSync(SPALATE_APP_OUTPUT_DIR);
+    fs.removeSync(SPAT_APP_OUTPUT_DIR);
 
-    // app 内の .spalate を削除してコピーし直す
-    var output = `${SPALATE_APP_OUTPUT_DIR}/modules`;
+    // app 内の .spat を削除してコピーし直す
+    var output = `${SPAT_APP_OUTPUT_DIR}/modules`;
     fs.removeSync(output);
     fs.copySync(path.join(__dirname, `../src`), output);  
   },
 
   clean() {
-    // app 内の .spalate を削除してコピーし直す
-    fs.removeSync(SPALATE_OUTPUT_DIR);
-    fs.removeSync(SPALATE_APP_OUTPUT_DIR);
+    // app 内の .spat を削除してコピーし直す
+    fs.removeSync(SPAT_OUTPUT_DIR);
+    fs.removeSync(SPAT_APP_OUTPUT_DIR);
   },
 
   // TODO: 失敗したらわかるように全ページレンダリングしてエラーでないかのテスト機構作る？
