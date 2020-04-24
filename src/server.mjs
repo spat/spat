@@ -84,7 +84,7 @@ Object.keys(routes).forEach(key => {
     await ssr.render({
       req,
       res,
-      isSsr: route.ssr || config.server.ssr
+      isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
     });
 
     // リダイレクト時は何もせず次へ
