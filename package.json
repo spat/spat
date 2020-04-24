@@ -1,10 +1,10 @@
 {
-  "name": "spalate",
-  "version": "0.0.1",
+  "name": "spat",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "bin": {
-    "spalate": "./spalate"
+    "spat": "./spat"
   },
   "directories": {
     "test": "test"
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/phi-jp/spalate-with-parcel.git"
+    "url": "git+https://github.com/spat/spat.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/phi-jp/spalate-with-parcel/issues"
+    "url": "https://github.com/spat/spat/issues"
   },
-  "homepage": "https://github.com/phi-jp/spalate-with-parcel#readme",
+  "homepage": "https://github.com/spat/spat#readme",
   "dependencies": {
     "browser-or-node": "^1.2.1",
     "express": "^4.17.1",

@@ -1,15 +1,15 @@
-# spalate-with-parcel
+# spat
 
 ## setup
 
-test フォルダに spalate のシンボリックリンクを貼る
+test フォルダに spat のシンボリックリンクを貼る
 
 ```
-# spalate をリンク可能にする
+# spat をリンク可能にする
 $ npm link
 $ cd test
-# test に spalate を紐付ける
-$ npm link spalate
+# test に spat を紐付ける
+$ npm link spat
 ```
 
 ## run

@@ -1,4 +1,4 @@
-import client from '.spalate/modules/client'
+import client from '.spat/modules/client'
 
 import firebase from '~/plugins/firebase.js'
 var db = firebase.firestore();

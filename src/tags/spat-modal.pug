@@ -1,4 +1,4 @@
-spalate-modal(show="{visible}")
+spat-modal(show="{visible}")
 
   style(type='less').
     :scope {
@@ -126,7 +126,7 @@ spalate-modal(show="{visible}")
     this.alert = (message, title, options) => {
       // タグ名をきめる
       var templates = riot.util.templates;
-      var template = templates['alert'] || templates['modal-alert'] || templates['spalate-modal-alert'];
+      var template = templates['alert'] || templates['modal-alert'] || templates['spat-modal-alert'];
       // オプションを作成
       var _options = {message, title, ...options};
       var modal = this.open(template.name, _options);
@@ -137,7 +137,7 @@ spalate-modal(show="{visible}")
     this.confirm = (message, title, options) => {
       // タグ名をきめる
       var templates = riot.util.templates;
-      var template = templates['confirm'] || templates['modal-confirm'] || templates['spalate-modal-confirm'];
+      var template = templates['confirm'] || templates['modal-confirm'] || templates['spat-modal-confirm'];
       // オプションを作成
       var _options = {message, title, ...options};
       var modal = this.open(template.name, _options);
@@ -148,7 +148,7 @@ spalate-modal(show="{visible}")
     this.prompt = (message, title, options) => {
       // タグ名をきめる
       var templates = riot.util.templates;
-      var template = templates['prompt'] || templates['modal-prompt'] || templates['spalate-modal-prompt'];
+      var template = templates['prompt'] || templates['modal-prompt'] || templates['spat-modal-prompt'];
       // オプションを作成
       var _options = {message, title, ...options};
       var modal = this.open(template.name, _options);
@@ -156,7 +156,7 @@ spalate-modal(show="{visible}")
       return modal.waitClose();
     };
 
-spalate-modal-alert.f.fh(spat-animation='push')
+spat-modal-alert.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
       div.bold.fs16.text-center.mb8(if='{opts.title}') {opts.title}
@@ -180,7 +180,7 @@ spalate-modal-alert.f.fh(spat-animation='push')
 
     });
 
-spalate-modal-confirm.f.fh(spat-animation='push')
+spat-modal-confirm.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
       div.bold.fs16.text-center.mb8(if='{opts.title}') {opts.title}
@@ -216,7 +216,7 @@ spalate-modal-confirm.f.fh(spat-animation='push')
     };
 
 
-spalate-modal-prompt.f.fh(spat-animation='push')
+spat-modal-prompt.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
       div.bold.fs16.text-center.mb8(if='{opts.title}') {opts.title}

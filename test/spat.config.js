@@ -5,11 +5,11 @@ module.exports = {
   },
   client: {
     head: {
-      title: 'spalate with parcel',
+      title: 'spat with parcel',
       description: 'frontend framework',
       favicon: '/images/favicon.png',
       ogp: {
-        site_name: 'spalate',
+        site_name: 'spat',
         type: 'website',
         image: 'https://chat-rabee-jp.appspot.com/static/images/ogp.png'
       }

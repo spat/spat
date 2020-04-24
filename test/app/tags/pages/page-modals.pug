@@ -24,35 +24,35 @@ page-modals
           {
             label: '開く',
             onclick: () => {
-              spalate.modal.alert('Message', 'Ttile');
+              spat.modal.alert('Message', 'Ttile');
             }
           },
           {
             label: '開く(メッセージのみ)',
             onclick: () => {
-              spalate.modal.alert('Hello, world!');
+              spat.modal.alert('Hello, world!');
             }
           },
           {
             label: '連続で開く',
             onclick: async () => {
-              await spalate.modal.alert('A');
-              await spalate.modal.alert('B');
-              await spalate.modal.alert('C');
+              await spat.modal.alert('A');
+              await spat.modal.alert('B');
+              await spat.modal.alert('C');
             }
           },
           {
             label: '同時に開く',
             onclick: () => {
-              spalate.modal.alert('A');
-              spalate.modal.alert('B');
-              spalate.modal.alert('C');
+              spat.modal.alert('A');
+              spat.modal.alert('B');
+              spat.modal.alert('C');
             }
           },
           {
             label: '背景タッチ無効(dismissible:true)',
             onclick: () => {
-              spalate.modal.alert('OK でしか閉じれないよ', '', {
+              spat.modal.alert('OK でしか閉じれないよ', '', {
                 dismissible: false,
               });
             }
@@ -67,10 +67,10 @@ page-modals
           {
             label: '開く',
             onclick: async () => {
-              var value = await spalate.modal.confirm('Message', 'Ttile', {
+              var value = await spat.modal.confirm('Message', 'Ttile', {
                 dismissible: false,
               });
-              spalate.modal.alert(value.toString(), '結果は?');
+              spat.modal.alert(value.toString(), '結果は?');
             }
           }
         ],
@@ -81,10 +81,10 @@ page-modals
           {
             label: '開く',
             onclick: async () => {
-              var value = await spalate.modal.prompt('Message', 'Ttile', {
+              var value = await spat.modal.prompt('Message', 'Ttile', {
                 dismissible: false,
               });
-              spalate.modal.alert(value.toString(), '結果は?');
+              spat.modal.alert(value.toString(), '結果は?');
             }
           }
         ],

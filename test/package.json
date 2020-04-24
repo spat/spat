@@ -3,13 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "spalate build",
-    "start": "spalate start",
-    "dev": "spalate dev",
-    "clean": "spalate clean",
-    
+    "build": "spat build",
+    "start": "spat start",
+    "dev": "spat dev",
+    "clean": "spat clean",
     "icon": "fontcustom compile ./static/images/icons --font_name icons --output static/icons/",
-
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
