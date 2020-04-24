@@ -1,5 +1,5 @@
 spat-app
-  div(ref='pages')
+  div.h-full(ref='pages')
 
   div(data-is='spat-modal')
 
@@ -7,6 +7,11 @@ spat-app
   style(type='less').
     :scope {
       display: block;
+      height: 100%;
+
+      .spat-page {
+        height: 100%;
+      }
     }
 
   script.
@@ -22,6 +27,7 @@ spat-app
       
       var element = document.createElement('div');
       element.setAttribute('data-is', tagName);
+      element.setAttribute('class', 'spat-page');
       var pageTag = riot.mount(element, tagName)[0];
       this.refs.pages.appendChild(element);
 
