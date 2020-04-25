@@ -80,10 +80,11 @@ Object.keys(routes).forEach(key => {
   app.get(key, async (req, res, next) => {
     var route = routes[key];
 
-    var ssr = new Ssriot(route.tag);
+    var ssr = new Ssriot();
     await ssr.render({
       req,
       res,
+      route,
       isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
     });
 
@@ -124,9 +125,15 @@ app.use(async (req, res, next) => {
 
   res.status(404);
 
-  var ssr = new Ssriot('page-error');
+  var ssr = new Ssriot();
+  var route = {
+    tag: 'page-error',
+  };
   await ssr.render({
-    req, res
+    req,
+    res,
+    route,
+    isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
   });
 
   // 描画
