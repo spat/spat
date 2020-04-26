@@ -41,12 +41,23 @@ spat-app
       this.refs.pages.appendChild(element);
 
       // preload 実行
-      await this.preload(pageTag, req, res);
+      try {
+        await this.preload(pageTag, req, res);
 
-      // head 取得
-      this.head = this.getHead(pageTag);
+        // head 取得
+        this.head = this.getHead(pageTag);
 
-      this.pageTag = pageTag;
+        this.pageTag = pageTag;
+      }
+      catch (e) {
+        res.error = e;
+        // エラーが出たら page-error を表示する
+        await this.gotoPage({
+          tag: 'page-error',
+        }, req, res);
+
+        return ;
+      }
     };
 
     this.preload = async (tag, req, res) => {

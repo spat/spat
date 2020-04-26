@@ -1,13 +1,20 @@
 page-error
   div.s-full.f.fh
-    div.text-center
-      h2.fs64 {statusCode}
-      div
+    div
+      h2.text-center.fs64.mb16 {statusCode || 999}
+      p.white-space-pre-wrap.mb16(if='{error}') {error.stack || error.toString()}
+      div.text-center
         a(href='/') to TOP
+
+  style(type='less').
+    :scope {
+      display: block;
+    }
 
   script.
     this.preload = ({req, res}) => {
       return {
+        error: res.error,
         statusCode: res.statusCode,
       };
     };

@@ -30,6 +30,12 @@ page-groups-single
         }
       }
 
+      // 存在しなかったら 404 に飛ばす
+      if (!ss.exists) {
+        res.status(404);
+        throw 'そのページは存在しません';
+      }
+
       console.log('fromCache:', ss.metadata.fromCache);
       console.log('group name:', ss.data().title);
 
