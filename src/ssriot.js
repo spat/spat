@@ -7,11 +7,10 @@ const fetch = require('node-fetch');
 global.fetch = fetch;
 
 module.exports = class Ssriot {
-  constructor(tagName) {
-    this.tagName = tagName;
+  constructor() {
   }
 
-  async render({req, res, isSsr}) {
+  async render({req, res, route, isSsr}) {
     var element = document.createElement('div');
     element.setAttribute('render', 'server');
     element.setAttribute('data-is', 'spat-app');
@@ -19,7 +18,7 @@ module.exports = class Ssriot {
     this.tag = riot.mount(element)[0];
 
     if (isSsr) {
-      await this.tag.gotoPage(this.tagName, req, res);
+      await this.tag.gotoPage(route, req, res);
     }
     else {
       this.tag.head = spat.config.head;
