@@ -156,6 +156,20 @@ spat-modal(show="{visible}")
       return modal.waitClose();
     };
 
+    this.indicator = (options) => {
+      // タグ名をきめる
+      var templates = riot.util.templates;
+      var template = templates['indicator'] || templates['modal-indicator'] || templates['spat-modal-indicator'];
+      // オプションを作成
+      var _options = {...options};
+
+      _options.dismissible = false;
+
+      var modal = this.open(template.name, _options);
+      
+      return modal;
+    };
+
 spat-modal-alert.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
@@ -254,3 +268,21 @@ spat-modal-prompt.f.fh(spat-animation='push')
       this.value = '';
       this.close();
     };
+
+
+spat-modal-indicator.f.fh(spat-animation='fade')
+  div(ref='modal')
+    div.fs24.text-white ...
+
+  style(type='less').
+    :scope {
+      background-color: rgba(0, 0, 0, 0.75);
+
+      [ref='modal'] {
+
+      }
+    }
+  
+  script.
+    this.on('mount', () => {
+    });

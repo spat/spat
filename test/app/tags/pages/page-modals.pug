@@ -89,4 +89,19 @@ page-modals
           }
         ],
       },
+      {
+        label: 'indicator',
+        items: [
+          {
+            label: '開く',
+            onclick: async () => {
+              var modal = spat.modal.indicator();
+
+              setTimeout(() => {
+                modal.close();
+              }, 2000);
+            }
+          }
+        ],
+      },
     ];
