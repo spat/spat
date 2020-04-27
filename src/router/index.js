@@ -135,15 +135,15 @@ class Router {
     };
     // レスポンスオブジェクトを作成
     var res = {
-      status: function(status) {
-        this.statusCode = status;
+      status: (status) => {
+        res.statusCode = status;
       },
-      redirect: function(status, url) {
+      redirect: (status, url) => {
         if (typeof status === 'string') {
           url = status;
           status = 302;
         }
-        this.status(status);
+        res.status(status);
         this.replace(url);
       }
     };
