@@ -15,3 +15,11 @@ item-group
       //-   console.log('foo');
       //- });
     });
+
+    this.on('client', ({req, res}) => {
+      console.log('client: ', req.url);
+    });
+
+    this.on('server', ({req, res}) => {
+      console.log('server: ', req.url);
+    });

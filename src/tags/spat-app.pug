@@ -91,3 +91,10 @@ spat-app
 
       return head;
     };
+
+    this.triggerWithChildren = (tag, event, opts) => {
+      tag.trigger(event, opts);
+
+      var tags = _.flatten(Object.values(tag.tags));
+      tags.forEach(tag => this.triggerWithChildren(tag, event, opts));
+    };
