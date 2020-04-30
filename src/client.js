@@ -1,15 +1,17 @@
+
 // spat は global とする
-import common from './common.js'
+import path from 'path';
+import common from './common.js';
+import './plugins.js';
 
 // view 側で定義している global な spat にマージ
 Object.assign(global.spat, common);
 
 var spat = global.spat;
 
-
 // router
 import Router from './router'
-import routes from '../../scripts/routes'
+import routes from '~/scripts/routes'
 
 var router = new Router();
 

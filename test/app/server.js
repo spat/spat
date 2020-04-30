@@ -1,9 +1,5 @@
 import server from '.spat/modules/server'
 
-import firebase from "~/plugins/firebase.js"
-var db = firebase.firestore();
-global.db = db;
-
 // Start the server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

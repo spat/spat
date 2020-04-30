@@ -58,6 +58,7 @@ module.exports = class Ssriot {
     <script>
     var spat = {};
     spat.config = ${JSON.stringify(spat.config)};
+    spat.plugins = ${JSON.stringify(spat.plugins)};
     </script>
     <script src="/spat/modules.js"></script>
 `;

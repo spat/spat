@@ -23,6 +23,11 @@ module.exports = {
       messagingSenderId: "50741122756"
     },
   },
+  plugins: [
+    { global: '$', src: 'jquery' },
+    { global: 'firebase', src: '~/plugins/firebase.js' },
+    { src: '~/styles/main.less' },
+  ],
   test: {
     pages: [
       '/',

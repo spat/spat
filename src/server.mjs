@@ -17,6 +17,11 @@ const Bundler = require('parcel-bundler');
 const config = require('./config');
 // client 側の config を spat.config とする
 spat.config = config.client;
+spat.plugins = config.plugins;
+
+// plugins を展開
+require('./plugins');
+
 
 var spat_OUTPUT_DIR = `${process.cwd()}/.spat`;
 
@@ -52,7 +57,7 @@ riot.mixin({ _ssr: true });
 
 // setup routing
 import URL from 'url'
-import routes from '../../scripts/routes.js'
+import routes from '~/scripts/routes.js'
 
 app.use((req, res, next) => {
   req.Url = URL.parse(req.url, true);

@@ -15,6 +15,7 @@
   "description": "",
   "dependencies": {
     "firebase": "^7.13.2",
+    "jquery": "^3.5.0",
     "parcel-plugin-riot-pug": "git://github.com/phi-jp/parcel-plugin-riot-pug.git#037609bc2fbb17ec3c6097f879c6d29fd5e1c256"
   },
   "devDependencies": {
