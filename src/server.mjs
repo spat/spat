@@ -53,104 +53,116 @@ import Ssriot from './ssriot.js'
 var riot = require('riot');
 var sdom = require('riot/lib/server/sdom.js');
 riot.util.tmpl.errorHandler = function() {};
-riot.mixin({ _ssr: true });
 
 // setup routing
 import URL from 'url'
 import routes from '~/scripts/routes.js'
-
+  
 app.use((req, res, next) => {
   req.Url = URL.parse(req.url, true);
   next();
 });
 
-spat.caches = {};
-Object.keys(routes).forEach(key => {
-
-  if (config.server.cache) {
-    // キャッシュチェック
+app.setup = function() {
+  
+  spat.caches = {};
+  Object.keys(routes).forEach(key => {
+  
+    if (config.server.cache) {
+      // キャッシュチェック
+      app.get(key, async (req, res, next) => {
+        // レンダリング済みだったらそっちを使う
+        if (spat.caches[req.url]) {
+          res.send(spat.caches[req.url]);
+        }
+        else {
+          next();
+        }
+      });
+    }
+  
+  
+    // 実際のレンダリング
     app.get(key, async (req, res, next) => {
-      // レンダリング済みだったらそっちを使う
-      if (spat.caches[req.url]) {
-        res.send(spat.caches[req.url]);
-      }
-      else {
+      var route = routes[key];
+  
+      var ssr = new Ssriot();
+      await ssr.render({
+        req,
+        res,
+        route,
+        isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
+      });
+  
+      // リダイレクト時は何もせず次へ
+      if (res.statusCode === 301 || res.statusCode === 302) {
         next();
+        return ;
       }
+  
+      // 描画
+      res.render('index', {
+        head: ssr.tag.head,
+        content: ssr.tagContent,
+        spat: ssr,
+        // methods: {
+        //   head: ssr.head,
+        // },
+  
+        pretty: true,
+      }, (err, content) => {
+        if (err) {
+          res.send(err.toString());
+        }
+        else {
+          if (config.server.cache) {
+            spat.caches[req.url] = content;
+          }
+          res.send(content);
+        }
+      });
     });
-  }
-
-
-  // 実際のレンダリング
-  app.get(key, async (req, res, next) => {
-    var route = routes[key];
-
+    
+  });
+  
+  // 404 対応
+  app.use(async (req, res, next) => {
+    console.error(`404: ${req.url}`);
+  
+    res.status(404);
+  
     var ssr = new Ssriot();
+    var route = {
+      tag: 'page-error',
+    };
     await ssr.render({
       req,
       res,
       route,
       isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
     });
-
-    // リダイレクト時は何もせず次へ
-    if (res.statusCode === 301 || res.statusCode === 302) {
-      next();
-      return ;
-    }
-
+  
     // 描画
     res.render('index', {
       head: ssr.tag.head,
       content: ssr.tagContent,
       spat: ssr,
-      // methods: {
-      //   head: ssr.head,
-      // },
-
       pretty: true,
-    }, (err, content) => {
-      if (err) {
-        res.send(err.toString());
-      }
-      else {
-        if (config.server.cache) {
-          spat.caches[req.url] = content;
-        }
-        res.send(content);
-      }
     });
   });
-  
-});
+};
 
-// 404 対応
-app.use(async (req, res, next) => {
-  console.error(`404: ${req.url}`);
 
-  res.status(404);
+app.start = function() {
+  this.setup();
 
-  var ssr = new Ssriot();
-  var route = {
-    tag: 'page-error',
-  };
-  await ssr.render({
-    req,
-    res,
-    route,
-    isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
+  // Start the server
+  const PORT = process.env.PORT || 3000;
+  this.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`);
+    console.log('Press Ctrl+C to quit.');
   });
-
-  // 描画
-  res.render('index', {
-    head: ssr.tag.head,
-    content: ssr.tagContent,
-    spat: ssr,
-    pretty: true,
-  });
-});
-
-
+};
 
 export default app;
 
