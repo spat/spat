@@ -66,6 +66,8 @@ spat.goto = async (route, req, res) => {
   spat.appTag.pageTag.trigger('show');
   spat.appTag.pageTag.update();
 
+  // 一番上にスクロール
+  window.scroll(0, 0);
 
   // meta の設定
   var titleElement = document.querySelector('title');
