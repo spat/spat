@@ -9,7 +9,9 @@ import { isBrowser, isNode } from 'browser-or-node'
 
 var extendDeep = require('extend-deep');
 
+// spat で定義しているタグ
 import './tags/*.pug';
+// サービス側
 import '../../tags/*.pug';
 import '../../tags/**/*.pug';
 

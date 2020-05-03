@@ -50,6 +50,9 @@ spat-app
         this.pageTag = pageTag;
       }
       catch (e) {
+        // console にも出す
+        console.error(e);
+
         res.error = e;
         // エラーが出たら page-error を表示する
         await this.gotoPage({

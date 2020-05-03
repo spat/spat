@@ -4,6 +4,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
+const config = require(`${process.cwd()}/spat.config.js`);
 const Bundler = require('parcel-bundler');
 
 // 実行パス直下の .spat
@@ -63,6 +64,20 @@ module.exports = {
     var output = `${SPAT_APP_OUTPUT_DIR}/modules`;
     fs.removeSync(output);
     fs.copySync(path.join(__dirname, `../src`), output);  
+
+    // client 甩にプラグイン読み込みのスクリプトを生成
+    var plugins = config.plugins || [];
+    var imports = config.plugins.map(item => {
+      if (item.global) {
+        return `import ${item.global} from '${item.src}';\nglobal['${item.global}'] = ${item.global}`;
+      }
+      else {
+        return `import '${item.src}';`;
+      }
+    }).join('\n\n');
+    var code = `${imports}
+`;
+    fs.writeFileSync(path.join(output, 'plugins.js'), code);
   },
 
   clean() {
