@@ -66,9 +66,6 @@ spat.goto = async (route, req, res) => {
   spat.appTag.pageTag.trigger('show');
   spat.appTag.pageTag.update();
 
-  // 一番上にスクロール
-  window.scroll(0, 0);
-
   // meta の設定
   var titleElement = document.querySelector('title');
   if (titleElement) {
@@ -85,6 +82,11 @@ spat.goto = async (route, req, res) => {
     // サーバーでレンダリングしていた riot style を消す(重複するので)
     var serverElement = document.querySelector('style[render=server]');
     serverElement.parentNode.removeChild(serverElement);
+  }
+  // 初回以外
+  else {
+    // 一番上にスクロール
+    window.scroll(0, 0);
   }
 };
 
