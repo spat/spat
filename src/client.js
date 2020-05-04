@@ -52,7 +52,9 @@ spat.start = () => {
   });
 
   // ルーティング実行
-  spat.router.start();
+  if (spat.config.spa !== false) {
+    spat.router.start();
+  }
   spat.router.exec();
 };
 

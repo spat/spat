@@ -4,6 +4,8 @@ module.exports = {
     // ssr: false,
   },
   client: {
+    // spa: false,
+
     head: {
       title: 'spat with parcel',
       description: 'frontend framework',
