@@ -38,7 +38,6 @@ spat-app
       element.setAttribute('data-is', tagName);
       element.setAttribute('class', 'spat-page');
       var pageTag = riot.mount(element, tagName)[0];
-      this.refs.pages.appendChild(element);
 
       // preload 実行
       try {
@@ -47,6 +46,8 @@ spat-app
         // head 取得
         this.head = this.getHead(pageTag);
 
+        this.refs.pages.appendChild(element);
+        
         this.pageTag = pageTag;
       }
       catch (e) {
