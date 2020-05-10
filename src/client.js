@@ -33,6 +33,7 @@ spat.start = () => {
 
   spat.appTag = appTag;
   spat.modal = appTag.tags['spat-modal'];
+  spat.toast = appTag.tags['spat-toast'];
 
   // routes を登録
   Object.keys(routes).forEach(key => {
