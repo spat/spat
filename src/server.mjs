@@ -64,16 +64,15 @@ app.use((req, res, next) => {
 });
 
 app.setup = function() {
-  
-  spat.caches = {};
   Object.keys(routes).forEach(key => {
   
     if (config.server.cache) {
       // キャッシュチェック
       app.get(key, async (req, res, next) => {
         // レンダリング済みだったらそっちを使う
-        if (spat.caches[req.url]) {
-          res.send(spat.caches[req.url]);
+        var cache = app.getCache(req.Url.pathname);
+        if (cache) {
+          res.send(cache);
         }
         else {
           next();
@@ -116,7 +115,7 @@ app.setup = function() {
         }
         else {
           if (config.server.cache) {
-            spat.caches[req.url] = content;
+            app.setCache(req.Url.pathname, content);
           }
           res.send(content);
         }
@@ -152,7 +151,23 @@ app.setup = function() {
   });
 };
 
+// キャッシュまわりセットアップ
 
+app.caches = {};
+
+app.setCache = (key, value) => {
+  app.caches[key] = value;
+};
+
+app.getCache = (key) => {
+  return app.caches[key];
+};
+
+app.clearCache = (key) => {
+  delete app.caches[key];
+};
+
+// スタート
 app.start = function() {
   this.setup();
 
