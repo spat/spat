@@ -31,6 +31,9 @@ spat-app
         tagName = route.tag;
       }
 
+      if (this.pageTag) {
+        this.pageTag.unmount();
+      }
       this.refs.pages.innerHTML = '';
       
       var element = document.createElement('div');
@@ -38,16 +41,17 @@ spat-app
       element.setAttribute('class', 'spat-page');
       var pageTag = riot.mount(element, tagName)[0];
 
+      element.style.display = 'none';
+      this.refs.pages.appendChild(element);
+
       // preload 実行
       try {
         await this.preload(pageTag, req, res);
-
         // head 取得
         this.head = this.getHead(pageTag);
-
-        this.refs.pages.appendChild(element);
-        
         this.pageTag = pageTag;
+
+        element.style.display = '';
       }
       catch (e) {
         // console にも出す
