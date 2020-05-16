@@ -148,6 +148,8 @@ app.setup = function() {
       spat: ssr,
       pretty: true,
     });
+
+    ssr.unmount();
   });
 };
 

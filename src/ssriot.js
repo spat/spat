@@ -32,6 +32,13 @@ module.exports = class Ssriot {
     this.tagContent = sdom.serialize(this.tag.root);
   }
 
+  unmount() {
+    if (this.tag) {
+      this.tag.unmount();
+      this.tag = null;
+    }
+  }
+
   head() {
     
   }
