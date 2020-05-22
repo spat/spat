@@ -119,6 +119,8 @@ app.setup = function() {
           }
           res.send(content);
         }
+
+        ssr.unmount();
       });
     });
     
