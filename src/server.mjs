@@ -101,6 +101,7 @@ app.setup = function() {
   
       // 描画
       res.render('index', {
+        config: config,
         head: ssr.tag.head,
         content: ssr.tagContent,
         spat: ssr,
