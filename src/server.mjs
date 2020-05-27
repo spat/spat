@@ -119,6 +119,8 @@ app.setup = function() {
           }
           res.send(content);
         }
+
+        ssr.unmount();
       });
     });
     
@@ -149,6 +151,8 @@ app.setup = function() {
       spat: ssr,
       pretty: true,
     });
+
+    ssr.unmount();
   });
 };
 
