@@ -1,4 +1,4 @@
-module.exports = {
+var config = {
   server: {
     // cache: true,
     // ssr: false,
@@ -36,3 +36,5 @@ module.exports = {
     ],
   }
 };
+
+module.exports = config;
