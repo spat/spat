@@ -174,7 +174,7 @@ spat-modal-alert.f.fh(spat-animation='push')
   div.rounded-8(ref='modal')
     div.p16.border
       div.bold.fs16.text-center.mb8(if='{opts.title}') {opts.title}
-      p.text-center {opts.message}
+      p.text-center.white-space-pre-wrap.word-break-all {opts.message}
     div.w-full.h44
       button.s-full(onclick='{close}') OK
 
