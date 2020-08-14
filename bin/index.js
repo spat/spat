@@ -36,7 +36,10 @@ var main = async () => {
     var bundler = builder.bundle('node');
     await bundler.bundle();
 
-    var bundler = builder.bundle('browser');
+    var bundler = builder.bundle('browser', {
+      hmr: true,
+      watch: true,
+    });
 
     // riot タグが更新されたら再読み込みする
     bundler.on('bundled', (bundle, a, b) => {

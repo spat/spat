@@ -17,11 +17,11 @@ module.exports = {
   },
 
   bundle(target, opts) {
-    var config;
+    var options;
 
     if (target === 'node') {
       var entry = path.join(process.cwd(), 'app/server.js');
-      config = {
+      options = {
         target: 'node',
         bundleNodeModules: false,
         outDir: `${SPAT_OUTPUT_DIR}`,
@@ -35,7 +35,7 @@ module.exports = {
     }
     else {
       var entry = path.join(process.cwd(), 'app/client.js');
-      config = {
+      options = {
         target: 'browser',
         bundleNodeModules: true,
         outDir: `${SPAT_OUTPUT_DIR}/static`,
@@ -49,9 +49,9 @@ module.exports = {
       };
     }
 
-    Object.assign(config, opts);
+    Object.assign(options, opts);
   
-    var bundler = new Bundler(entry, config);
+    var bundler = new Bundler(entry, options);
 
     return bundler;
   },
