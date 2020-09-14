@@ -30,9 +30,11 @@ spat-app
       else {
         tagName = route.tag;
       }
-
-      if (this.pageTag) {
-        this.pageTag.unmount();
+      
+      this.trigger('pagechange', { nextTagName: tagName });
+      const prevPageTag = this.pageTag;
+      if (prevPageTag) {
+        prevPageTag.unmount();
       }
       this.refs.pages.innerHTML = '';
       
@@ -52,6 +54,7 @@ spat-app
         this.pageTag = pageTag;
 
         element.style.display = '';
+        this.trigger('pagechanged', {prevPageTag});
       }
       catch (e) {
         // console にも出す
