@@ -20,7 +20,6 @@ module.exports = class Ssriot {
     if (isSsr) {
       await this.tag.gotoPage(route, req, res);
 
-
       this.tag.triggerWithChildren(this.tag.pageTag, 'server', {
         req, res
       });
