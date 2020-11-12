@@ -66,9 +66,6 @@ spat.goto = async (route, req, res) => {
     req, res
   });
 
-  spat.appTag.pageTag.trigger('show');
-  spat.appTag.pageTag.update();
-
   // meta の設定
   var head = spat.appTag.head;
   var titleElement = document.querySelector('title');

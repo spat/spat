@@ -31,7 +31,8 @@ spat-app
         tagName = route.tag;
       }
 
-      if (this.pageTag) {
+      if (spat.isBrowser && this.pageTag) {
+        this.pageTag.trigger('hide');
         this.pageTag.unmount();
       }
       this.refs.pages.innerHTML = '';
@@ -64,6 +65,11 @@ spat-app
         }, req, res);
 
         return ;
+      }
+
+      if (spat.isBrowser) {
+        pageTag.trigger('show');
+        pageTag.update();
       }
     };
 

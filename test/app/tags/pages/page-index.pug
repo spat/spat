@@ -43,6 +43,12 @@ page-index
     };
 
     this.on('show', async () => {
-
+      console.log('index: show');
+    });
+    this.on('hide', async () => {
+      console.log('index: hide');
+    });
+    this.on('client', async () => {
+      console.log('index: client');
     });
 
