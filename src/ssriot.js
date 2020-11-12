@@ -17,16 +17,11 @@ module.exports = class Ssriot {
     
     this.tag = riot.mount(element)[0];
 
-    if (isSsr) {
-      await this.tag.gotoPage(route, req, res);
+    await this.tag.gotoPage(route, req, res, isSsr);
 
-      this.tag.triggerWithChildren(this.tag.pageTag, 'server', {
-        req, res
-      });
-    }
-    else {
-      this.tag.head = spat.config.head;
-    }
+    this.tag.triggerWithChildren(this.tag.pageTag, 'server', {
+      req, res
+    });
 
     this.tagContent = sdom.serialize(this.tag.root);
   }
