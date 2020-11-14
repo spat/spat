@@ -95,7 +95,12 @@ spat-modal(show="{visible}")
 
       // dismissible: true のときは背景 click で閉じれるようにする
       if (_options.dismissible) {
-        modalTag.root.addEventListener('click', modalTag.close);
+        modalTag.root.addEventListener('click', (e) => {
+          // 自分自身(tag.root)のイベントのときのみクローズする
+          if (e.currentTarget === e.target) {
+            modalTag.close();
+          }
+        });
       }
 
       // 表示更新

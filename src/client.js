@@ -66,14 +66,27 @@ spat.goto = async (route, req, res) => {
     req, res
   });
 
-  spat.appTag.pageTag.trigger('show');
-  spat.appTag.pageTag.update();
-
   // meta の設定
+  var head = spat.appTag.head;
   var titleElement = document.querySelector('title');
   if (titleElement) {
-    document.querySelector('title').textContent = spat.appTag.head.title;
+    titleElement.textContent = head.title;
   }
+
+  // タイトル以外の設定
+  [
+    { query: 'meta[name="description"', value: head.description },
+    { query: 'meta[property="og:title"]', value: head.ogp.title || head.title },
+    { query: 'meta[property="og:description"]', value: head.ogp.description || head.description },
+    { query: 'meta[property="og:site_name"]', value: head.ogp.site_name },
+    { query: 'meta[property="og:type"]', value: head.ogp.type },
+    { query: 'meta[property="og:image"]', value: head.ogp.image },
+  ].forEach(item => {
+    var $elm = document.querySelector(item.query);
+    if ($elm) {
+      $elm.setAttribute('content', item.value);
+    }
+  });
 
   // まだ client app が append されていなかったら
   var clientElement = spat.appTag.root;

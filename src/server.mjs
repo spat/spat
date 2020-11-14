@@ -116,7 +116,7 @@ app.setup = function() {
         }
         else {
           if (config.server.cache) {
-            app.setCache(req.Url.pathname, content);
+            app.setCache(req.Url.pathname + req.Url.search, content);
           }
           res.send(content);
         }

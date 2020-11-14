@@ -30,10 +30,12 @@ spat-app
       else {
         tagName = route.tag;
       }
-      
+
       this.trigger('pagechange', { nextTagName: tagName });
       const prevPageTag = this.pageTag;
-      if (prevPageTag) {
+
+      if (spat.isBrowser && prevPageTag) {
+        prevPageTag.trigger('hide');
         prevPageTag.unmount();
       }
       this.refs.pages.innerHTML = '';
@@ -67,6 +69,11 @@ spat-app
         }, req, res);
 
         return ;
+      }
+
+      if (spat.isBrowser) {
+        pageTag.trigger('show');
+        pageTag.update();
       }
     };
 
