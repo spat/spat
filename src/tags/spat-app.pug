@@ -31,9 +31,12 @@ spat-app
         tagName = route.tag;
       }
 
-      if (spat.isBrowser && this.pageTag) {
-        this.pageTag.trigger('hide');
-        this.pageTag.unmount();
+      this.trigger('pagechange', { nextTagName: tagName });
+      const prevPageTag = this.pageTag;
+
+      if (spat.isBrowser && prevPageTag) {
+        prevPageTag.trigger('hide');
+        prevPageTag.unmount();
       }
       this.refs.pages.innerHTML = '';
       
@@ -56,6 +59,7 @@ spat-app
         this.pageTag = pageTag;
 
         element.style.display = '';
+        this.trigger('pagechanged', {prevPageTag});
       }
       catch (e) {
         // console にも出す
