@@ -21,7 +21,7 @@ spat-app
 
     var sleep = (msec) => new Promise(resolve => setTimeout(resolve, msec));
 
-    this.gotoPage = async (route, req, res) => {
+    this.gotoPage = async (route, req, res, ssr=true) => {
       // route からタグ名を取得
       var tagName = '';
       if (typeof route.tag === 'function') {
@@ -47,7 +47,10 @@ spat-app
 
       // preload 実行
       try {
-        await this.preload(pageTag, req, res);
+        // ssr が true のときのみ preload を実行
+        if (ssr) {
+          await this.preload(pageTag, req, res);
+        }
         // head 取得
         this.head = this.getHead(pageTag);
         this.pageTag = pageTag;
