@@ -26,7 +26,8 @@ router.use((req, res, next) => {
 import riot from 'riot'
 riot.util.tmpl.errorHandler = function() {};
 
-spat.start = () => {
+// 初期化
+spat.init = () => {
   var clientElement = document.createElement('div');
   clientElement.setAttribute('render', 'client');
   var appTag = riot.mount(clientElement, 'spat-app')[0];
@@ -51,7 +52,10 @@ spat.start = () => {
       tag: 'page-error',
     }, req, res);
   });
+};
 
+// スタート
+spat.start = () => {
   // ルーティング実行
   if (spat.config.spa !== false) {
     spat.router.start();
@@ -105,5 +109,7 @@ spat.goto = async (route, req, res) => {
     window.scroll(0, 0);
   }
 };
+
+spat.init();
 
 export default spat;
