@@ -113,7 +113,8 @@ class Router {
   }
 
   back() {
-
+    history.back();
+    return this;
   }
 
   start() {
