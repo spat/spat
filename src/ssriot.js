@@ -14,6 +14,8 @@ module.exports = class Ssriot {
     var element = document.createElement('div');
     element.setAttribute('render', 'server');
     element.setAttribute('data-is', 'spat-app');
+    // SSR レンダリング時は非表示にする(未ログイン時の表示とかがちらつくので)
+    element.setAttribute('style', 'opacity:0');
     
     this.tag = riot.mount(element)[0];
 
