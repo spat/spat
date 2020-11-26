@@ -76,6 +76,9 @@ spat-app
         this.trigger('pagechanged', {prevPageTag});
       }
       catch (e) {
+        // 非表示に戻す
+        element.style.display = 'none';
+
         // console にも出す
         console.error(e);
 
