@@ -110,6 +110,13 @@ spat.goto = async (route, req, res) => {
   }
 };
 
+spat.showSSR = () => {
+  var $serverApp = document.querySelector('[data-is=spat-app][render=server]');
+  if (!$serverApp) return ;
+
+  $serverApp.style.opacity = '';
+};
+
 spat.init();
 
 export default spat;
