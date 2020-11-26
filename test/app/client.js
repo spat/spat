@@ -13,4 +13,6 @@ spat.appTag.on('pagechanged', (e) => {
   indicator && indicator.close();
 });
 
+// client.showSSR();
+
 client.start();

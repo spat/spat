@@ -1,11 +1,13 @@
 page-index
-  div.container
+  div
     div.sticky.t0.z100(data-is='module-header')
-    h1 {title}
 
-    div.my8
-      div
-        div.mb1(each='{item in items}', data-is='item-group', item='{item}')
+    div.container.p16
+      h1.mb16 {title}
+
+      div.my8
+        div
+          div.mb1(each='{item in items}', data-is='item-group', item='{item}')
 
   style(type='less').
     :scope {
@@ -15,7 +17,10 @@ page-index
   script.
     this.title = 'Hello, spat with parcel!';
 
-    this.preload = async ({req, res}) => {
+    this.preload = async ({req, res, cached}) => {
+      if (cached) return ;
+
+      console.log('index: preload');
       var ref = db.collection('groups');
       var ss = await ref.get({source: "cache"});
       
@@ -30,6 +35,8 @@ page-index
           data: doc.data(),
         }
       });
+
+      items = [...items, ...items, ...items];
 
       return {
         items,

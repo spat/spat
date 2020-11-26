@@ -15,6 +15,7 @@ spat-app
 
   script.
     this.title = 'Hello, spat with parcel!';
+    this.cachedPages = {};
 
     this.on('mount', async () => {
     });
@@ -24,6 +25,8 @@ spat-app
     this.gotoPage = async (route, req, res, ssr=true) => {
       // route からタグ名を取得
       var tagName = '';
+      var cached = false;
+
       if (typeof route.tag === 'function') {
         tagName = await route.tag({req, res})
       }
@@ -35,30 +38,41 @@ spat-app
       const prevPageTag = this.pageTag;
 
       if (spat.isBrowser && prevPageTag) {
-        prevPageTag.trigger('hide');
-        prevPageTag.unmount();
+        prevPageTag.trigger('hide', {
+          req, res,
+        });
+        this.cachedPages[this.pageTag.opts.cacheKey] = prevPageTag;
+        prevPageTag.root.style.display = 'none';
       }
-      this.refs.pages.innerHTML = '';
       
-      var element = document.createElement('div');
-      element.setAttribute('data-is', tagName);
-      element.setAttribute('class', 'spat-page');
-      var pageTag = riot.mount(element, tagName)[0];
+      if (this.cachedPages[req.url]) {
+        var pageTag = this.cachedPages[req.url];
+        var element = pageTag.root;
+        cached = true;
 
-      element.style.display = 'none';
-      this.refs.pages.appendChild(element);
+        element.style.display = '';
+      }
+      else {
+        var element = document.createElement('div');
+        element.setAttribute('data-is', tagName);
+        element.setAttribute('class', 'spat-page');
+        element.setAttribute('cache-key', req.url);
+        var pageTag = riot.mount(element, tagName)[0];
+        this.refs.pages.appendChild(element);
+      }
 
       // preload 実行
       try {
         // ssr が true のときのみ preload を実行
         if (ssr) {
-          await this.preload(pageTag, req, res);
+          await this.preload(pageTag, {
+            req, res, cached,
+          });
         }
         // head 取得
         this.head = this.getHead(pageTag);
         this.pageTag = pageTag;
 
-        element.style.display = '';
         this.trigger('pagechanged', {prevPageTag});
       }
       catch (e) {
@@ -75,14 +89,16 @@ spat-app
       }
 
       if (spat.isBrowser) {
-        pageTag.trigger('show');
+        pageTag.trigger('show', {
+          req, res, cached
+        });
         pageTag.update();
       }
     };
 
-    this.preload = async (tag, req, res) => {
+    this.preload = async (tag, opts) => {
       if (tag.preload) {
-        var data = await tag.preload({req, res});
+        var data = await tag.preload(opts);
         Object.assign(tag, data);
         tag.update();
       }
@@ -95,7 +111,7 @@ spat-app
 
       // preload する
       var promises = tags.map(async (tag) => {
-        return this.preload(tag, req, res);
+        return this.preload(tag, opts);
       });
 
       await Promise.all(promises);
