@@ -70,7 +70,7 @@ app.setup = function() {
       // キャッシュチェック
       app.get(key, async (req, res, next) => {
         // レンダリング済みだったらそっちを使う
-        var cache = app.getCache(req.Url.pathname);
+        var cache = app.getCache(req.Url.pathname + (req.Url.search||''));
         if (cache) {
           res.send(cache);
         }
@@ -116,7 +116,7 @@ app.setup = function() {
         }
         else {
           if (config.server.cache) {
-            app.setCache(req.Url.pathname + req.Url.search, content);
+            app.setCache(req.Url.pathname + (req.Url.search||''), content);
           }
           res.send(content);
         }
@@ -162,6 +162,7 @@ app.setup = function() {
 app.caches = {};
 
 app.setCache = (key, value) => {
+  console.log(key);
   app.caches[key] = value;
 };
 
