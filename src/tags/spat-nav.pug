@@ -1,0 +1,129 @@
+spat-nav
+  div.h-full(ref='pages')
+
+  style(type='less').
+    :scope {
+      display: block;
+      height: 100%;
+
+      .spat-page {
+        height: 100%;
+      }
+    }
+
+  script.
+    this.cachedPages = {};
+
+    this.goto = async ({route, req, res, ssr=true}) => {
+      var tagName = '';
+      var cached = false;
+
+      if (typeof route.tag === 'function') {
+        tagName = await route.tag({req, res});
+      }
+      else {
+        tagName = route.tag;
+      }
+
+      this.trigger('pagechange');
+
+      var tempPageTag = this.currentPageTag;
+
+      // すでにページがある場合キャッシュする
+      if (spat.isBrowser && tempPageTag) {
+        tempPageTag.trigger('hide', {
+          req, res
+        });
+        this.cachePageTag(tempPageTag);
+      }
+
+      var currentPageTag = this.getCachedPage(req.url);
+
+      if (currentPageTag) {
+        currentPageTag.root.style.display = '';
+        cached = true;
+      }
+      else {
+        var element = document.createElement('div');
+        element.setAttribute('data-is', tagName);
+        element.setAttribute('class', 'spat-page');
+        element.setAttribute('cache-key', req.url);
+        currentPageTag = riot.mount(element, tagName)[0];
+        this.refs.pages.appendChild(element);
+      }
+
+      // preload 実行
+      try {
+        // ssr が true のときのみ preload を実行
+        if (ssr) {
+          await this.preload(currentPageTag, {
+            req, res, cached,
+          });
+        }
+
+        // head 設定
+        this._head = this.setupHead(currentPageTag);
+        this.currentPageTag = currentPageTag;
+
+        this.trigger('pagechanged', {});
+      }
+      catch(e) {
+        // 非表示に戻す
+        currentPageTag.root.style.display = 'none';
+
+        // console にも出す
+        console.error(e);
+
+        res.error = e;
+        // エラーが出たら page-error を表示する
+        var route = {
+          tag: 'page-error'
+        };
+        await this.goto({route, req, res});
+      }
+    };
+
+    this.cachePageTag = (tag) => {
+      this.cachedPages[tag.opts.cacheKey] = tag;
+      tag.root.style.display = 'none';
+    };
+
+    this.getCachedPage = (cacheKey) => {
+      return this.cachedPages[cacheKey];
+    };
+
+    this.preload = async (tag, opts) => {
+      if (tag.preload) {
+        var data = await tag.preload(opts);
+        Object.assign(tag, data);
+        tag.update();
+      }
+
+      // すべてのタグをまとめて配列化
+      var tags = _.flatten(Object.values(tag.tags));
+
+      // 子タグがない場合は何もしない
+      if (tags.length <= 0) return ;
+
+      // preload する
+      var promises = tags.map(async (tag) => {
+        return this.preload(tag, opts);
+      });
+
+      await Promise.all(promises);
+    };
+
+    this.setupHead = (tag) => {
+      var head = {};
+      spat.utils.extendDeep(head, spat.config.head);
+      if (tag.head) {
+        var data = tag.head();
+        spat.utils.extendDeep(head, data);
+      }
+
+      return head;
+    };
+
+    this.getHead = () => {
+      return this._head;
+    };

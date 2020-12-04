@@ -64,14 +64,10 @@ spat.start = () => {
 };
 
 spat.goto = async (route, req, res) => {
-  await spat.appTag.gotoPage(route, req, res);
-
-  spat.appTag.triggerWithChildren(spat.appTag.pageTag, 'client', {
-    req, res
-  });
+  await spat.appTag.navTag.goto({route, req, res});
 
   // meta の設定
-  var head = spat.appTag.head;
+  var head = spat.appTag.navTag.getHead();
   var titleElement = document.querySelector('title');
   if (titleElement) {
     titleElement.textContent = head.title;

@@ -104,7 +104,7 @@ app.setup = function() {
         req,
         res,
         config: config,
-        head: ssr.tag.head,
+        head: ssr.tag.navTag.getHead(),
         content: ssr.tagContent,
         spat: ssr,
         // methods: {
@@ -149,7 +149,7 @@ app.setup = function() {
     // 描画
     res.render('index', {
       config: config,
-      head: ssr.tag.head,
+      head: ssr.tag.navTag.getHead(),
       content: ssr.tagContent,
       spat: ssr,
       pretty: true,
