@@ -81,6 +81,14 @@ spat-nav
         };
         await this.goto({route, req, res});
       }
+
+      // show イベントを発火
+      if (spat.isBrowser) {
+        this.currentPageTag.trigger('show', {
+          req, res, cached
+        });
+        this.currentPageTag.update();
+      }
     };
 
     this.cachePageTag = (tag) => {
