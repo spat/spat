@@ -1,5 +1,5 @@
 spat-app
-  div.h-full(ref='pages')
+  div.h-full(data-is='spat-nav')
   div(data-is='spat-modal')
   div(data-is='spat-toast')
 
@@ -18,118 +18,10 @@ spat-app
     this.cachedPages = {};
 
     this.on('mount', async () => {
+      this.navTag = this.tags['spat-nav'];
+      this.modalTag = this.tags['spat-modal'];
+      this.toastTag = this.tags['spat-toast'];
     });
-
-    var sleep = (msec) => new Promise(resolve => setTimeout(resolve, msec));
-
-    this.gotoPage = async (route, req, res, ssr=true) => {
-      // route からタグ名を取得
-      var tagName = '';
-      var cached = false;
-
-      if (typeof route.tag === 'function') {
-        tagName = await route.tag({req, res})
-      }
-      else {
-        tagName = route.tag;
-      }
-
-      this.trigger('pagechange', { nextTagName: tagName });
-      const prevPageTag = this.pageTag;
-
-      if (spat.isBrowser && prevPageTag) {
-        prevPageTag.trigger('hide', {
-          req, res,
-        });
-        this.cachedPages[this.pageTag.opts.cacheKey] = prevPageTag;
-        prevPageTag.root.style.display = 'none';
-      }
-      
-      if (this.cachedPages[req.url]) {
-        var pageTag = this.cachedPages[req.url];
-        var element = pageTag.root;
-        cached = true;
-
-        element.style.display = '';
-      }
-      else {
-        var element = document.createElement('div');
-        element.setAttribute('data-is', tagName);
-        element.setAttribute('class', 'spat-page');
-        element.setAttribute('cache-key', req.url);
-        var pageTag = riot.mount(element, tagName)[0];
-        this.refs.pages.appendChild(element);
-      }
-
-      // preload 実行
-      try {
-        // ssr が true のときのみ preload を実行
-        if (ssr) {
-          await this.preload(pageTag, {
-            req, res, cached,
-          });
-        }
-        // head 取得
-        this.head = this.getHead(pageTag);
-        this.pageTag = pageTag;
-
-        this.trigger('pagechanged', {prevPageTag});
-      }
-      catch (e) {
-        // 非表示に戻す
-        element.style.display = 'none';
-
-        // console にも出す
-        console.error(e);
-
-        res.error = e;
-        // エラーが出たら page-error を表示する
-        await this.gotoPage({
-          tag: 'page-error',
-        }, req, res);
-
-        return ;
-      }
-
-      if (spat.isBrowser) {
-        pageTag.trigger('show', {
-          req, res, cached
-        });
-        pageTag.update();
-      }
-    };
-
-    this.preload = async (tag, opts) => {
-      if (tag.preload) {
-        var data = await tag.preload(opts);
-        Object.assign(tag, data);
-        tag.update();
-      }
-
-      // すべてのタグをまとめて配列化
-      var tags = _.flatten(Object.values(tag.tags));
-
-      // 子タグがない場合は何もしない
-      if (tags.length <= 0) return ;
-
-      // preload する
-      var promises = tags.map(async (tag) => {
-        return this.preload(tag, opts);
-      });
-
-      await Promise.all(promises);
-    };
-
-    this.getHead = (tag) => {
-      var head = {};
-      spat.utils.extendDeep(head, spat.config.head);
-      if (tag.head) {
-        var data = tag.head();
-        spat.utils.extendDeep(head, data);
-      }
-
-      return head;
-    };
 
     this.triggerWithChildren = (tag, event, opts) => {
       tag.trigger(event, opts);

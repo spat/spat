@@ -19,11 +19,7 @@ module.exports = class Ssriot {
     
     this.tag = riot.mount(element)[0];
 
-    await this.tag.gotoPage(route, req, res, isSsr);
-
-    this.tag.triggerWithChildren(this.tag.pageTag, 'server', {
-      req, res
-    });
+    await this.tag.navTag.goto({route, req, res, ssr: isSsr});
 
     this.tagContent = sdom.serialize(this.tag.root);
   }
