@@ -52,6 +52,9 @@ spat-nav
         this.refs.pages.appendChild(element);
       }
 
+      // current となるページをセット
+      this.currentPageTag = currentPageTag;
+
       // preload 実行
       try {
         // ssr が true のときのみ preload を実行
@@ -61,11 +64,17 @@ spat-nav
           });
         }
 
-        // head 設定
-        this._head = this.setupHead(currentPageTag);
-        this.currentPageTag = currentPageTag;
+        if (this.currentPageTag === currentPageTag) {
+          // head 設定
+          this._head = this.setupHead(currentPageTag);
+          this.trigger('pagechanged', {});
+        }
+        // 非同期処理終了後に, 別のページになっていた場合は非表示に戻す(すぐにスワイプバックされたとき等)
+        else {
+          // TODO: hide も実行する
 
-        this.trigger('pagechanged', {});
+          currentPageTag.root.style.display = 'none';
+        }
       }
       catch(e) {
         // 非表示に戻す
