@@ -85,10 +85,10 @@ spat-nav
 
         res.error = e;
         // エラーが出たら page-error を表示する
-        var route = {
+        var errorRoute = {
           tag: 'page-error'
         };
-        await this.goto({route, req, res});
+        await this.goto({route:errorRoute, req, res});
       }
 
       // show イベントを発火
