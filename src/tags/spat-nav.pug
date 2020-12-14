@@ -29,12 +29,12 @@ spat-nav
 
       var tempPageTag = this.currentPageTag;
 
-      // すでにページがある場合キャッシュする
+      // すでにページがある場合 hide する
       if (spat.isBrowser && tempPageTag) {
         tempPageTag.trigger('hide', {
           req, res
         });
-        this.cachePageTag(tempPageTag);
+        tempPageTag.root.style.display = 'none';
       }
 
       var currentPageTag = this.getCachedPage(req.url);
@@ -98,11 +98,15 @@ spat-nav
         });
         this.currentPageTag.update();
       }
+
+      // 最後にキャッシュする
+      if (spat.isBrowser && tempPageTag) {
+        this.cachePageTag(tempPageTag);
+      }
     };
 
     this.cachePageTag = (tag) => {
       this.cachedPages[tag.opts.cacheKey] = tag;
-      tag.root.style.display = 'none';
     };
 
     this.getCachedPage = (cacheKey) => {
