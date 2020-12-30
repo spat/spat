@@ -5,5 +5,6 @@ page-debug-redirect
   script.
     this.preload = ({req, res}) => {
       console.log('debug ページにリダイレクトします!');
-      res.redirect(301, '/debug');
+      res.redirect(301, '/');
+      //- res.redirect(301, '/debug');
     };

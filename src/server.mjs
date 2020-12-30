@@ -93,9 +93,8 @@ app.setup = function() {
         isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
       });
   
-      // リダイレクト時は何もせず次へ
+      // リダイレクト時は何もしない
       if (res.statusCode === 301 || res.statusCode === 302) {
-        next();
         return ;
       }
   
