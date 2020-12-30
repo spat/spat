@@ -93,8 +93,9 @@ app.setup = function() {
         isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
       });
   
-      // リダイレクト時は何もしない
+      // リダイレクト時は何もせず次へ
       if (res.statusCode === 301 || res.statusCode === 302) {
+        next();
         return ;
       }
   
@@ -133,6 +134,7 @@ app.setup = function() {
     console.error(`404: ${req.url}`);
   
     res.status(404);
+    res.error = new Error('404 not found');
   
     var ssr = new Ssriot();
     var route = {

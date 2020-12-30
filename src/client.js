@@ -48,6 +48,7 @@ spat.init = () => {
   // 404 対応
   router.on('(.*)', (req, res) => {
     res.statusCode = 404;
+    res.error = new Error('404 not found');
     spat.goto({
       tag: 'page-error',
     }, req, res);
