@@ -59,6 +59,12 @@ spat-nav
           await this.preload(currentPageTag, {
             req, res, cached,
           });
+
+          // redirect がかかっていたら非表示にして以降をスキップ
+          if (res.statusCode === 301 || res.statusCode === 302) {
+            currentPageTag.root.style.display = 'none';
+            return ;
+          }
         }
 
         // head 設定
