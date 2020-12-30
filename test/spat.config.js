@@ -28,6 +28,7 @@ var config = {
   plugins: [
     { global: '$', src: 'jquery' },
     { global: 'firebase', src: '~/plugins/firebase.js' },
+    { global: 'app', src: '~/scripts/app.js' },
     { src: '~/styles/main.less' },
   ],
   test: {
