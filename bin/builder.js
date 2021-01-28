@@ -8,6 +8,7 @@ const config = require(`${process.cwd()}/spat.config.js`);
 const Bundler = require('parcel-bundler');
 
 // 実行パス直下の .spat
+var PARCEL_CACHE_DIR = `${process.cwd()}/.cache`;
 var SPAT_OUTPUT_DIR = `${process.cwd()}/.spat`;
 var SPAT_APP_OUTPUT_DIR = `${process.cwd()}/app/.spat`;
 
@@ -83,6 +84,7 @@ module.exports = {
 
   clean() {
     // app 内の .spat を削除してコピーし直す
+    fs.removeSync(PARCEL_CACHE_DIR);
     fs.removeSync(SPAT_OUTPUT_DIR);
     fs.removeSync(SPAT_APP_OUTPUT_DIR);
   },
