@@ -28,8 +28,9 @@ module.exports = {
         outFile: 'modules.cjs',
         hmr: false,
         global: 'spat',
-        cache: false,
-        sourceMaps: false,
+        sourceMaps: true,
+        publicUrl: './',
+        cache: true,
         watch: true,
       };
     }
