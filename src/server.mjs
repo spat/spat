@@ -95,7 +95,6 @@ app.setup = function() {
   
       // リダイレクト時は何もせず次へ
       if (res.statusCode === 301 || res.statusCode === 302) {
-        next();
         return ;
       }
   
