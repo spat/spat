@@ -59,6 +59,37 @@ spat-modal(show="{visible}")
     }
   
   script.
+    this.on('mount', () => {
+      if (spat.isBrowser) {
+        // キーボードを押した際の挙動
+        window.addEventListener('keydown', (e) => {
+          // ESC
+          if (e.keyCode === 27) {
+            e.preventDefault();
+            var modalTag = this.getCurrentModalTag();
+
+            // dismissible が true のモノのみ ESC で閉じれるようにする 
+            if (modalTag && modalTag.opts.dismissible) {
+              modalTag.close();
+            }
+          }
+        });
+
+        // 戻るを押した際の挙動
+        // TODO: 進むのときは何もしないようにする
+        window.addEventListener('popstate', (e) => {
+          var modalTag = this.getCurrentModalTag();
+
+          if (modalTag) {
+            // モーダルを閉じる
+            modalTag.close();
+            // router 側でチェック
+            e.preventBack = true;
+          }
+        }, false);
+      }
+    });
+
     this.open = (tagName, options) => {
       var _options = Object.assign({
         dismissible: true,
@@ -131,6 +162,13 @@ spat-modal(show="{visible}")
           resolve();
         });
       });
+    };
+
+    this.getCurrentModalTag = () => {
+      var children = this.root.children;
+      var child = children[children.length-1];
+
+      return child && child._tag ? child._tag : null;
     };
 
     this.alert = (message, title, options) => {
