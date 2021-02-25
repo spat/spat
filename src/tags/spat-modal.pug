@@ -84,7 +84,7 @@ spat-modal(show="{visible}")
           if (child && child._tag) {
             // モーダルを閉じる
             child._tag.close();
-            // routeful 依存
+            // router 側でチェック
             e.preventBack = true;
           }
         }, false);
