@@ -59,6 +59,22 @@ spat-modal(show="{visible}")
     }
   
   script.
+    this.on('mount', () => {
+      if (spat.isBrowser) {
+        // 戻るを押した際の挙動
+        // TODO: 進むのときは何もしないようにする
+        window.addEventListener('popstate', (e) => {
+          var children = this.root.children;
+          var child = children[children.length-1];
+          if (child && child._tag) {
+            // モーダルを閉じる
+            child._tag.close();
+            // routeful 依存
+            e.preventBack = true;
+          }
+        }, false);
+      }
+    });
     this.open = (tagName, options) => {
       var _options = Object.assign({
         dismissible: true,

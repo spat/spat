@@ -209,6 +209,19 @@ class Router {
   }
 
   _onpopstate(e) {
+    // preventBack で再度実行されたときは skip フラグが立っているので何もしない
+    if (this._skip) {
+      this._skip = false;
+      return ;
+    }
+    // バックをキャンセル
+    if (e.preventBack) {
+      this._skip = true;
+      // URL を元に戻す
+      history.forward();
+      return ;
+    }
+
     this.exec();
   }
 }
