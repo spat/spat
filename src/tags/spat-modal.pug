@@ -106,6 +106,9 @@ spat-modal(show="{visible}")
       // 表示更新
       this.update({visible: true});
 
+      // スクロールを止める
+      document.documentElement.style.overflow = 'hidden';
+
       return modalTag;
     };
 
@@ -121,6 +124,8 @@ spat-modal(show="{visible}")
           // モーダルが全てなくなっていたら非表示にする
           if (this.root.childNodes.length <= 0) {
             this.update({visible: false});
+            // スクロール復活
+            document.documentElement.style.overflow = '';
           }
 
           resolve();
