@@ -61,6 +61,21 @@ spat-modal(show="{visible}")
   script.
     this.on('mount', () => {
       if (spat.isBrowser) {
+        // キーボードを押した際の挙動
+        window.addEventListener('keydown', (e) => {
+          // ESC
+          if (e.keyCode === 27) {
+            e.preventDefault();
+            var children = this.root.children;
+            var child = children[children.length-1];
+
+            // dismissible が true のモノのみ ESC で閉じれるようにする 
+            if (child && child._tag && child._tag.opts.dismissible) {
+              child._tag.close();
+            }
+          }
+        });
+
         // 戻るを押した際の挙動
         // TODO: 進むのときは何もしないようにする
         window.addEventListener('popstate', (e) => {
