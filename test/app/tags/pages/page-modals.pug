@@ -104,4 +104,24 @@ page-modals
           }
         ],
       },
+      {
+        label: 'dummy',
+        items: [
+          {
+            label: 'ダミーだよ',
+            onclick: async () => {
+              var modal = spat.modal.open('modal-dummy');
+
+              setTimeout(() => {
+                modal.close();
+              }, 2000);
+            }
+          }
+        ],
+      },
     ];
+
+
+modal-dummy.f.fh(spat-animation='')
+  div.bg-white.p32(ref='modal')
+    div ダミーだよ

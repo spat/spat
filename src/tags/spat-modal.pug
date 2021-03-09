@@ -99,11 +99,15 @@ spat-modal(show="{visible}")
       this.root.appendChild(element);
 
       var modalTag = riot.mount(element, tagName, _options)[0];
+      debugger;
       element.classList.add('modal-content');
 
       // アニメーション
       var animation = element.getAttribute('spat-animation') || 'push';
-      modalTag.refs.modal.style.animation = `modal-${animation}-in 256ms`;
+
+      if (animation !== 'undefined') {
+        modalTag.refs.modal.style.animation = `modal-${animation}-in 256ms`;
+      }
 
       modalTag.promise = new Promise((resolve) => {
         modalTag.close = async () => {
@@ -147,21 +151,31 @@ spat-modal(show="{visible}")
       return new Promise(resolve => {
         // アニメーション
         var animation = modalTag.root.getAttribute('spat-animation') || 'push';
-        modalTag.refs.modal.style.animation = `modal-${animation}-out 128ms forwards`;
 
-        modalTag.refs.modal.addEventListener('animationend', (e) => {
-          modalTag.unmount();
+        if (animation !== 'undefined') {
+          modalTag.refs.modal.style.animation = `modal-${animation}-out 128ms forwards`;
 
-          // モーダルが全てなくなっていたら非表示にする
-          if (this.root.childNodes.length <= 0) {
-            this.update({visible: false});
-            // スクロール復活
-            document.documentElement.style.overflow = '';
-          }
-
+          modalTag.refs.modal.addEventListener('animationend', (e) => {
+            this._unmount(modalTag);
+            resolve();
+          });
+        }
+        else {
+          this._unmount(modalTag);
           resolve();
-        });
+        }
       });
+    };
+
+    this._unmount = (modalTag) => {
+      modalTag.unmount();
+
+      // モーダルが全てなくなっていたら非表示にする
+      if (this.root.childNodes.length <= 0) {
+        this.update({visible: false});
+        // スクロール復活
+        document.documentElement.style.overflow = '';
+      }
     };
 
     this.getCurrentModalTag = () => {
