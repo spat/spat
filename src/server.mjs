@@ -148,6 +148,8 @@ app.setup = function() {
   
     // 描画
     res.render('index', {
+      req,
+      res,
       config: config,
       head: ssr.tag.navTag.getHead(),
       content: ssr.tagContent,
