@@ -111,14 +111,17 @@ spat-nav
       }
     };
 
+    // ページタグをキャッシュ
     this.cachePageTag = (tag) => {
       this.cachedPages[tag.opts.cacheKey] = tag;
     };
 
+    // ページタグを取得
     this.getCachedPage = (cacheKey) => {
       return this.cachedPages[cacheKey];
     };
 
+    // preload を再帰呼び出し
     this.preload = async (tag, opts) => {
       if (tag.preload) {
         var data = await tag.preload(opts);
@@ -140,6 +143,7 @@ spat-nav
       await Promise.all(promises);
     };
 
+    // head をセットアップ
     this.setupHead = (tag) => {
       var head = {};
       spat.utils.extendDeep(head, spat.config.head);
