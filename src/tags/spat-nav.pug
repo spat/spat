@@ -78,7 +78,6 @@ spat-nav
         // 非同期処理終了後に, 別のページになっていた場合は非表示に戻す(すぐにスワイプバックされたとき等)
         else {
           // TODO: hide も実行する
-
           currentPageTag.root.style.display = 'none';
         }
       }
@@ -109,6 +108,10 @@ spat-nav
       if (spat.isBrowser && tempPageTag) {
         this.cachePageTag(tempPageTag);
       }
+
+      return {
+        cached,
+      };
     };
 
     // ページタグをキャッシュ

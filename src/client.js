@@ -65,7 +65,7 @@ spat.start = () => {
 };
 
 spat.goto = async (route, req, res) => {
-  await spat.appTag.navTag.goto({route, req, res});
+  var result = await spat.appTag.navTag.goto({route, req, res});
 
   // meta の設定
   var head = spat.appTag.navTag.getHead();
@@ -102,8 +102,11 @@ spat.goto = async (route, req, res) => {
   }
   // 初回以外
   else {
-    // 一番上にスクロール
-    window.scroll(0, 0);
+    // キャッシュされていないページだった場合は上部にスクロール
+    if (result.cached === false) {
+      // 一番上にスクロール
+      window.scroll(0, 0);
+    }
   }
 };
 
