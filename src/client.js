@@ -65,6 +65,9 @@ spat.start = () => {
 };
 
 spat.goto = async (route, req, res) => {
+  // 進む/戻る 経由かどうかのフラグを持っておく
+  var isPopState = spat.router.isPopState;
+
   var result = await spat.appTag.navTag.goto({route, req, res});
 
   // meta の設定
@@ -102,8 +105,8 @@ spat.goto = async (route, req, res) => {
   }
   // 初回以外
   else {
-    // キャッシュされていないページだった場合は上部にスクロール
-    if (result.cached === false) {
+    // 進む/戻る じゃなければ上部にスクロールする
+    if (isPopState !== true) {
       // 一番上にスクロール
       window.scroll(0, 0);
     }
