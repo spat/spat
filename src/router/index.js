@@ -222,7 +222,11 @@ class Router {
       return ;
     }
 
+    this.isPopState = true;
+
     this.exec();
+
+    this.isPopState = false;
   }
 }
 
