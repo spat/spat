@@ -65,9 +65,16 @@ spat.start = () => {
 };
 
 spat.goto = async (route, req, res) => {
-  // 進む/戻る 経由かどうかのフラグを持っておく
-  var isPopState = spat.router.isPopState;
+  // 初回はスクロールリセットしない　
+  if (spat.appTag.root.parentNode) {
+      // 進む/戻る じゃなければ上部にスクロールする
+    if (spat.router.isPopState !== true) {
+      // 一番上にスクロール
+      window.scroll(0, 0);
+    }
+  }
 
+  // ページ遷移
   var result = await spat.appTag.navTag.goto({route, req, res});
 
   // meta の設定
@@ -102,14 +109,6 @@ spat.goto = async (route, req, res) => {
     // サーバーでレンダリングしていた riot style を消す(重複するので)
     var serverElement = document.querySelector('style[render=server]');
     serverElement.parentNode.removeChild(serverElement);
-  }
-  // 初回以外
-  else {
-    // 進む/戻る じゃなければ上部にスクロールする
-    if (isPopState !== true) {
-      // 一番上にスクロール
-      window.scroll(0, 0);
-    }
   }
 };
 
