@@ -109,11 +109,6 @@ spat-nav
         this.currentPageTag.update();
       }
 
-      // 最後にキャッシュする
-      if (spat.isBrowser && tempPageTag) {
-        this.cachePageTag(tempPageTag);
-      }
-
       return {
         cached,
       };
