@@ -131,13 +131,13 @@ spat-nav
     this.preload = async (tag, opts) => {
       if (tag.preload) {
         var data = {};
-        //- if (spat.preloadData[this.preloadIndex]) {
-        //-   data = spat.preloadData[this.preloadIndex++];
-        //- }
-        //- else {
+        if (spat.isBrowser && spat.preloadData[this.preloadIndex]) {
+          data = spat.preloadData[this.preloadIndex++];
+        }
+        else {
           data = await tag.preload(opts);
           this.preloadData[this.preloadIndex++] = data;
-        //- }
+        }
         Object.assign(tag, data);
         tag.update();
       }

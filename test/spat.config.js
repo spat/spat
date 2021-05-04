@@ -1,6 +1,6 @@
 var config = {
   server: {
-    // cache: true,
+    cache: true,
     // ssr: false,
   },
   client: {
