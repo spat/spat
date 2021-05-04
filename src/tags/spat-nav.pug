@@ -37,7 +37,8 @@ spat-nav
         tempPageTag.root.style.display = 'none';
       }
 
-      var currentPageTag = this.getCachedPage(req.url);
+      // エラーじゃないときのみキャッシュからの取得を試みる
+      var currentPageTag = !res.error ? this.getCachedPage(req.url) : null;
 
       if (currentPageTag) {
         currentPageTag.root.style.display = '';
