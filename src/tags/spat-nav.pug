@@ -37,7 +37,8 @@ spat-nav
         tempPageTag.root.style.display = 'none';
       }
 
-      var currentPageTag = this.getCachedPage(req.url);
+      // エラーじゃないときのみキャッシュからの取得を試みる
+      var currentPageTag = !res.error ? this.getCachedPage(req.url) : null;
 
       if (currentPageTag) {
         currentPageTag.root.style.display = '';
@@ -74,6 +75,11 @@ spat-nav
           // head 設定
           this._head = this.setupHead(currentPageTag);
           this.trigger('pagechanged', {});
+
+          // 最後にキャッシュする(エラーページ以外)
+          if (spat.isBrowser && !res.error) {
+            this.cachePageTag(this.currentPageTag);
+          }
         }
         // 非同期処理終了後に, 別のページになっていた場合は非表示に戻す(すぐにスワイプバックされたとき等)
         else {
@@ -102,11 +108,6 @@ spat-nav
           req, res, cached
         });
         this.currentPageTag.update();
-      }
-
-      // 最後にキャッシュする
-      if (spat.isBrowser && tempPageTag) {
-        this.cachePageTag(tempPageTag);
       }
 
       return {
