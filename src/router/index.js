@@ -109,10 +109,11 @@ class Router {
     this.pageIndex++;
 
     history.pushState({
-      ...window.history.state,
+      ...history.state,
       pageIndex: this.pageIndex,
     }, '', path);
 
+    // 進む/戻る 以外の遷移なので false に戻す
     this.isBack = false;
     this.isForward = false;
 
@@ -235,15 +236,14 @@ class Router {
     }
 
     // state をチェック
-    var state = history.state;
-
-    if (!state || !Number.isInteger(state.pageIndex)) {
-      window.history.replaceState({
-        ...window.history.state,
+    if (!history.state || !Number.isInteger(history.state.pageIndex)) {
+      history.replaceState({
+        ...history.state,
         pageIndex: 0,
       }, '');
     }
 
+    // 戻る/進む 判定
     this.isBack = this.pageIndex > history.state.pageIndex;
     this.isForward = this.pageIndex < history.state.pageIndex;
     this.pageIndex = history.state.pageIndex;
