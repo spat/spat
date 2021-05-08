@@ -246,14 +246,9 @@ class Router {
 
     this.isBack = this.pageIndex > history.state.pageIndex;
     this.isForward = this.pageIndex < history.state.pageIndex;
-
     this.pageIndex = history.state.pageIndex;
 
-    this.isPopState = true;
-
     this.exec();
-
-    this.isPopState = false;
   }
 }
 
