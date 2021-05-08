@@ -121,7 +121,15 @@ class Router {
   }
 
   replace(path) {
-    history.replaceState(history.state, null, path);
+    history.replaceState({
+      ...history.state,
+      pageIndex: this.pageIndex,
+    }, '', path);
+
+    // 進む/戻る 以外の遷移なので false に戻す
+    this.isBack = false;
+    this.isForward = false;
+
     this.emit(path);
   }
 
