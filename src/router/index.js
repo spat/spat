@@ -58,6 +58,9 @@ class Router {
     this._callbacks = [];
 
     this._base = '/';
+    this.pageIndex = history.state && Number.isInteger(history.state.pageIndex) ? history.state.pageIndex : 0;
+    this.isBack = false;
+    this.isForward = false;
   }
 
   // パスの登録
@@ -103,17 +106,40 @@ class Router {
 
   // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
   push(path) {
-    history.pushState(history.state, null, path);
+    this.pageIndex++;
+
+    history.pushState({
+      ...history.state,
+      pageIndex: this.pageIndex,
+    }, '', path);
+
+    // 進む/戻る 以外の遷移なので false に戻す
+    this.isBack = false;
+    this.isForward = false;
+
     this.emit(path);
   }
 
   replace(path) {
-    history.replaceState(history.state, null, path);
+    history.replaceState({
+      ...history.state,
+      pageIndex: this.pageIndex,
+    }, '', path);
+
+    // 進む/戻る 以外の遷移なので false に戻す
+    this.isBack = false;
+    this.isForward = false;
+
     this.emit(path);
   }
 
   back() {
     history.back();
+    return this;
+  }
+
+  forward() {
+    history.forward();
     return this;
   }
 
@@ -214,7 +240,7 @@ class Router {
       this._skip = false;
       return ;
     }
-    // バックをキャンセル
+    // バックをキャンセル(modal 時を考慮)
     if (e.preventBack) {
       this._skip = true;
       // URL を元に戻す
@@ -222,11 +248,20 @@ class Router {
       return ;
     }
 
-    this.isPopState = true;
+    // state をチェック
+    if (!history.state || !Number.isInteger(history.state.pageIndex)) {
+      history.replaceState({
+        ...history.state,
+        pageIndex: 0,
+      }, '');
+    }
+
+    // 戻る/進む 判定
+    this.isBack = this.pageIndex > history.state.pageIndex;
+    this.isForward = this.pageIndex < history.state.pageIndex;
+    this.pageIndex = history.state.pageIndex;
 
     this.exec();
-
-    this.isPopState = false;
   }
 }
 
