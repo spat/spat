@@ -12,7 +12,7 @@ spat-nav
     }
 
   script.
-    this.cachedPages = {};
+    this.cachedPageTags = {};
 
     this.goto = async ({route, req, res, ssr=true}) => {
       var tagName = '';
@@ -37,8 +37,15 @@ spat-nav
         tempPageTag.root.style.display = 'none';
       }
 
+      // タグをレンダリング
+      var cacheKey = null;
+
       // エラーじゃないときのみキャッシュからの取得を試みる
-      var currentPageTag = !res.error ? this.getCachedPage(req.url) : null;
+      if (!res.error) {
+        // route に関数があればそっちを実行する. なければ url を cache key とする
+        cacheKey = route.cacheKey ? route.cacheKey({route, req, res}) : req.url;
+      }
+      var currentPageTag = cacheKey ? this.getCachedPageTag(cacheKey) : null;
 
       if (currentPageTag) {
         currentPageTag.root.style.display = '';
@@ -48,7 +55,7 @@ spat-nav
         var element = document.createElement('div');
         element.setAttribute('data-is', tagName);
         element.setAttribute('class', 'spat-page');
-        element.setAttribute('cache-key', req.url);
+        element.setAttribute('cache-key', cacheKey);
         currentPageTag = riot.mount(element, tagName)[0];
         this.refs.pages.appendChild(element);
       }
@@ -78,7 +85,7 @@ spat-nav
 
           // 最後にキャッシュする(エラーページ以外)
           if (spat.isBrowser && !res.error) {
-            this.cachePageTag(this.currentPageTag);
+            this.setCachedPageTag(this.currentPageTag);
           }
         }
         // 非同期処理終了後に, 別のページになっていた場合は非表示に戻す(すぐにスワイプバックされたとき等)
@@ -116,13 +123,15 @@ spat-nav
     };
 
     // ページタグをキャッシュ
-    this.cachePageTag = (tag) => {
-      this.cachedPages[tag.opts.cacheKey] = tag;
+    this.setCachedPageTag = (tag) => {
+      if (tag.opts.cacheKey) {
+        this.cachedPageTags[tag.opts.cacheKey] = tag;
+      }
     };
 
     // ページタグを取得
-    this.getCachedPage = (cacheKey) => {
-      return this.cachedPages[cacheKey];
+    this.getCachedPageTag = (cacheKey) => {
+      return this.cachedPageTags[cacheKey];
     };
 
     // preload を再帰呼び出し
