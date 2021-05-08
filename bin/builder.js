@@ -45,6 +45,7 @@ module.exports = {
         hmr: true,
         // 名前がバッティングするので off に
         // global: 'spat',
+        minify: process.env.NODE_ENV === 'production',
         sourceMaps: true,
         publicUrl: './',
         cache: true,
