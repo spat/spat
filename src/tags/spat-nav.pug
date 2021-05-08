@@ -42,8 +42,8 @@ spat-nav
 
       // エラーじゃないときのみキャッシュからの取得を試みる
       if (!res.error) {
-        // route に関数があればそっちを実行する. なければ url を cache key とする
-        cacheKey = route.cacheKey ? route.cacheKey({route, req, res}) : req.url;
+        // route に関数があればそっちを実行する. なければ req.Url.pathname を cache key とする
+        cacheKey = route.cacheKey ? route.cacheKey({route, req, res}) : req.Url.pathname;
       }
       var currentPageTag = cacheKey ? this.getCachedPageTag(cacheKey) : null;
 
