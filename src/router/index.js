@@ -138,6 +138,11 @@ class Router {
     return this;
   }
 
+  forward() {
+    history.forward();
+    return this;
+  }
+
   start() {
     var TOUCH_EVENT = ('undefined' !== typeof document) && document.ontouchstart ? 'touchstart' : 'click';
 
