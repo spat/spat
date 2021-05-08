@@ -58,6 +58,9 @@ class Router {
     this._callbacks = [];
 
     this._base = '/';
+    this.pageIndex = history.state && Number.isInteger(history.state.pageIndex) ? history.state.pageIndex : 0;
+    this.isBack = false;
+    this.isForward = false;
   }
 
   // パスの登録
@@ -103,7 +106,16 @@ class Router {
 
   // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
   push(path) {
-    history.pushState(history.state, null, path);
+    this.pageIndex++;
+
+    history.pushState({
+      ...window.history.state,
+      pageIndex: this.pageIndex,
+    }, '', path);
+
+    this.isBack = false;
+    this.isForward = false;
+
     this.emit(path);
   }
 
@@ -214,13 +226,28 @@ class Router {
       this._skip = false;
       return ;
     }
-    // バックをキャンセル
+    // バックをキャンセル(modal 時を考慮)
     if (e.preventBack) {
       this._skip = true;
       // URL を元に戻す
       history.forward();
       return ;
     }
+
+    // state をチェック
+    var state = history.state;
+
+    if (!state || !Number.isInteger(state.pageIndex)) {
+      window.history.replaceState({
+        ...window.history.state,
+        pageIndex: 0,
+      }, '');
+    }
+
+    this.isBack = this.pageIndex > history.state.pageIndex;
+    this.isForward = this.pageIndex < history.state.pageIndex;
+
+    this.pageIndex = history.state.pageIndex;
 
     this.isPopState = true;
 

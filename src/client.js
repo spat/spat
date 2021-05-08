@@ -18,7 +18,13 @@ var router = new Router();
 spat.router = router;
 
 router.use((req, res, next) => {
+  // user agent を付与
   req.useragent = useragent.parse(navigator.userAgent);
+
+  // back/forward 情報を付与
+  req.isBack = router.isBack;
+  req.isForward = router.isForward;
+
   next();
 });
 
