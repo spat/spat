@@ -18,7 +18,13 @@ var router = new Router();
 spat.router = router;
 
 router.use((req, res, next) => {
+  // user agent を付与
   req.useragent = useragent.parse(navigator.userAgent);
+
+  // back/forward 情報を付与
+  req.isBack = router.isBack;
+  req.isForward = router.isForward;
+
   next();
 });
 
@@ -68,7 +74,7 @@ spat.goto = async (route, req, res) => {
   // 初回はスクロールリセットしない　
   if (spat.appTag.root.parentNode) {
       // 進む/戻る じゃなければ上部にスクロールする
-    if (spat.router.isPopState !== true) {
+    if (!req.isBack && !req.isForward) {
       // 一番上にスクロール
       window.scroll(0, 0);
     }
