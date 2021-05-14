@@ -58,7 +58,7 @@ class Router {
     this._callbacks = [];
 
     this._base = '/';
-    this.pageIndex = history.state && Number.isInteger(history.state.pageIndex) ? history.state.pageIndex : 0;
+    this.pageIndex = _.isObject(history.state) && Number.isInteger(history.state.pageIndex) ? history.state.pageIndex : 0;
     this.isBack = false;
     this.isForward = false;
   }
@@ -248,8 +248,8 @@ class Router {
       return ;
     }
 
-    // state をチェック
-    if (!history.state || !Number.isInteger(history.state.pageIndex)) {
+    // state に pageIndex がなかった場合追加する
+    if (!_.isObject(history.state) || !Number.isInteger(history.state.pageIndex)) {
       history.replaceState({
         ...history.state,
         pageIndex: 0,
