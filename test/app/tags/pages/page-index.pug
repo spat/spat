@@ -49,6 +49,10 @@ page-index
       };
     };
 
+    this.beforeunload = () => {
+      return false;
+    };
+
     this.on('show', async () => {
       console.log('index: show');
     });

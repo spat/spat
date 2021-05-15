@@ -59,6 +59,19 @@ spat.init = () => {
       tag: 'page-error',
     }, req, res);
   });
+
+  // 画面遷移対応
+  window.addEventListener('beforeunload', (e) => {
+    var currentPageTag = spat.appTag.navTag.currentPageTag;
+    if (currentPageTag && currentPageTag.beforeunload) {
+      var result = currentPageTag.beforeunload();
+
+      if (!result) {
+        e.returnValue = '行った変更が保存されない可能性があります。';
+        e.preventDefault();
+      }
+    }
+  });
 };
 
 // スタート
@@ -126,5 +139,6 @@ spat.showSSR = () => {
 };
 
 spat.init();
+
 
 export default spat;
