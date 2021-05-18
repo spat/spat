@@ -155,18 +155,6 @@ spat-nav
       await Promise.all(promises);
     };
 
-    // head をセットアップ
-    this.setupHead = (tag) => {
-      var head = {};
-      spat.utils.extendDeep(head, spat.config.head);
-      if (tag.head) {
-        var data = tag.head();
-        spat.utils.extendDeep(head, data);
-      }
-
-      return head;
-    };
-
     this.getHead = () => {
       var tag = this.currentPageTag;
       if (!tag) return spat.config.head;
