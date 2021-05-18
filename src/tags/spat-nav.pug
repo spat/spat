@@ -80,7 +80,6 @@ spat-nav
 
         if (this.currentPageTag === currentPageTag) {
           // head 設定
-          this._head = this.setupHead(currentPageTag);
           this.trigger('pagechanged', {});
 
           // 最後にキャッシュする(エラーページ以外)
@@ -169,5 +168,15 @@ spat-nav
     };
 
     this.getHead = () => {
-      return this._head || spat.config.head;
+      var tag = this.currentPageTag;
+      if (!tag) return spat.config.head;
+
+      var head = {};
+      spat.utils.extendDeep(head, spat.config.head);
+      if (tag.head) {
+        var data = tag.head();
+        spat.utils.extendDeep(head, data);
+      }
+
+      return head;
     };

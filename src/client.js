@@ -83,6 +83,23 @@ spat.goto = async (route, req, res) => {
   // ページ遷移
   var result = await spat.appTag.navTag.goto({route, req, res});
 
+  // メタ情報を更新
+  spat.updateMeta();
+
+  // まだ client app が append されていなかったら
+  var clientElement = spat.appTag.root;
+  if (!clientElement.parentNode) {
+    // app を server から client に入れ替える
+    var serverElement = document.querySelector('[data-is=spat-app]');
+    serverElement.parentElement.replaceChild(clientElement, serverElement);
+
+    // サーバーでレンダリングしていた riot style を消す(重複するので)
+    var serverElement = document.querySelector('style[render=server]');
+    serverElement.parentNode.removeChild(serverElement);
+  }
+};
+
+spat.updateMeta = () => {
   // meta の設定
   var head = spat.appTag.navTag.getHead();
   var titleElement = document.querySelector('title');
@@ -104,18 +121,6 @@ spat.goto = async (route, req, res) => {
       $elm.setAttribute('content', item.value);
     }
   });
-
-  // まだ client app が append されていなかったら
-  var clientElement = spat.appTag.root;
-  if (!clientElement.parentNode) {
-    // app を server から client に入れ替える
-    var serverElement = document.querySelector('[data-is=spat-app]');
-    serverElement.parentElement.replaceChild(clientElement, serverElement);
-
-    // サーバーでレンダリングしていた riot style を消す(重複するので)
-    var serverElement = document.querySelector('style[render=server]');
-    serverElement.parentNode.removeChild(serverElement);
-  }
 };
 
 spat.showSSR = () => {
