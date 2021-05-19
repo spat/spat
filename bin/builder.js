@@ -20,6 +20,12 @@ module.exports = {
   bundle(target, opts) {
     var options;
 
+    // minify フラグ
+    var minify = process.env.NODE_ENV === 'production';
+    if (config.parcel && config.parcel.minify !== undefined) {
+      minify = config.parcel.minify;
+    }
+
     if (target === 'node') {
       var entry = path.join(process.cwd(), 'app/server.js');
       options = {
@@ -45,7 +51,7 @@ module.exports = {
         hmr: true,
         // 名前がバッティングするので off に
         // global: 'spat',
-        minify: process.env.NODE_ENV === 'production',
+        minify: minify,
         sourceMaps: true,
         publicUrl: './',
         cache: true,
