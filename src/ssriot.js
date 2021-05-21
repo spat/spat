@@ -59,7 +59,7 @@ module.exports = class Ssriot {
     spat.config = ${JSON.stringify(spat.config)};
     spat.plugins = ${JSON.stringify(spat.plugins)};
     </script>
-    <script src="/spat/modules.js"></script>
+    <script src="/spat/modules.js" async></script>
 `;
   }
 };

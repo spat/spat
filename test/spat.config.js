@@ -1,4 +1,7 @@
 var config = {
+  parcel: {
+    minify: true,
+  },
   server: {
     // cache: true,
     // ssr: false,
