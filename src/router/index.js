@@ -267,12 +267,7 @@ class Router extends EventEmitter {
     }
 
     // state に pageIndex がなかった場合追加する
-    if (!_.isObject(history.state) || !Number.isInteger(history.state.pageIndex)) {
-      history.replaceState({
-        ...history.state,
-        pageIndex: 0,
-      }, '');
-    }
+    this.normalizeHistoryState();
 
     // 戻る/進む 判定
     this.isBack = this.pageIndex > history.state.pageIndex;
