@@ -1,4 +1,5 @@
-import URL from 'url'
+import URL from 'url';
+import EventEmitter from 'events';
 // import { pathToRegexp } from 'path-to-regexp'
 const { pathToRegexp, match, parse, compile } = require("path-to-regexp");
 
@@ -52,15 +53,27 @@ class Layer {
 /*
  * ルーター本体
  */
-class Router {
+class Router extends EventEmitter {
   constructor(routes) {
+    super();
     this._stack = [];
     this._callbacks = [];
 
     this._base = '/';
-    this.pageIndex = _.isObject(history.state) && Number.isInteger(history.state.pageIndex) ? history.state.pageIndex : 0;
+    this.normalizeHistoryState();
+    this.pageIndex = history.state.pageIndex;
     this.isBack = false;
     this.isForward = false;
+  }
+
+  // history.state を安全な形に設定
+  normalizeHistoryState() {
+    if (!_.isObject(history.state) || !Number.isInteger(history.state.pageIndex)) {
+      history.replaceState({
+        ...history.state,
+        pageIndex: 0,
+      }, '');
+    }
   }
 
   // パスの登録
@@ -73,6 +86,11 @@ class Router {
   use(callback) {
     this._callbacks.push(callback);
     return this;
+  }
+
+  // emit がオーバーライドされているので別名で実装
+  dispatch(...args) {
+    return super.emit(...args);
   }
 
   // 発火
