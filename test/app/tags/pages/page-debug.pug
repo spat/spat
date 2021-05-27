@@ -58,6 +58,5 @@ page-debug
     });
 
     this.on('beforeunload', e => {
-      console.log('asd')
-      e.returnValue = true;
+      e.returnValue = 'beforeunload\n遷移しますか？';
     });
