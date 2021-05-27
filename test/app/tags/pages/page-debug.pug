@@ -56,3 +56,8 @@ page-debug
 
     this.on('show', async () => {
     });
+
+    this.on('beforeunload', e => {
+      console.log('asd')
+      e.returnValue = true;
+    });
