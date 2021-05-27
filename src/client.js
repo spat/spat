@@ -66,6 +66,10 @@ spat.init = () => {
     const { currentPageTag } = spat.appTag.navTag;
     if (currentPageTag) {
       currentPageTag.trigger('beforeunload', e);
+      // 一応 preventDefault しておく
+      if (e.returnValue) {
+        e.preventDefault();
+      }
     }
   });
 
