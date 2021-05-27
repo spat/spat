@@ -64,6 +64,8 @@ class Router extends EventEmitter {
     this.pageIndex = history.state.pageIndex;
     this.isBack = false;
     this.isForward = false;
+
+    this.DEFAULT_BEFOREUNLOAD_MESSAGE = 'このサイトを離れますか？\n行った変更が保存されない可能性があります。';
   }
 
   // history.state を安全な形に設定
@@ -122,8 +124,29 @@ class Router extends EventEmitter {
 
   }
 
+  // キャンセルで true
+  dispatchBeforeunload() {
+    const event = { type: 'beforeunload' };
+    this.dispatch(event.type, event);
+    // returnValue がある場合は confirm を表示する
+    if (event.returnValue) {
+      let message = this.DEFAULT_BEFOREUNLOAD_MESSAGE;
+      if (typeof event.returnValue === 'string') {
+        message = event.returnValue;
+      }
+      // キャンセル時に true を返す
+      if (!confirm(message)) {
+        return true;
+      }
+    }
+  }
+
   // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
   push(path) {
+    // beforeunload
+    const canceled = this.dispatchBeforeunload();
+    if (canceled) return;
+    
     this.pageIndex++;
 
     history.pushState({
@@ -139,6 +162,10 @@ class Router extends EventEmitter {
   }
 
   replace(path) {
+    // beforeunload
+    const canceled = this.dispatchBeforeunload();
+    if (canceled) return;
+
     history.replaceState({
       ...history.state,
       pageIndex: this.pageIndex,

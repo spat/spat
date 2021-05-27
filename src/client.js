@@ -72,6 +72,12 @@ spat.init = () => {
       }
     }
   });
+
+  router.addListener('beforeunload', (e) => {
+    // TODO: modal のチェック
+    const { currentPageTag } = spat.appTag.navTag;
+    currentPageTag.trigger('beforeunload', e);
+  });
 };
 
 // スタート
