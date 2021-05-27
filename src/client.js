@@ -62,21 +62,19 @@ spat.init = () => {
 
   // 画面遷移対応
   window.addEventListener('beforeunload', (e) => {
-    var currentPageTag = spat.appTag.navTag.currentPageTag;
-    if (currentPageTag && currentPageTag.beforeunload) {
-      var result = currentPageTag.beforeunload();
-
-      if (!result) {
-        e.returnValue = '行った変更が保存されない可能性があります。';
-        e.preventDefault();
-      }
+    // TODO: modal のチェック
+    const { currentPageTag } = spat.appTag.navTag;
+    if (currentPageTag) {
+      currentPageTag.trigger('beforeunload', e);
     }
   });
 
   router.addListener('beforeunload', (e) => {
     // TODO: modal のチェック
     const { currentPageTag } = spat.appTag.navTag;
-    currentPageTag.trigger('beforeunload', e);
+    if (currentPageTag) {
+      currentPageTag.trigger('beforeunload', e);
+    }
   });
 };
 
