@@ -98,7 +98,7 @@ class Router extends EventEmitter {
   // 発火
   emit(path) {
     var url = URL.parse(path, true);
-
+    this.currentPath = path;
     // ヒットする Layer を検索して実行
     this._stack.some((layer) => {
       var params = layer.match(url);
@@ -285,6 +285,20 @@ class Router extends EventEmitter {
       this._skip = false;
       return ;
     }
+
+    // beforeunload
+    const canceled = this.dispatchBeforeunload();
+    if (canceled) {
+      this.normalizeHistoryState();
+      this.pageIndex = history.state.pageIndex + 1;
+      // URL をもとに戻す
+      history.pushState({
+        ...history.state,
+        pageIndex: this.pageIndex,
+      }, '', this.currentPath);
+      return ;
+    }
+
     // バックをキャンセル(modal 時を考慮)
     if (e.preventBack) {
       this._skip = true;
