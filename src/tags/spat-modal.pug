@@ -179,9 +179,12 @@ spat-modal(show="{visible}")
 
     this.getCurrentModalTag = () => {
       var children = this.root.children;
-      var child = children[children.length-1];
-
-      return child && child._tag ? child._tag : null;
+      for (let i = children.length - 1; i >= 0; --i) {
+        var child = children[i];
+        if (child && child._tag) {
+          return child._tag;
+        }
+      }
     };
 
     this.alert = (message, title, options) => {
