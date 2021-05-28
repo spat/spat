@@ -65,11 +65,11 @@ spat-modal(show="{visible}")
         window.addEventListener('keydown', (e) => {
           // ESC
           if (e.keyCode === 27) {
-            e.preventDefault();
             var modalTag = this.getCurrentModalTag();
 
             // dismissible が true のモノのみ ESC で閉じれるようにする 
             if (modalTag && modalTag.opts.dismissible) {
+              e.preventDefault();
               modalTag.close();
             }
           }
