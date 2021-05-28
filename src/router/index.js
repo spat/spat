@@ -65,7 +65,7 @@ class Router extends EventEmitter {
     this.isBack = false;
     this.isForward = false;
 
-    this.DEFAULT_BEFOREUNLOAD_MESSAGE = 'このサイトを離れますか？\n行った変更が保存されない可能性があります。';
+    this.DEFAULT_BEFOREUNLOAD_MESSAGE = 'このページを離れますか？\n行った変更が保存されない可能性があります。';
   }
 
   // history.state を安全な形に設定
