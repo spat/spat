@@ -135,9 +135,7 @@ class Router extends EventEmitter {
         message = event.returnValue;
       }
       // キャンセル時に true を返す
-      if (!confirm(message)) {
-        return true;
-      }
+      return !confirm(message);
     }
   }
 
@@ -279,32 +277,40 @@ class Router extends EventEmitter {
     e.preventDefault();
   }
 
-  _onpopstate(e) {
+  _onpopstate(nativeEvent) {
     // preventBack で再度実行されたときは skip フラグが立っているので何もしない
     if (this._skip) {
       this._skip = false;
       return ;
     }
 
-    // beforeunload
-    const canceled = this.dispatchBeforeunload();
-    if (canceled) {
-      this.normalizeHistoryState();
-      this.pageIndex = history.state.pageIndex + 1;
-      // URL をもとに戻す
-      history.pushState({
-        ...history.state,
-        pageIndex: this.pageIndex,
-      }, '', this.currentPath);
-      return ;
-    }
+    const e = {
+      nativeEvent,
+      router: this,
+    };
+    this.dispatch('popstate', e);
 
     // バックをキャンセル(modal 時を考慮)
-    if (e.preventBack) {
+    if (e.preventBack || nativeEvent.preventBack) {
       this._skip = true;
       // URL を元に戻す
       history.forward();
-      return ;
+      return;
+    }
+
+    if (this.currentPath !== (location.pathname + location.search + location.hash)) {
+      // beforeunload
+      const canceled = this.dispatchBeforeunload();
+      if (canceled) {
+        this.normalizeHistoryState();
+        this.pageIndex = history.state.pageIndex + 1;
+        // URL をもとに戻す
+        history.pushState({
+          ...history.state,
+          pageIndex: this.pageIndex,
+        }, '', this.currentPath);
+        return;
+      }
     }
 
     // state に pageIndex がなかった場合追加する
