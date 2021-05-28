@@ -6,11 +6,11 @@ page-debug
       div.container
         div(data-is='module-header')
         //- h1 {title}
-
         div.mb16
           div isNode: {spat.isNode}
           div isBrowser: {spat.isBrowser}
-        
+        div.mb16
+          button.button(onclick='{openBeforeunloadTestModal}') beforeunload modal test
         div.mb16
           a.p8(href='/debug/redirect') リダイレクトへのリンク
 
@@ -60,3 +60,9 @@ page-debug
     this.on('beforeunload', e => {
       e.returnValue = 'beforeunload\n遷移しますか？';
     });
+    
+    this.openBeforeunloadTestModal = () => {
+      spat.modal.open('spat-modal-alert', {message: 'beforeunload test'}).on('beforeunload', e => {
+        e.returnValue = true;
+      });
+    };

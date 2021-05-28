@@ -60,21 +60,40 @@ spat.init = () => {
     }, req, res);
   });
 
+  // 戻るを押した際の挙動
+  // TODO: 進むのときは何もしないようにする
+  router.addListener('popstate', (e) => {
+    var modalTag = spat.modal.getCurrentModalTag();
+    if (modalTag) {
+      // モーダルを閉じる
+      modalTag.close();
+      // router 側でチェック
+      e.preventBack = true;
+    }
+  });
+
   // 画面遷移対応
   window.addEventListener('beforeunload', (e) => {
-    // TODO: modal のチェック
+    const modalTag = spat.modal.getCurrentModalTag();
+    if (modalTag) {
+      modalTag.trigger('beforeunload', e);
+    }
+    // modal があってもページの処理をする
     const { currentPageTag } = spat.appTag.navTag;
     if (currentPageTag) {
       currentPageTag.trigger('beforeunload', e);
-      // 一応 preventDefault しておく
-      if (e.returnValue) {
-        e.preventDefault();
-      }
+    }
+
+    // 一応 preventDefault しておく
+    if (e.returnValue) {
+      e.preventDefault();
     }
   });
 
   router.addListener('beforeunload', (e) => {
-    // TODO: modal のチェック
+    const modalTag = spat.modal.getCurrentModalTag();
+    // modal は popstate でやってるのでやらない
+    if (modalTag) return ;
     const { currentPageTag } = spat.appTag.navTag;
     if (currentPageTag) {
       currentPageTag.trigger('beforeunload', e);
