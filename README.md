@@ -1,5 +1,11 @@
 # spat
 
+## get started
+
+```
+% npx create-spat-app <project-name>
+```
+
 ## setup
 
 test フォルダに spat のシンボリックリンクを貼る
