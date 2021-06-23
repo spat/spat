@@ -12,6 +12,7 @@ var config = {
     head: {
       title: 'spat with parcel',
       description: 'frontend framework',
+      keywords: 'javascript,riot,framework',
       favicon: '/images/favicon.png',
       ogp: {
         site_name: 'spat',
