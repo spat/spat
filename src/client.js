@@ -109,7 +109,8 @@ spat.updateMeta = () => {
 
   // タイトル以外の設定
   [
-    { query: 'meta[name="description"', value: head.description },
+    { query: 'meta[name="description"]', value: head.description },
+    { query: 'meta[name="keywords"]', value: head.keywords },
     { query: 'meta[property="og:title"]', value: head.ogp.title || head.title },
     { query: 'meta[property="og:description"]', value: head.ogp.description || head.description },
     { query: 'meta[property="og:site_name"]', value: head.ogp.site_name },
