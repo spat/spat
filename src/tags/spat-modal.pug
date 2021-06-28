@@ -59,34 +59,23 @@ spat-modal(show="{visible}")
     }
   
   script.
+    this.DEFAULT_BEFOREUNLOAD_MESSAGE = 'この画面を閉じますか？\n行った変更が保存されない可能性があります。';
+
     this.on('mount', () => {
       if (spat.isBrowser) {
         // キーボードを押した際の挙動
         window.addEventListener('keydown', (e) => {
           // ESC
           if (e.keyCode === 27) {
-            e.preventDefault();
             var modalTag = this.getCurrentModalTag();
 
             // dismissible が true のモノのみ ESC で閉じれるようにする 
             if (modalTag && modalTag.opts.dismissible) {
+              e.preventDefault();
               modalTag.close();
             }
           }
         });
-
-        // 戻るを押した際の挙動
-        // TODO: 進むのときは何もしないようにする
-        window.addEventListener('popstate', (e) => {
-          var modalTag = this.getCurrentModalTag();
-
-          if (modalTag) {
-            // モーダルを閉じる
-            modalTag.close();
-            // router 側でチェック
-            e.preventBack = true;
-          }
-        }, false);
       }
     });
 
@@ -112,6 +101,21 @@ spat-modal(show="{visible}")
         modalTag.close = async () => {
           // close 中だったら何もしない
           if (modalTag.isClose) return ;
+
+          //- beforeunload
+          const event = { type: 'beforeunload' };
+          modalTag.trigger(event.type, event);
+          // returnValue がある場合は confirm を表示する
+          if (event.returnValue) {
+            let message = this.DEFAULT_BEFOREUNLOAD_MESSAGE;
+            if (typeof event.returnValue === 'string') {
+              message = event.returnValue;
+            }
+            // キャンセル時は何もしない
+            if (!await spat.modal.confirm(message)) {
+              return ;
+            }
+          }
 
           modalTag.isClose = true;
           var value = modalTag.value;
@@ -179,9 +183,12 @@ spat-modal(show="{visible}")
 
     this.getCurrentModalTag = () => {
       var children = this.root.children;
-      var child = children[children.length-1];
-
-      return child && child._tag ? child._tag : null;
+      for (let i = children.length - 1; i >= 0; --i) {
+        var child = children[i];
+        if (child && child._tag && !child._tag.isClose) {
+          return child._tag;
+        }
+      }
     };
 
     this.alert = (message, title, options) => {

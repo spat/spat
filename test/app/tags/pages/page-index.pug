@@ -49,9 +49,9 @@ page-index
       };
     };
 
-    this.beforeunload = () => {
-      return false;
-    };
+    this.on('beforeunload', (e) => {
+      e.returnValue = true;
+    });
 
     this.on('show', async () => {
       console.log('index: show');

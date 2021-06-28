@@ -1,4 +1,5 @@
-import URL from 'url'
+import URL from 'url';
+import EventEmitter from 'events';
 // import { pathToRegexp } from 'path-to-regexp'
 const { pathToRegexp, match, parse, compile } = require("path-to-regexp");
 
@@ -52,15 +53,29 @@ class Layer {
 /*
  * ルーター本体
  */
-class Router {
+class Router extends EventEmitter {
   constructor(routes) {
+    super();
     this._stack = [];
     this._callbacks = [];
 
     this._base = '/';
-    this.pageIndex = _.isObject(history.state) && Number.isInteger(history.state.pageIndex) ? history.state.pageIndex : 0;
+    this.normalizeHistoryState();
+    this.pageIndex = history.state.pageIndex;
     this.isBack = false;
     this.isForward = false;
+
+    this.DEFAULT_BEFOREUNLOAD_MESSAGE = 'このページを離れますか？\n行った変更が保存されない可能性があります。';
+  }
+
+  // history.state を安全な形に設定
+  normalizeHistoryState() {
+    if (!_.isObject(history.state) || !Number.isInteger(history.state.pageIndex)) {
+      history.replaceState({
+        ...history.state,
+        pageIndex: 0,
+      }, '');
+    }
   }
 
   // パスの登録
@@ -75,10 +90,15 @@ class Router {
     return this;
   }
 
+  // emit がオーバーライドされているので別名で実装
+  dispatch(...args) {
+    return super.emit(...args);
+  }
+
   // 発火
   emit(path) {
     var url = URL.parse(path, true);
-
+    this.currentPath = path;
     // ヒットする Layer を検索して実行
     this._stack.some((layer) => {
       var params = layer.match(url);
@@ -104,8 +124,27 @@ class Router {
 
   }
 
+  // キャンセルで true
+  dispatchBeforeunload() {
+    const event = { type: 'beforeunload' };
+    this.dispatch(event.type, event);
+    // returnValue がある場合は confirm を表示する
+    if (event.returnValue) {
+      let message = this.DEFAULT_BEFOREUNLOAD_MESSAGE;
+      if (typeof event.returnValue === 'string') {
+        message = event.returnValue;
+      }
+      // キャンセル時に true を返す
+      return !confirm(message);
+    }
+  }
+
   // 参考: https://router.vuejs.org/ja/guide/essentials/navigation.html
   push(path) {
+    // beforeunload
+    const canceled = this.dispatchBeforeunload();
+    if (canceled) return;
+    
     this.pageIndex++;
 
     history.pushState({
@@ -121,6 +160,10 @@ class Router {
   }
 
   replace(path) {
+    // beforeunload
+    const canceled = this.dispatchBeforeunload();
+    if (canceled) return;
+
     history.replaceState({
       ...history.state,
       pageIndex: this.pageIndex,
@@ -234,27 +277,44 @@ class Router {
     e.preventDefault();
   }
 
-  _onpopstate(e) {
+  _onpopstate(nativeEvent) {
     // preventBack で再度実行されたときは skip フラグが立っているので何もしない
     if (this._skip) {
       this._skip = false;
       return ;
     }
+
+    const e = {
+      nativeEvent,
+      router: this,
+    };
+    this.dispatch('popstate', e);
+
     // バックをキャンセル(modal 時を考慮)
-    if (e.preventBack) {
+    if (e.preventBack || nativeEvent.preventBack) {
       this._skip = true;
       // URL を元に戻す
       history.forward();
-      return ;
+      return;
+    }
+
+    if (this.currentPath !== (location.pathname + location.search + location.hash)) {
+      // beforeunload
+      const canceled = this.dispatchBeforeunload();
+      if (canceled) {
+        this.normalizeHistoryState();
+        this.pageIndex = history.state.pageIndex + 1;
+        // URL をもとに戻す
+        history.pushState({
+          ...history.state,
+          pageIndex: this.pageIndex,
+        }, '', this.currentPath);
+        return;
+      }
     }
 
     // state に pageIndex がなかった場合追加する
-    if (!_.isObject(history.state) || !Number.isInteger(history.state.pageIndex)) {
-      history.replaceState({
-        ...history.state,
-        pageIndex: 0,
-      }, '');
-    }
+    this.normalizeHistoryState();
 
     // 戻る/進む 判定
     this.isBack = this.pageIndex > history.state.pageIndex;
