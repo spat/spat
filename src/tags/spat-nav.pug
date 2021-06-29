@@ -106,10 +106,6 @@ spat-nav
           tag: 'page-error'
         };
         await this.goto({route:errorRoute, req, res});
-        //- メモリリーク対策
-        if (spat.isNode) {
-          currentPageTag.unmount();
-        }
       }
 
       // show イベントを発火
