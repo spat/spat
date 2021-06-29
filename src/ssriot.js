@@ -25,9 +25,14 @@ module.exports = class Ssriot {
   }
 
   unmount() {
-    if (this.tag) {
-      this.tag.unmount();
-      this.tag = null;
+    const { tag } = this;
+    if (tag) {
+      const { currentPageTag } = tag;
+      if (currentPageTag) {
+        currentPageTag.unmount();
+      }
+      tag.unmount();
+      tag = null;
     }
   }
 
