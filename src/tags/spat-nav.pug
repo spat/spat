@@ -173,7 +173,7 @@ spat-nav
 
     this.on('before-unmount', () => {
       if (spat.isNode) {
-        for (let i = 0; node = this.refs.pages.childNodes.item(i); ++i) {
+        for (let i = 0, node; node = this.refs.pages.childNodes.item(i); ++i) {
           if (node._tag) {
             node._tag.unmount();
           }
