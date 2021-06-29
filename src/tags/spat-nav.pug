@@ -173,11 +173,15 @@ spat-nav
 
     this.on('before-unmount', () => {
       if (spat.isNode) {
+        let nodes = [];
         for (let i = 0, node; node = this.refs.pages.childNodes.item(i); ++i) {
+          nodes.push(node);
+        }
+        nodes.forEach(node => {
           if (node._tag) {
             node._tag.unmount();
           }
-        }
+        });
       }
       else {
         [...this.refs.pages.children].forEach(element => {
