@@ -32,7 +32,7 @@ module.exports = class Ssriot {
         currentPageTag.unmount();
       }
       tag.unmount();
-      tag = null;
+      this.tag = null;
     }
   }
 
