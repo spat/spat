@@ -168,3 +168,20 @@ spat-nav
 
       return head;
     };
+
+    this.on('before-unmount', () => {
+      if (spat.isNode) {
+        for (let i = 0; node = this.refs.pages.childNodes.item(i); ++i) {
+          if (node._tag) {
+            node._tag.unmount();
+          }
+        }
+      }
+      else {
+        [...this.refs.pages.children].forEach(element => {
+          if (element._tag) {
+            element._tag.unmount();
+          }
+        });
+      }
+    });
