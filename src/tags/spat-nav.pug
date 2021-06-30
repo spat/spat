@@ -14,7 +14,7 @@ spat-nav
   script.
     this.cachedPageTags = {};
 
-    this.goto = async ({route, req, res, ssr=true}) => {
+    this.goto = async ({route, req, res, ssr=true, isPageChanging=false}) => {
       var tagName = '';
       var cached = false;
 
@@ -25,7 +25,9 @@ spat-nav
         tagName = route.tag;
       }
 
-      this.trigger('pagechange');
+      if (!isPageChanging) {
+        this.trigger('pagechange');
+      }
 
       var tempPageTag = this.currentPageTag;
 
@@ -105,7 +107,7 @@ spat-nav
         var errorRoute = {
           tag: 'page-error'
         };
-        await this.goto({route:errorRoute, req, res});
+        await this.goto({route: errorRoute, req, res, isPageChanging: true});
       }
 
       // show イベントを発火
@@ -168,3 +170,25 @@ spat-nav
 
       return head;
     };
+
+    this.on('before-unmount', () => {
+      //- node.js は sdom の実装がDOMと違うので分岐してそれぞれ処理
+      if (spat.isNode) {
+        let nodes = [];
+        for (let i = 0, node; node = this.refs.pages.childNodes.item(i); ++i) {
+          nodes.push(node);
+        }
+        nodes.forEach(node => {
+          if (node._tag) {
+            node._tag.unmount();
+          }
+        });
+      }
+      else {
+        [...this.refs.pages.children].forEach(element => {
+          if (element._tag) {
+            element._tag.unmount();
+          }
+        });
+      }
+    });
