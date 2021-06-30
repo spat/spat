@@ -172,6 +172,7 @@ spat-nav
     };
 
     this.on('before-unmount', () => {
+      //- node.js は sdom の実装がDOMと違うので分岐してそれぞれ処理
       if (spat.isNode) {
         let nodes = [];
         for (let i = 0, node; node = this.refs.pages.childNodes.item(i); ++i) {
