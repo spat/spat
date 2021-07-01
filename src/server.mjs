@@ -116,7 +116,7 @@ app.setup = function() {
           res.send(err.toString());
         }
         else {
-          if (config.server.cache) {
+          if (!res.error && config.server.cache) {
             app.setCache(req.Url.pathname + (req.Url.search||''), content);
           }
           res.send(content);
@@ -166,7 +166,7 @@ app.setup = function() {
 app.caches = {};
 
 app.setCache = (key, value) => {
-  console.log(key);
+  console.log('set cache', key);
   app.caches[key] = value;
 };
 
