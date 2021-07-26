@@ -156,6 +156,7 @@ spat.updateMeta = () => {
     { query: 'meta[property="og:site_name"]', value: head.ogp.site_name },
     { query: 'meta[property="og:type"]', value: head.ogp.type },
     { query: 'meta[property="og:image"]', value: head.ogp.image },
+    { query: 'link[rel="canonical"]', value: head.canonical },
   ].forEach(item => {
     var $elm = document.querySelector(item.query);
     if ($elm) {
