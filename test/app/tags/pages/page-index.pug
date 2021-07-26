@@ -49,11 +49,8 @@ page-index
       };
     };
 
-    this.on('beforeunload', (e) => {
-      e.returnValue = true;
-    });
-
-    this.on('show', async () => {
+    this.on('show', async ({req}) => {
+      console.assert(req.Url.pathname === '/', '別ページのパラメータ');
       console.log('index: show');
     });
     this.on('hide', async () => {
