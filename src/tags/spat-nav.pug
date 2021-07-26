@@ -111,7 +111,7 @@ spat-nav
       }
 
       // show イベントを発火
-      if (spat.isBrowser) {
+      if (spat.isBrowser && this.currentPageTag === currentPageTag) {
         this.currentPageTag.trigger('show', {
           req, res, cached
         });
