@@ -149,23 +149,18 @@ spat.updateMeta = () => {
 
   // タイトル以外の設定
   [
-    { query: 'meta[name="description"]', value: head.description },
-    { query: 'meta[name="keywords"]', value: head.keywords },
-    { query: 'meta[property="og:title"]', value: head.ogp.title || head.title },
-    { query: 'meta[property="og:description"]', value: head.ogp.description || head.description },
-    { query: 'meta[property="og:site_name"]', value: head.ogp.site_name },
-    { query: 'meta[property="og:type"]', value: head.ogp.type },
-    { query: 'meta[property="og:image"]', value: head.ogp.image },
-    { query: 'link[rel="canonical"]', value: head.canonical },
+    { query: 'meta[name="description"]', key: 'content', value: head.description },
+    { query: 'meta[name="keywords"]', key: 'content', value: head.keywords },
+    { query: 'meta[property="og:title"]', key: 'content', value: head.ogp.title || head.title },
+    { query: 'meta[property="og:description"]', key: 'content', value: head.ogp.description || head.description },
+    { query: 'meta[property="og:site_name"]', key: 'content', value: head.ogp.site_name },
+    { query: 'meta[property="og:type"]', key: 'content', value: head.ogp.type },
+    { query: 'meta[property="og:image"]', key: 'content', value: head.ogp.image },
+    { query: 'link[rel="canonical"]', key: 'href', value: head.canonical },
   ].forEach(item => {
     var $elm = document.querySelector(item.query);
     if ($elm) {
-      if ($elm.tagName === 'LINK') {
-        $elm.setAttribute('href', item.value);
-      }
-      else {
-        $elm.setAttribute('content', item.value);
-      }
+      $elm.setAttribute(item.key, item.value);
     }
   });
 };
