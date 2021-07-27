@@ -9,6 +9,8 @@ html
     meta(name='keywords', content= head.keywords)
 
     link(rel='icon', href= head.favicon)
+    if (head.canonical)
+      link(rel='canonical', href= head.canonical)
 
     // ogp
     meta(property='og:title', content= head.ogp.title || head.title)

@@ -160,7 +160,12 @@ spat.updateMeta = () => {
   ].forEach(item => {
     var $elm = document.querySelector(item.query);
     if ($elm) {
-      $elm.setAttribute('content', item.value);
+      if ($elm.tagName === 'LINK') {
+        $elm.setAttribute('href', item.value);
+      }
+      else {
+        $elm.setAttribute('content', item.value);
+      }
     }
   });
 };
