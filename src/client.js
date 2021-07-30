@@ -159,8 +159,24 @@ spat.updateMeta = () => {
     { query: 'link[rel="canonical"]', key: 'href', value: head.canonical },
   ].forEach(item => {
     var $elm = document.querySelector(item.query);
-    if ($elm) {
+    
+    if (item.value) {
+      // 要素がない場合は作る
+      if (!$elm) {
+        var tag_name = item.query.split('[')[0];
+        var option = item.query.split('[')[1].replace(']', '');
+        var $elm = document.createElement(tag_name);
+        var $head = document.getElementsByTagName('head')[0];
+        $head.appendChild($elm);          
+        $elm.setAttribute(option.split('=')[0], option.split('=')[1].replace(/"/g, ''));
+      }
       $elm.setAttribute(item.key, item.value);
+    }
+    else if (!item.value) {
+      // valueがなければ要素を削除
+      if ($elm) {
+        $elm.remove();
+      }
     }
   });
 };
