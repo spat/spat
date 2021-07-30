@@ -165,7 +165,8 @@ spat.updateMeta = () => {
       if (!$elm) {
         var tag_name = item.query.split('[')[0];
         var option = item.query.split('[')[1].replace(']', '');
-        var $elm = document.createElement(tag_name);
+        $elm = document.createElement(tag_name);
+        // head内に置く
         var $head = document.getElementsByTagName('head')[0];
         $head.appendChild($elm);          
         $elm.setAttribute(option.split('=')[0], option.split('=')[1].replace(/"/g, ''));
