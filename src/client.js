@@ -164,12 +164,16 @@ spat.updateMeta = () => {
       // 要素がない場合は作る
       if (!$elm) {
         var tag_name = item.query.split('[')[0];
-        var option = item.query.split('[')[1].replace(']', '');
+        // queryの[]で囲まれた部分を取得
+        var option = item.query.match(/\[.+?\]/)[0].slice(1, -1);
         $elm = document.createElement(tag_name);
         // head内に置く
         var $head = document.head;
-        $head.appendChild($elm);          
-        $elm.setAttribute(option.split('=')[0], option.split('=')[1].replace(/"/g, ''));
+        $head.appendChild($elm);
+        // 属性情のkey, value 作る
+        var attribute_key = option.split('=')[0];   
+        var attribute_value = option.split('=')[1].slice(1, -1);   
+        $elm.setAttribute(attribute_key, attribute_value);
       }
       $elm.setAttribute(item.key, item.value);
     }
