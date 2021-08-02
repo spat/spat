@@ -171,8 +171,9 @@ spat.updateMeta = () => {
         var $head = document.head;
         $head.appendChild($elm);
         // 属性情のkey, value 作る
-        var attribute_key = option.split('=')[0];   
-        var attribute_value = option.split('=')[1].slice(1, -1);   
+        var attributes = option.split('=');
+        var attribute_key = attributes[0];   
+        var attribute_value = attributes[1].slice(1, -1);   
         $elm.setAttribute(attribute_key, attribute_value);
       }
       $elm.setAttribute(item.key, item.value);
