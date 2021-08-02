@@ -163,18 +163,20 @@ spat.updateMeta = () => {
     if (item.value) {
       // 要素がない場合は作る
       if (!$elm) {
+        // タグ名を取得
         var tag_name = item.query.split('[')[0];
-        // queryの[]で囲まれた部分を取得
-        var option = item.query.match(/\[.+?\]/)[0].slice(1, -1);
+        // 要素を作成
         $elm = document.createElement(tag_name);
-        // head内に置く
-        var $head = document.head;
-        $head.appendChild($elm);
-        // 属性情のkey, value 作る
-        var attributes = option.split('=');
-        var attribute_key = attributes[0];   
-        var attribute_value = attributes[1].slice(1, -1);   
+        // 属性を取得
+        // queryの[]で囲まれた部分を取得 (先頭文字から[までと 最後の]を削除)
+        var attribute_string = item.query.replace(/^.*?\[|\]$/g, '');
+        // 属性の情報を key と value に分解
+        var [attribute_key, attribute_value] = attribute_string.split('=');
+        var attribute_value = attribute_value.slice(1, -1);
+        // 属性をセット
         $elm.setAttribute(attribute_key, attribute_value);
+        // headタグの子要素に追加
+        document.head.appendChild($elm);
       }
       $elm.setAttribute(item.key, item.value);
     }
