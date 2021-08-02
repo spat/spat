@@ -149,17 +149,42 @@ spat.updateMeta = () => {
 
   // タイトル以外の設定
   [
-    { query: 'meta[name="description"]', value: head.description },
-    { query: 'meta[name="keywords"]', value: head.keywords },
-    { query: 'meta[property="og:title"]', value: head.ogp.title || head.title },
-    { query: 'meta[property="og:description"]', value: head.ogp.description || head.description },
-    { query: 'meta[property="og:site_name"]', value: head.ogp.site_name },
-    { query: 'meta[property="og:type"]', value: head.ogp.type },
-    { query: 'meta[property="og:image"]', value: head.ogp.image },
+    { query: 'meta[name="description"]', key: 'content', value: head.description },
+    { query: 'meta[name="keywords"]', key: 'content', value: head.keywords },
+    { query: 'meta[property="og:title"]', key: 'content', value: head.ogp.title || head.title },
+    { query: 'meta[property="og:description"]', key: 'content', value: head.ogp.description || head.description },
+    { query: 'meta[property="og:site_name"]', key: 'content', value: head.ogp.site_name },
+    { query: 'meta[property="og:type"]', key: 'content', value: head.ogp.type },
+    { query: 'meta[property="og:image"]', key: 'content', value: head.ogp.image },
+    { query: 'link[rel="canonical"]', key: 'href', value: head.canonical },
   ].forEach(item => {
     var $elm = document.querySelector(item.query);
-    if ($elm) {
-      $elm.setAttribute('content', item.value);
+    
+    if (item.value) {
+      // 要素がない場合は作る
+      if (!$elm) {
+        // タグ名を取得
+        var tag_name = item.query.split('[')[0];
+        // 要素を作成
+        $elm = document.createElement(tag_name);
+        // 属性を取得
+        // queryの[]で囲まれた部分を取得 (先頭文字から[までと 最後の]を削除)
+        var attribute_string = item.query.replace(/^.*?\[|\]$/g, '');
+        // 属性の情報を key と value に分解
+        var [attribute_key, attribute_value] = attribute_string.split('=');
+        var attribute_value = attribute_value.slice(1, -1);
+        // 属性をセット
+        $elm.setAttribute(attribute_key, attribute_value);
+        // headタグの子要素に追加
+        document.head.appendChild($elm);
+      }
+      $elm.setAttribute(item.key, item.value);
+    }
+    else if (!item.value) {
+      // valueがなければ要素を削除
+      if ($elm) {
+        $elm.remove();
+      }
     }
   });
 };

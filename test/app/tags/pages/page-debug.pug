@@ -39,6 +39,9 @@ page-debug
           ul.ml32
             li(each='{item in [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}') item {item}
 
+      div.f.w-full.mb16
+        div.button.w-full(each='{button in buttons}', onclick='{onChangeTab}') {button.label}
+
     style(type='less').
       :scope {
         display: block;
@@ -46,13 +49,31 @@ page-debug
 
   script.
     this.title = 'Hello, spat with parcel!';
+    this.buttons = [
+      {label: 'hoge', id: 'hoge'},
+      {label: 'fuga', id: 'fuga'},
+    ];
 
     this.preload = async () => {
+      var id = 'fuga';
+
+      return {
+        id,
+      }
     };
 
     this.head = () => {
+      var meta = {
+        'hoge': {
+          canonical: `https://rabee.jp/`,
+        },
+        'fuga': {
+          canonical: `https://rabee.jp/contact`,
+        },
+      }[this.id];
       return {
         title: 'aaaaaaa',
+        canonical: meta.canonical,
       };
     };
 
@@ -73,4 +94,10 @@ page-debug
     this.testPageShowBug = () => {
       spat.router.push('/groups/LEzo4c4W2AvRsFL2M3lS');
       spat.router.push('/');
+    };
+
+    this.onChangeTab = (e) => {
+      this.id = e.item.button.id;
+      spat.updateMeta();
+      this.update();
     };
