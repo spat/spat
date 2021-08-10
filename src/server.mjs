@@ -121,8 +121,12 @@ app.setup = function() {
           }
           res.send(content);
         }
-
-        ssr.unmount();
+        try {
+          ssr.unmount();
+        }
+        catch (e) {
+          console.error(e);
+        }
       });
     });
     
