@@ -69,10 +69,33 @@ app.setup = function() {
     if (config.server.cache) {
       // キャッシュチェック
       app.get(key, async (req, res, next) => {
-        // レンダリング済みだったらそっちを使う
-        var cache = app.getCache(req.Url.pathname + (req.Url.search||''));
+        var route = routes[key];
+        var cacheKey = route.cacheKey ? route.cacheKey({ route, req, res }) : req.Url.pathname;
+
+        // キャッシュがあればそっちを使う
+        var cache = app.getCache(cacheKey);
+        if (cache instanceof Promise) {
+          try {
+            cache = await cache;
+          }
+          catch (e) {
+            res.status(500).send(e.toString());
+          }
+        }
+
         if (cache) {
-          res.send(cache);
+          if (cache.error) {
+            app.clearCache(cacheKey);
+          }
+          else {
+            app.setCache(cacheKey, cache);
+          }
+          // リダイレクト
+          if (cache.redirected) {
+            res.redirect(cache.statusCode, cache.address);
+            return;
+          }
+          res.status(cache.statusCode).send(cache.content);
         }
         else {
           next();
@@ -84,50 +107,95 @@ app.setup = function() {
     // 実際のレンダリング
     app.get(key, async (req, res, next) => {
       var route = routes[key];
-  
-      var ssr = new Ssriot();
-      await ssr.render({
-        req,
-        res,
-        route,
-        isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
-      });
-  
-      // リダイレクト時は何もせず次へ
-      if (res.statusCode === 301 || res.statusCode === 302) {
-        return ;
-      }
-  
-      // 描画
-      res.render('index', {
-        req,
-        res,
-        config: config,
-        head: ssr.tag.navTag.getHead(),
-        content: ssr.tagContent,
-        spat: ssr,
-        // methods: {
-        //   head: ssr.head,
-        // },
-  
-        pretty: true,
-      }, (err, content) => {
-        if (err) {
-          res.send(err.toString());
-        }
-        else {
-          if (!res.error && config.server.cache) {
-            app.setCache(req.Url.pathname + (req.Url.search||''), content);
+      var cacheKey = route.cacheKey ? route.cacheKey({ route, req, res }) : req.Url.pathname;
+
+      var promise = new Promise(async (resolve, reject) => {
+        
+        var ssr = new Ssriot();
+        await ssr.render({
+          req,
+          res,
+          route,
+          isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
+        });
+
+        // リダイレクト時は何もせず次へ
+        if (res.statusCode === 301 || res.statusCode === 302) {
+          // unmount はしておく
+          try {
+            ssr.unmount();
           }
-          res.send(content);
+          catch (e) {
+            console.error('--- redirect unmount error ---');
+            console.error(e);
+          }
+          resolve({
+            redirected: true,
+            statusCode: res.statusCode,
+            address: res.get('Location'),
+          });
+          return;
         }
-        try {
-          ssr.unmount();
-        }
-        catch (e) {
-          console.error(e);
-        }
+
+        // 描画
+        res.render('index', {
+          req,
+          res,
+          config: config,
+          head: ssr.tag.navTag.getHead(),
+          content: ssr.tagContent,
+          spat: ssr,
+          // methods: {
+          //   head: ssr.head,
+          // },
+
+          pretty: true,
+        }, (err, content) => {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve({
+              content,
+              error: res.error,
+              statusCode: res.statusCode,
+            });
+          }
+          try {
+            ssr.unmount();
+          }
+          catch (e) {
+            console.error('--- rendered unmount error ---');
+            console.error(e);
+          }
+        });
       });
+
+      // キャッシュする
+      if (config.server.cache) {
+        app.setCache(cacheKey, promise);
+      }
+
+      try {
+        var result = await promise;
+        // エラー時はキャッシュを削除
+        if (res.error) {
+          app.clearCache(cacheKey);
+        }
+        // キャッシュする
+        else if (config.server.cache) {
+          app.setCache(cacheKey, result);
+        }
+        // リダイレクトの時
+        if (result.redirected) {
+          // 何もしない
+          return ;
+        }
+        res.send(result.content);
+      }
+      catch (e) {
+        res.status(500).send(e.toString());
+      }
     });
     
   });
@@ -135,33 +203,76 @@ app.setup = function() {
   // 404 対応
   app.use(async (req, res, next) => {
     console.error(`404: ${req.url}`);
-  
-    res.status(404);
-    res.error = new Error('404 not found');
-  
-    var ssr = new Ssriot();
-    var route = {
-      tag: 'page-error',
-    };
-    await ssr.render({
-      req,
-      res,
-      route,
-      isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
-    });
-  
-    // 描画
-    res.render('index', {
-      req,
-      res,
-      config: config,
-      head: ssr.tag.navTag.getHead(),
-      content: ssr.tagContent,
-      spat: ssr,
-      pretty: true,
-    });
+    var cacheKey = '404';
+    // キャッシュがあればそっちを使う
+    var cache = app.getCache(cacheKey);
+    if (cache instanceof Promise) {
+      try {
+        cache = await cache;
+      }
+      catch (e) {
+        res.status(500).send(e.toString());
+      }
+    }
 
-    ssr.unmount();
+    res.status(404);
+
+    if (cache) {
+      app.setCache(cacheKey, cache);
+      res.send(cache.content);
+    }
+    else {
+      res.error = new Error('404 not found');
+      var promise = new Promise(async (resolve, reject) => {
+        var ssr = new Ssriot();
+        var route = {
+          tag: 'page-error',
+        };
+        await ssr.render({
+          req,
+          res,
+          route,
+          isSsr: (route.ssr !== undefined) ? route.ssr : config.server.ssr
+        });
+
+        // 描画
+        res.render('index', {
+          req,
+          res,
+          config: config,
+          head: ssr.tag.navTag.getHead(),
+          content: ssr.tagContent,
+          spat: ssr,
+          pretty: true,
+        }, (err, content) => {
+          if (err) {
+            reject(err);
+          }
+          else {
+            resolve({ content });
+          }
+          try {
+            ssr.unmount();
+          }
+          catch (e) {
+            console.error('--- rendered unmount error ---');
+            console.error(e);
+          }
+        });
+      });
+
+      try {
+        var result = await promise;
+        // キャッシュする
+        if (config.server.cache) {
+          app.setCache(cacheKey, result);
+        }
+        res.send(result.content);
+      }
+      catch (e) {
+        res.status(500).send(e.toString());
+      }
+    }  
   });
 };
 
