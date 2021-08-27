@@ -9,6 +9,7 @@ export default {
   '/': {
     tag: 'page-index',
     useServerSideData: true,
+    revalidate: 10,
     // ssr: false,
   },
 
