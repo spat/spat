@@ -118,6 +118,7 @@ app.setup = function() {
       // 実際のレンダリング
       var promise = new Promise(async (resolve, reject) => {
         var ssr = new Ssriot();
+        res.status(200);
         await ssr.render({
           req,
           res,
@@ -188,9 +189,7 @@ app.setup = function() {
         var result = await promise;
         // エラー時はキャッシュを削除
         if (res.error) {
-          if (revalidate) {
-            app.clearCache(cacheKey);
-          }
+          app.clearCache(cacheKey);
         }
         // キャッシュする
         else if (config.server.cache) {
