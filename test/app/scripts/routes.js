@@ -2,6 +2,9 @@
 export default {
   '/groups/:id': {
     tag: 'page-groups-single',
+    cache({req}) {
+      return req.query.cache !== 'false';
+    }
   },
   '/modals': {
     tag: 'page-modals',
@@ -16,6 +19,7 @@ export default {
   // debug
   '/debug': {
     tag: 'page-debug',
+    cache: false,
   },
   '/debug/redirect': {
     tag: 'page-debug-redirect',
