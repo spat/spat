@@ -68,9 +68,17 @@ app.setup = function() {
     app.get(key, async (req, res, next) => {
       var route = routes[key];
       var cacheKey = route.cacheKey ? route.cacheKey({ route, req, res }) : req.Url.pathname;
+      var cacheFlag = route.cache;
+      if (typeof cacheFlag === 'function') {
+        cacheFlag = cacheFlag({ route, req, res });
+      }
+      cacheFlag = config.server.cache && (cacheFlag !== false);
+      if (!cacheFlag) {
+        app.clearCache(cacheKey);
+      }
       var revalidate = false;
       // キャッシュチェック
-      if (config.server.cache) {
+      if (cacheFlag) {
         // キャッシュがあればそっちを使う
         var cache = app.getCache(cacheKey);
         if (cache instanceof Promise) {
@@ -181,7 +189,7 @@ app.setup = function() {
       });
 
       // キャッシュする
-      if (!revalidate && config.server.cache) {
+      if (!revalidate && cacheFlag) {
         app.setCache(cacheKey, promise);
       }
 
@@ -192,7 +200,7 @@ app.setup = function() {
           app.clearCache(cacheKey);
         }
         // キャッシュする
-        else if (config.server.cache) {
+        else if (cacheFlag) {
           app.setCache(cacheKey, result);
         }
         // リダイレクトの時
@@ -277,7 +285,7 @@ app.setup = function() {
       try {
         var result = await promise;
         // キャッシュする
-        if (config.server.cache) {
+        if (cacheFlag) {
           app.setCache(cacheKey, result);
         }
         res.send(result.content);
