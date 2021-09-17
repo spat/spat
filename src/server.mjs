@@ -63,6 +63,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// 複数スラッシュを単一スラッシュに置換する
+app.use((req, res, next) => {
+  var pathname = req.Url.pathname;
+  var normalizedPathname = pathname.replace(/\/\/+/g, '/');
+  if (pathname !== normalizedPathname) {
+    res.redirect(301, normalizedPathname + (req.Url.search || ''));
+  }
+  else {
+    next();
+  }
+});
+
 app.setup = function() {
   Object.keys(routes).forEach(key => {
     app.get(key, async (req, res, next) => {
