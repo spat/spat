@@ -157,7 +157,7 @@ spat.updateMeta = () => {
     { query: 'meta[property="og:type"]', key: 'content', value: head.ogp.type },
     { query: 'meta[property="og:image"]', key: 'content', value: head.ogp.image },
     { query: 'link[rel="canonical"]', key: 'href', value: head.canonical },
-    { query: 'link[rel="icon"]', key: 'href', value: head.favicon },
+    { query: 'link[rel~="icon"]', key: 'href', value: head.favicon },
   ].forEach(item => {
     var $elm = document.querySelector(item.query);
     
