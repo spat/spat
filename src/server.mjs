@@ -297,7 +297,7 @@ app.setup = function() {
       try {
         var result = await promise;
         // キャッシュする
-        if (cacheFlag) {
+        if (config.server.cache) {
           app.setCache(cacheKey, result);
         }
         res.send(result.content);
