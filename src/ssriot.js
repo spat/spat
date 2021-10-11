@@ -7,6 +7,8 @@ const fetch = require('node-fetch');
 global.fetch = fetch;
 
 module.exports = class Ssriot {
+  modulesJsPath = '/spat/modules.js'
+  modulesCssPath = '/spat/modules.css'
   constructor() {
   }
 
@@ -41,7 +43,7 @@ module.exports = class Ssriot {
     }).join('\n');
 
     return `
-    <link rel="stylesheet", href='/spat/modules.css' />
+    <link rel="stylesheet" href="${this.modulesCssPath}" />
     <style render="server" type="text/css">${styleText}</style>
 `;
   }
@@ -54,22 +56,30 @@ module.exports = class Ssriot {
 
   cacheScript() {
     if (this.tag.navTag._preloadCache) {
-      return `spat._preload_cache = ${JSON.stringify(this.tag.navTag._preloadCache).replace(/<\/script/ig, '<\\/script')};`;
+      return `
+      <script>spat._preload_cache = ${JSON.stringify(this.tag.navTag._preloadCache).replace(/<\/script/ig, '<\\/script')};</script>
+`;
     }
     else {
       return '';
     }
   }
 
-  scripts() {
+  configScript() {
     return `
     <script>
     var spat = {};
     spat.config = ${JSON.stringify(spat.config)};
     spat.plugins = ${JSON.stringify(spat.plugins)};
-    ${this.cacheScript()}
     </script>
-    <script src="/spat/modules.js" async></script>
+    ${this.cacheScript()}
+`;
+  }
+
+  scripts() {
+    return `
+    ${this.configScript()}
+    <script src="${this.modulesJsPath}" async></script>
 `;
   }
 };
