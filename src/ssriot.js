@@ -44,7 +44,7 @@ module.exports = class Ssriot {
     }).join('\n');
 
     return `
-    <link rel="stylesheet" href="${this.modulesCssPath}" />
+    <link rel="stylesheet" href="${this.modulesCssPath}?${this.timestamp}" />
     <style render="server" type="text/css">${styleText}</style>
 `;
   }
@@ -80,7 +80,7 @@ module.exports = class Ssriot {
   scripts() {
     return `
     ${this.configScript()}
-    <script src="${this.modulesJsPath}" async></script>
+    <script src="${this.modulesJsPath}?${this.timestamp}" async></script>
 `;
   }
 };
