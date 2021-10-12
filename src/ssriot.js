@@ -2,13 +2,14 @@ const riot = require('riot');
 const sdom = require('riot/lib/server/sdom.js');
 riot.util.tmpl.errorHandler = function() {};
 const fetch = require('node-fetch');
-
+const TIMESTAMP = Date.now();
 // ssr 対策
 global.fetch = fetch;
 
 module.exports = class Ssriot {
   modulesJsPath = '/spat/modules.js'
   modulesCssPath = '/spat/modules.css'
+  timestamp = TIMESTAMP
   constructor() {
   }
 
