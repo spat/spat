@@ -28,6 +28,7 @@ spat-toast
       tag.close = function() {
         tag.unmount();
       };
+      tag.update();
     };
 
 
@@ -58,14 +59,17 @@ spat-toast-item
         100% { transform: translateY(-40px); opacity: 0; }
       }
     }
+
   script.
-    var timeout = opts.timeout || 2000;
+    var timeout = opts.timeout || 10000;
 
     this.on('mount', () => {
-      setTimeout(() => {
+      this._timeoutId = setTimeout(() => {
         this.root.classList.add('disappear');
-        this.root.addEventListener('animationend', () => {
-          this.close();
-        });
+        this.root.addEventListener('animationend', this.close);
       }, timeout);
+    });
+
+    this.on('unmount', () => {
+      clearTimeout(this._timeoutId);
     });
