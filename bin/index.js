@@ -84,4 +84,8 @@ var main = async () => {
 };
 
 
-main();
+main().catch((e) => {
+  console.log(e);
+  console.error('エラーが発生しました。エラー内容を確認してください。');
+  process.exit(1);
+});
