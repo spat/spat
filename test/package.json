@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "set -eu; spat build; echo 'build complete'",
+    "build": "spat build && echo 'build complete'",
     "start": "spat start",
     "dev": "spat dev",
     "clean": "spat clean",
