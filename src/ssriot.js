@@ -19,7 +19,7 @@ module.exports = class Ssriot {
     
     this.tag = riot.mount(element)[0];
 
-    await this.tag.navTag.goto({route, req, res, ssr: isSsr});
+    await this.tag.navTag.goto({ route, req, res, ssr: isSsr });
 
     this.tagContent = sdom.serialize(this.tag.root);
   }
@@ -52,12 +52,22 @@ module.exports = class Ssriot {
 `;
   }
 
+  cacheScript() {
+    if (this.tag.navTag._preloadCache) {
+      return `spat._preload_cache = ${JSON.stringify(this.tag.navTag._preloadCache).replace(/<\/script/ig, '<\\/script')};`;
+    }
+    else {
+      return '';
+    }
+  }
+
   scripts() {
     return `
     <script>
     var spat = {};
     spat.config = ${JSON.stringify(spat.config)};
     spat.plugins = ${JSON.stringify(spat.plugins)};
+    ${this.cacheScript()}
     </script>
     <script src="/spat/modules.js" async></script>
 `;

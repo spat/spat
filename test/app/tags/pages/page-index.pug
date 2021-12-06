@@ -31,11 +31,17 @@ page-index
       var items = ss.docs.map(doc => {
         return {
           id: doc.id,
-          ref: doc.ref,
+          path: doc.ref.path,
           data: doc.data(),
         }
       });
 
+      //- ref を消す
+      items.forEach((item) => {
+        delete item.data.user_ref;
+        delete item.data.users;
+        delete item.data.last_message_ref;
+      });
       items = [...items, ...items, ...items];
 
       return {
