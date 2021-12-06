@@ -77,13 +77,20 @@ app.use((req, res, next) => {
 
 app.setup = function() {
   Object.keys(routes).forEach(key => {
-  
-    if (config.server.cache) {
+    app.get(key, async (req, res, next) => {
+      var route = routes[key];
+      var cacheKey = route.cacheKey ? route.cacheKey({ route, req, res }) : req.Url.pathname;
+      var cacheFlag = route.cache;
+      if (typeof cacheFlag === 'function') {
+        cacheFlag = cacheFlag({ route, req, res });
+      }
+      cacheFlag = config.server.cache && (cacheFlag !== false);
+      if (!cacheFlag) {
+        app.clearCache(cacheKey);
+      }
+      var revalidate = false;
       // キャッシュチェック
-      app.get(key, async (req, res, next) => {
-        var route = routes[key];
-        var cacheKey = route.cacheKey ? route.cacheKey({ route, req, res }) : req.Url.pathname;
-
+      if (cacheFlag) {
         // キャッシュがあればそっちを使う
         var cache = app.getCache(cacheKey);
         if (cache instanceof Promise) {
@@ -104,26 +111,34 @@ app.setup = function() {
           }
           // リダイレクト
           if (cache.redirected) {
-            res.redirect(cache.statusCode, cache.address);
-            return;
+            // キャッシュを更新するかどうかチェック
+            if (!cache.revalidated && Date.now() - cache.timestamp > route.revalidate * 1000) {
+              cache.revalidated = true;
+              revalidate = true;
+            }
+            else {
+              res.redirect(cache.statusCode, cache.address);
+            }
           }
-          res.status(cache.statusCode).send(cache.content);
+          else {
+            res.status(cache.statusCode).send(cache.content);
+          }
+          // キャッシュを更新するかどうかチェック
+          if (!cache.revalidated && Date.now() - cache.timestamp > route.revalidate * 1000) {
+            cache.revalidated = true;
+            // キャッシュの中身だけ更新するフラグ
+            revalidate = true;
+          }
+          // キャッシュ更新するフラグがない場合は return
+          if (!revalidate) return;
         }
-        else {
-          next();
-        }
-      });
-    }
-  
-  
-    // 実際のレンダリング
-    app.get(key, async (req, res, next) => {
-      var route = routes[key];
-      var cacheKey = route.cacheKey ? route.cacheKey({ route, req, res }) : req.Url.pathname;
+      }
 
+
+      // 実際のレンダリング
       var promise = new Promise(async (resolve, reject) => {
-        
         var ssr = new Ssriot();
+        res.status(200);
         await ssr.render({
           req,
           res,
@@ -145,6 +160,7 @@ app.setup = function() {
             redirected: true,
             statusCode: res.statusCode,
             address: res.get('Location'),
+            timestamp: Date.now(),
           });
           return;
         }
@@ -171,6 +187,7 @@ app.setup = function() {
               content,
               error: res.error,
               statusCode: res.statusCode,
+              timestamp: Date.now(),
             });
           }
           try {
@@ -184,7 +201,7 @@ app.setup = function() {
       });
 
       // キャッシュする
-      if (config.server.cache) {
+      if (!revalidate && cacheFlag) {
         app.setCache(cacheKey, promise);
       }
 
@@ -195,7 +212,7 @@ app.setup = function() {
           app.clearCache(cacheKey);
         }
         // キャッシュする
-        else if (config.server.cache) {
+        else if (cacheFlag) {
           app.setCache(cacheKey, result);
         }
         // リダイレクトの時
@@ -203,10 +220,14 @@ app.setup = function() {
           // 何もしない
           return ;
         }
-        res.send(result.content);
+        if (!revalidate) {
+          res.send(result.content);
+        }
       }
       catch (e) {
-        res.status(500).send(e.toString());
+        if (!revalidate) {
+          res.status(500).send(e.toString());
+        }
       }
     });
     
