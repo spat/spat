@@ -71,7 +71,7 @@ spat-nav
         if (ssr) {
           await this.preload(currentPageTag, {
             req, res, cached,
-          });
+          }, route.useServerSideData);
 
           // redirect がかかっていたら非表示にして以降をスキップ
           if (res.statusCode === 301 || res.statusCode === 302) {
@@ -136,9 +136,22 @@ spat-nav
     };
 
     // preload を再帰呼び出し
-    this.preload = async (tag, opts) => {
+    this.preload = async (tag, opts, preloadCache = false) => {
       if (tag.preload) {
-        var data = await tag.preload(opts);
+        var data;
+        //- SSR で展開したデータを入れる
+        if (preloadCache && spat.isBrowser && spat._preload_cache) {
+          data = spat._preload_cache;
+          //- 一回使ったら消す
+          delete spat._preload_cache;
+        }
+        else {
+          data = await tag.preload(opts);
+        }
+        //- SSR 時に展開するためのデータ
+        if (preloadCache && spat.isNode) {
+          this._preloadCache = data;
+        }
         Object.assign(tag, data);
         tag.update();
       }
