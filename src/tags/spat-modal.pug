@@ -80,6 +80,9 @@ spat-modal(show="{visible}")
     });
 
     this.open = (tagName, options) => {
+      //- フォーカスを外す
+      document.activeElement.blur();
+
       var _options = Object.assign({
         dismissible: true,
       }, options);
