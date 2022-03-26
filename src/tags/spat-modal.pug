@@ -80,9 +80,6 @@ spat-modal(show="{visible}")
     });
 
     this.open = (tagName, options) => {
-      //- フォーカスを外す
-      document.activeElement.blur();
-
       var _options = Object.assign({
         dismissible: true,
       }, options);
@@ -146,6 +143,10 @@ spat-modal(show="{visible}")
 
       // 表示更新
       this.update({visible: true});
+
+      // デフォルトで modal の枠に focus しておく (ボタン連打等の対策)
+      element.tabIndex = '-1';
+      element.focus();
 
       // スクロールを止める
       document.documentElement.style.overflow = 'hidden';
