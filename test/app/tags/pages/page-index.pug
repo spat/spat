@@ -1,68 +1,69 @@
 page-index
-  div
-    div.sticky.t0.z100(data-is='module-header')
+  h1 demo
+  //- div
+  //-   div.sticky.t0.z100(data-is='module-header')
 
-    div.container.p16
-      h1.mb16 {title}
+  //-   div.container.p16
+  //-     h1.mb16 {title}
 
-      div.my8
-        div
-          div.mb1(each='{item in items}', data-is='item-group', item='{item}')
+  //-     div.my8
+  //-       div
+  //-         div.mb1(each='{item in items}', data-is='item-group', item='{item}')
 
-  style(type='less').
-    :scope {
-      display: block;
-    }
+  //- style(type='less').
+  //-   :scope {
+  //-     display: block;
+  //-   }
 
-  script.
-    this.title = 'Hello, spat with parcel!';
+  //- script.
+  //-   this.title = 'Hello, spat with parcel!';
 
-    this.preload = async ({req, res, cached}) => {
-      if (cached) return ;
+  //-   this.preload = async ({req, res, cached}) => {
+  //-     if (cached) return ;
 
-      console.log('index: preload');
-      var ref = db.collection('groups');
-      var ss = await ref.get({source: "cache"});
+  //-     console.log('index: preload');
+  //-     var ref = db.collection('groups');
+  //-     var ss = await ref.get({source: "cache"});
       
-      if (ss.empty) {
-        var ss = await ref.get({source: "server"});
-      }
+  //-     if (ss.empty) {
+  //-       var ss = await ref.get({source: "server"});
+  //-     }
 
-      var items = ss.docs.map(doc => {
-        return {
-          id: doc.id,
-          path: doc.ref.path,
-          data: doc.data(),
-        }
-      });
+  //-     var items = ss.docs.map(doc => {
+  //-       return {
+  //-         id: doc.id,
+  //-         path: doc.ref.path,
+  //-         data: doc.data(),
+  //-       }
+  //-     });
 
-      //- ref を消す
-      items.forEach((item) => {
-        delete item.data.user_ref;
-        delete item.data.users;
-        delete item.data.last_message_ref;
-      });
-      items = [...items, ...items, ...items];
+  //-     //- ref を消す
+  //-     items.forEach((item) => {
+  //-       delete item.data.user_ref;
+  //-       delete item.data.users;
+  //-       delete item.data.last_message_ref;
+  //-     });
+  //-     items = [...items, ...items, ...items];
 
-      return {
-        items,
-      };
-    };
+  //-     return {
+  //-       items,
+  //-     };
+  //-   };
 
-    this.head = () => {
-      return {
-        title: 'トップページ',
-      };
-    };
+  //-   this.head = () => {
+  //-     return {
+  //-       title: 'トップページ',
+  //-     };
+  //-   };
 
-    this.on('show', async ({req}) => {
-      console.assert(req.Url.pathname === '/', '別ページのパラメータ');
-      console.log('index: show');
-    });
-    this.on('hide', async () => {
-      console.log('index: hide');
-    });
-    this.on('client', async () => {
-      console.log('index: client');
-    });
+  //-   this.on('show', async ({req}) => {
+  //-     console.assert(req.Url.pathname === '/', '別ページのパラメータ');
+  //-     console.log('index: show');
+  //-   });
+  //-   this.on('hide', async () => {
+  //-     console.log('index: hide');
+  //-   });
+  //-   this.on('client', async () => {
+  //-     console.log('index: client');
+  //-   });
 
